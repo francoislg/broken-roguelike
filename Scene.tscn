@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3 uid="uid://db4ll8cgpcygr"]
+
+[ext_resource type="Script" path="res://DebugGameVariables.gd" id="1_pwqor"]
+
+[node name="Node2D" type="Node2D"]
+
+[node name="RichTextLabel" type="RichTextLabel" parent="."]
+offset_right = 545.0
+offset_bottom = 387.0
+text = "Allo"
+script = ExtResource("1_pwqor")
