@@ -5,14 +5,13 @@ var States = GlobalState.States
 
 var allStates = States.keys()
 
-# Called when the node enters the scene tree for the first time.
 func _ready():
+
+	text = "Loaded"
 
 	pass # Replace with function body.
 
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
+func _process(_delta):
 	text = allStates.map(func (key):
 		return "%s=%s" % [key, state[States[key]]]
 	).reduce(func (acc, value):
