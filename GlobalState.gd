@@ -1,17 +1,16 @@
 extends Node
 
 enum States {
-
 	# Game Stats
-	SHORT_SESSION_GAMER,
+	ELAPSED_TIME,
 	FPS,
 	# Hardware
 	CPU_USAGE,
 	PROCESSOR_COUNT,
 	TOTAL_RAM,
 	SCREEN_REFRESH_RATE,
-  DOWNLOAD_SIZE,
-  SPACE_LEFT,
+	DOWNLOAD_SIZE,
+	SPACE_LEFT,
 	# Time
 	CLOCK_HOURS,
 	CLOCK_MINUTES,
@@ -20,7 +19,7 @@ enum States {
 	INTERNET_SPEED
 };
 
-var state = {}
+var state := {}
 
 var mainThread: Thread
 var startTime: float
@@ -77,10 +76,7 @@ func fastUpdates():
 	await dispose_threads(threads)
 
 func updateCurrentSession():
-	const timeInSecUntilKickoff = 60 * 5
-	const timeInSecUntilZero = 60 * 30
-	var timeSinceStart = Time.get_unix_time_from_system() - startTime
-	state[States.SHORT_SESSION_GAMER] = clamp(lerpf(100, 0, (timeSinceStart - timeInSecUntilKickoff) / timeInSecUntilZero), 0, 100)
+	state[States.ELAPSED_TIME] = round(Time.get_unix_time_from_system() - startTime)
 	
 func updateInternetSpeed():
 	var requestStartTime = Time.get_unix_time_from_system()
@@ -92,17 +88,17 @@ func updateInternetSpeed():
 		await get_tree().process_frame
 	
 	var timeSinceRequest = Time.get_unix_time_from_system() - requestStartTime
-	state[States.INTERNET_SPEED] = clamp(remap(timeSinceRequest, 0, 5, 0, 100), 0, 100)
+	state[States.INTERNET_SPEED] = timeSinceRequest
 
 func updateCpuUsage():
 	var result = wmicCall("cpu get loadpercentage")
 	if result:
-		state[States.CPU_USAGE] = result
+		state[States.CPU_USAGE] = float(result)
 
 func updateTotalRam():
 	var ramInBytes = wmicCall("computersystem get totalphysicalmemory")
 	if ramInBytes:
-		state[States.TOTAL_RAM] = UnitConverter.convertBytesToGb(ramInBytes)
+		state[States.TOTAL_RAM] = UnitConverter.convertBytesToGb(float(ramInBytes))
 
 func updateClock():
 	var time = Time.get_datetime_dict_from_system()
@@ -149,3 +145,15 @@ func dispose_threads(threads: Array):
 	
 func _exit_tree():
 	mainThread.wait_to_finish()
+
+func ratioedState(key: States) -> float:
+	var value = state[key]
+	match(key):
+		States.ELAPSED_TIME:
+			const timeInSecUntilKickoff = 60 * 5
+			const timeInSecUntilZero = 60 * 30
+			return clamp(lerpf(100, 0, (value - timeInSecUntilKickoff) / timeInSecUntilZero), 0, 100)
+		States.INTERNET_SPEED:
+			return clamp(remap(value, 0, 3, 0, 100), 0, 100)
+		_:
+			return value
