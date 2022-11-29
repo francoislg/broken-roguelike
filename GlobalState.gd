@@ -2,12 +2,16 @@ extends Node
 
 enum States {
    CPU_USAGE,
-   TOTAL_RAM
+   TOTAL_RAM,
+DOWNLOAD_SIZE,
+SPACE_LEFT
 };
 
 var state = {
 	States.CPU_USAGE: 0,
-	States.TOTAL_RAM: 0
+	States.TOTAL_RAM: 0,
+	States.DOWNLOAD_SIZE: 0,
+	States.SPACE_LEFT: 0
 }
 
 # Called when the node enters the scene tree for the first time.
@@ -34,6 +38,8 @@ func threadedUpdate():
 
 func oneShotUpdates():
 	updateTotalRam()
+	updateDownloadSize()
+	updateSpaceLeft()
 
 func slowUpdates():
 	return
@@ -49,7 +55,7 @@ func updateCpuUsage():
 func updateTotalRam():
 	var ramInBytes = wmicCall("computersystem get totalphysicalmemory")
 	if ramInBytes:
-		state[States.TOTAL_RAM] = float(ramInBytes) / 1024 / 1024 / 1024
+		state[States.TOTAL_RAM] = ramInBytes
 
 # Could probably use one wmic call with "/value" to retrieve every PC information at once
 
@@ -57,3 +63,16 @@ func wmicCall(args: String):
 	var output = []
 	OS.execute("wmic", args.split(" "), output)
 	return output[0].split(" ")[2].rstrip('\r\n').lstrip('\r\n')
+	
+
+func updateDownloadSize():
+	var downloadDir = DirAccess.open(OS.get_system_dir(OS.SYSTEM_DIR_DOWNLOADS))
+	var totalSize = 0;
+	for file in downloadDir.get_files():
+		var fileDir = downloadDir.get_current_dir(true) + "/" + file
+		totalSize += FileAccess.open(fileDir, FileAccess.READ).get_length()
+	state[States.DOWNLOAD_SIZE] = UnitConverter.convertBytesToGb(totalSize);
+
+func updateSpaceLeft():
+	var spaceLeft = DirAccess.open(OS.get_system_dir(0)).get_space_left()
+	state[States.SPACE_LEFT] = UnitConverter.convertBytesToGb(spaceLeft);
