@@ -4,6 +4,7 @@ enum States {
 	# Game Stats
 	ELAPSED_TIME,
 	FPS,
+	WINDOW_PIXELS,
 	# Hardware
 	CPU_USAGE,
 	PROCESSOR_COUNT,
@@ -11,6 +12,8 @@ enum States {
 	SCREEN_REFRESH_RATE,
 	DOWNLOAD_SIZE,
 	SPACE_LEFT,
+	NUMBER_OF_DRIVES,
+	NUMBER_OF_CONTROLLERS,
 	# Time
 	CLOCK_HOURS,
 	CLOCK_MINUTES,
@@ -43,13 +46,13 @@ func threadedUpdate():
 	var fastTimer = Timer.new()
 	add_child(fastTimer)
 	fastTimer.wait_time = 1
-	fastTimer.connect('timeout', fastUpdates);
+	fastTimer.connect('timeout', fastUpdates)
 	fastTimer.start()
 
 	var slowTimer = Timer.new()
 	add_child(slowTimer)
 	slowTimer.wait_time = 10
-	slowTimer.connect('timeout', slowUpdates);
+	slowTimer.connect('timeout', slowUpdates)
 	slowTimer.start()
 
 func oneShotUpdates():
@@ -63,6 +66,9 @@ func slowUpdates():
 	var threads = multiple_threads([updateInternetSpeed])
 	
 	state[States.SCREEN_REFRESH_RATE] = DisplayServer.screen_get_refresh_rate()
+	state[States.NUMBER_OF_DRIVES] = DirAccess.get_drive_count()
+	state[States.NUMBER_OF_CONTROLLERS] = Input.get_connected_joypads().size()
+	updateWindowPixels()
 	
 	await dispose_threads(threads)
 
@@ -70,13 +76,14 @@ func fastUpdates():
 	var threads = multiple_threads([updateCpuUsage])
 
 	updateClock()
-	updateCurrentSession()
+	state[States.ELAPSED_TIME] = round(Time.get_unix_time_from_system() - startTime)
 	state[States.FPS] = Engine.get_frames_per_second();
 
 	await dispose_threads(threads)
 
-func updateCurrentSession():
-	state[States.ELAPSED_TIME] = round(Time.get_unix_time_from_system() - startTime)
+func updateWindowPixels():
+	var size = DisplayServer.window_get_real_size();
+	state[States.WINDOW_PIXELS] = size.x * size.y;
 	
 func updateInternetSpeed():
 	var requestStartTime = Time.get_unix_time_from_system()
@@ -153,6 +160,14 @@ func ratioedState(key: States) -> float:
 			const timeInSecUntilKickoff = 60 * 5
 			const timeInSecUntilZero = 60 * 30
 			return clamp(lerpf(100, 0, (value - timeInSecUntilKickoff) / timeInSecUntilZero), 0, 100)
+		States.NUMBER_OF_DRIVES:
+			return value * 10
+		States.WINDOW_PIXELS:
+			# We use log (which is the ln() math equivalent) to flatten the difference between 4k and the low resolution
+			# (640 x 480) / (3840 x 2160) == 44% -> ln(2560 x 1440) / ln(3840 x 2160) = 94% 
+			# (640 x 480) / (3840 x 2160) == 3.7% -> ln(640 x 480) / ln(3840 x 2160) = 80%
+			# So, roughly, 4k gives ~0% bonus, 1440p gives ~25% bonus, 800x600 gives ~85%
+			return remap(log(value), log(640 * 480), log(3840 * 2160), 100, 0)
 		States.INTERNET_SPEED:
 			return clamp(remap(value, 0, 3, 0, 100), 0, 100)
 		_:
