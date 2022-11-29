@@ -6,8 +6,9 @@ var States = GlobalState.States
 var allStates = States.keys()
 
 func _ready():
+
 	text = "Loaded"
-	
+
 	pass # Replace with function body.
 
 func _process(_delta):

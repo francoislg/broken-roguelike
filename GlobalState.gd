@@ -1,6 +1,7 @@
 extends Node
 
 enum States {
+
 	# Game Stats
 	SHORT_SESSION_GAMER,
 	FPS,
@@ -9,6 +10,8 @@ enum States {
 	PROCESSOR_COUNT,
 	TOTAL_RAM,
 	SCREEN_REFRESH_RATE,
+  DOWNLOAD_SIZE,
+  SPACE_LEFT,
 	# Time
 	CLOCK_HOURS,
 	CLOCK_MINUTES,
@@ -52,7 +55,10 @@ func threadedUpdate():
 
 func oneShotUpdates():
 	updateTotalRam()
+	updateDownloadSize()
+	updateSpaceLeft()
 	state[States.PROCESSOR_COUNT] = OS.get_processor_count()
+
 
 func slowUpdates():
 	var threads = multiple_threads([updateInternetSpeed])
@@ -96,8 +102,8 @@ func updateCpuUsage():
 func updateTotalRam():
 	var ramInBytes = wmicCall("computersystem get totalphysicalmemory")
 	if ramInBytes:
-		state[States.TOTAL_RAM] = float(ramInBytes) / 1024 / 1024 / 1024
-		
+		state[States.TOTAL_RAM] = UnitConverter.convertBytesToGb(ramInBytes)
+
 func updateClock():
 	var time = Time.get_datetime_dict_from_system()
 	state[States.CLOCK_HOURS] = time.hour
@@ -114,6 +120,18 @@ func wmicCall(args: String):
 	OS.execute("wmic", args.split(" "), output)
 	return output[0].split(" ")[2].rstrip('\r\n').lstrip('\r\n')
 	
+func updateDownloadSize():
+	var downloadDir = DirAccess.open(OS.get_system_dir(OS.SYSTEM_DIR_DOWNLOADS))
+	var totalSize = 0;
+	for file in downloadDir.get_files():
+		var fileDir = downloadDir.get_current_dir(true) + "/" + file
+		totalSize += FileAccess.open(fileDir, FileAccess.READ).get_length()
+	state[States.DOWNLOAD_SIZE] = UnitConverter.convertBytesToGb(totalSize);
+
+func updateSpaceLeft():
+	var spaceLeft = DirAccess.open(OS.get_system_dir(0)).get_space_left()
+	state[States.SPACE_LEFT] = UnitConverter.convertBytesToGb(spaceLeft);
+
 func multiple_threads(callables: Array[Callable]):
 	return callables.map(func (callable):
 		var thread = Thread.new()
