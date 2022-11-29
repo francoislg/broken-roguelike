@@ -13,18 +13,21 @@ enum States {
 	CLOCK_HOURS,
 	CLOCK_MINUTES,
 	CLOCK_SECONDS,
-	DAY_OF_MONTH
+	DAY_OF_MONTH,
+	INTERNET_SPEED
 };
 
 var state = {}
 
 var mainThread: Thread
 var startTime: float
+var httpClient: HTTPClient;
 
 func _ready():
 	for k in States.values():
 		state[k] = 0
 	
+	httpClient = HTTPClient.new()
 	startTime = Time.get_unix_time_from_system()
 	
 	mainThread = Thread.new()
@@ -52,8 +55,11 @@ func oneShotUpdates():
 	state[States.PROCESSOR_COUNT] = OS.get_processor_count()
 
 func slowUpdates():
+	var threads = multiple_threads([updateInternetSpeed])
+	
 	state[States.SCREEN_REFRESH_RATE] = DisplayServer.screen_get_refresh_rate()
-	return
+	
+	await dispose_threads(threads)
 
 func fastUpdates():
 	var threads = multiple_threads([updateCpuUsage])
@@ -69,6 +75,18 @@ func updateCurrentSession():
 	const timeInSecUntilZero = 60 * 30
 	var timeSinceStart = Time.get_unix_time_from_system() - startTime
 	state[States.SHORT_SESSION_GAMER] = clamp(lerpf(100, 0, (timeSinceStart - timeInSecUntilKickoff) / timeInSecUntilZero), 0, 100)
+	
+func updateInternetSpeed():
+	var requestStartTime = Time.get_unix_time_from_system()
+	var err = httpClient.connect_to_host("www.google.com", 80)
+	assert(err == OK)
+	
+	while httpClient.get_status() == HTTPClient.STATUS_CONNECTING or httpClient.get_status() == HTTPClient.STATUS_RESOLVING:
+		httpClient.poll()
+		await get_tree().process_frame
+	
+	var timeSinceRequest = Time.get_unix_time_from_system() - requestStartTime
+	state[States.INTERNET_SPEED] = clamp(remap(timeSinceRequest, 0, 5, 0, 100), 0, 100)
 
 func updateCpuUsage():
 	var result = wmicCall("cpu get loadpercentage")
@@ -86,6 +104,8 @@ func updateClock():
 	state[States.CLOCK_MINUTES] = time.minute
 	state[States.CLOCK_SECONDS] = time.second
 	state[States.DAY_OF_MONTH] = time.day
+	
+# Battery: wmic path Win32_Battery get EstimatedChargeRemaining
 
 # Could probably use one wmic call with "/value" to retrieve every PC information at once
 
