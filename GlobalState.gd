@@ -1,10 +1,10 @@
 extends Node
 
 enum States {
-
 	# Game Stats
-	SHORT_SESSION_GAMER,
+	ELAPSED_TIME,
 	FPS,
+	WINDOW_PIXELS,
 	# Hardware
 	CPU_USAGE,
 	PROCESSOR_COUNT,
@@ -14,24 +14,29 @@ enum States {
 	SPACE_LEFT,
 	KEY_PRESSED_TEN_SECONDS,
 	KEY_PRESSED_TIMER,
+	NUMBER_OF_DRIVES,
+	NUMBER_OF_CONTROLLERS,
 	# Time
 	CLOCK_HOURS,
 	CLOCK_MINUTES,
 	CLOCK_SECONDS,
-	DAY_OF_MONTH
+	DAY_OF_MONTH,
+	INTERNET_SPEED
 };
 
-var state = {}
+var state := {}
 
 var mainThread: Thread
 var startTime: float
 var keysPressedLastTenSeconds: Array
 var keyPressedTimer: Timer
+var httpClient: HTTPClient;
 
 func _ready():
 	for k in States.values():
 		state[k] = 0
 	
+	httpClient = HTTPClient.new()
 	startTime = Time.get_unix_time_from_system()
 	
 	keyPressedTimer = Timer.new()
@@ -66,34 +71,50 @@ func oneShotUpdates():
 
 
 func slowUpdates():
+	var threads = multiple_threads([updateInternetSpeed])
+	
 	state[States.SCREEN_REFRESH_RATE] = DisplayServer.screen_get_refresh_rate()
-	return
+	state[States.NUMBER_OF_DRIVES] = DirAccess.get_drive_count()
+	state[States.NUMBER_OF_CONTROLLERS] = Input.get_connected_joypads().size()
+	updateWindowPixels()
+	
+	await dispose_threads(threads)
 
 func fastUpdates():
 	var threads = multiple_threads([updateCpuUsage])
 
 	updateClock()
-	updateCurrentSession()
 	updateKeyPressedTimer()
 	state[States.FPS] = Engine.get_frames_per_second()
+	state[States.ELAPSED_TIME] = round(Time.get_unix_time_from_system() - startTime)
 
 	await dispose_threads(threads)
 
-func updateCurrentSession():
-	const timeInSecUntilKickoff = 60 * 5
-	const timeInSecUntilZero = 60 * 30
-	var timeSinceStart = Time.get_unix_time_from_system() - startTime
-	state[States.SHORT_SESSION_GAMER] = clamp(lerpf(100, 0, (timeSinceStart - timeInSecUntilKickoff) / timeInSecUntilZero), 0, 100)
+func updateWindowPixels():
+	var size = DisplayServer.window_get_real_size();
+	state[States.WINDOW_PIXELS] = size.x * size.y;
+	
+func updateInternetSpeed():
+	var requestStartTime = Time.get_unix_time_from_system()
+	var err = httpClient.connect_to_host("www.google.com", 80)
+	assert(err == OK)
+	
+	while httpClient.get_status() == HTTPClient.STATUS_CONNECTING or httpClient.get_status() == HTTPClient.STATUS_RESOLVING:
+		httpClient.poll()
+		await get_tree().process_frame
+	
+	var timeSinceRequest = Time.get_unix_time_from_system() - requestStartTime
+	state[States.INTERNET_SPEED] = timeSinceRequest
 
 func updateCpuUsage():
 	var result = wmicCall("cpu get loadpercentage")
 	if result:
-		state[States.CPU_USAGE] = result
+		state[States.CPU_USAGE] = float(result)
 
 func updateTotalRam():
 	var ramInBytes = wmicCall("computersystem get totalphysicalmemory")
 	if ramInBytes:
-		state[States.TOTAL_RAM] = UnitConverter.convertBytesToGb(ramInBytes)
+		state[States.TOTAL_RAM] = UnitConverter.convertBytesToGb(float(ramInBytes))
 
 func updateClock():
 	var time = Time.get_datetime_dict_from_system()
@@ -101,6 +122,8 @@ func updateClock():
 	state[States.CLOCK_MINUTES] = time.minute
 	state[States.CLOCK_SECONDS] = time.second
 	state[States.DAY_OF_MONTH] = time.day
+	
+# Battery: wmic path Win32_Battery get EstimatedChargeRemaining
 
 # Could probably use one wmic call with "/value" to retrieve every PC information at once
 
@@ -167,3 +190,23 @@ func dispose_threads(threads: Array):
 	
 func _exit_tree():
 	mainThread.wait_to_finish()
+
+func ratioedState(key: States) -> float:
+	var value = state[key]
+	match(key):
+		States.ELAPSED_TIME:
+			const timeInSecUntilKickoff = 60 * 5
+			const timeInSecUntilZero = 60 * 30
+			return clamp(lerpf(100, 0, (value - timeInSecUntilKickoff) / timeInSecUntilZero), 0, 100)
+		States.NUMBER_OF_DRIVES:
+			return value * 10
+		States.WINDOW_PIXELS:
+			# We use log (which is the ln() math equivalent) to flatten the difference between 4k and the low resolution
+			# (640 x 480) / (3840 x 2160) == 44% -> ln(2560 x 1440) / ln(3840 x 2160) = 94% 
+			# (640 x 480) / (3840 x 2160) == 3.7% -> ln(640 x 480) / ln(3840 x 2160) = 80%
+			# So, roughly, 4k gives ~0% bonus, 1440p gives ~25% bonus, 800x600 gives ~85%
+			return remap(log(value), log(640 * 480), log(3840 * 2160), 100, 0)
+		States.INTERNET_SPEED:
+			return clamp(remap(value, 0, 3, 0, 100), 0, 100)
+		_:
+			return value

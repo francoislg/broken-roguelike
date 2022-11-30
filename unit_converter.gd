@@ -10,5 +10,5 @@ func _ready():
 func _process(delta):
 	pass
 
-func convertBytesToGb(bytes: int) -> float:
-	return float(bytes) / 1024 / 1024 / 1024
+func convertBytesToGb(bytes: float) -> float:
+	return bytes / 1024 / 1024 / 1024
