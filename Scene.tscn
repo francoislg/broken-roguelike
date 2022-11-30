@@ -24,7 +24,7 @@ animations = [{
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_hmdp8"]
-size = Vector2(354, 20)
+size = Vector2(1119, 20)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_1ga0c"]
 size = Vector2(23, 253)
@@ -56,6 +56,7 @@ playing = true
 position = Vector2(192, 630)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2(382.5, 0)
 shape = SubResource("RectangleShape2D_hmdp8")
 script = ExtResource("10_0fwa4")
 
@@ -63,6 +64,30 @@ script = ExtResource("10_0fwa4")
 position = Vector2(17, 374)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D2"]
+position = Vector2(1.5, 116.5)
+shape = SubResource("RectangleShape2D_1ga0c")
+script = ExtResource("10_0fwa4")
+
+[node name="StaticBody2D3" type="StaticBody2D" parent="."]
+position = Vector2(1128, 367)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D3"]
+position = Vector2(1.5, 116.5)
+shape = SubResource("RectangleShape2D_1ga0c")
+script = ExtResource("10_0fwa4")
+
+[node name="StaticBody2D4" type="StaticBody2D" parent="."]
+position = Vector2(966, 270)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D4"]
+position = Vector2(1.5, 116.5)
+shape = SubResource("RectangleShape2D_1ga0c")
+script = ExtResource("10_0fwa4")
+
+[node name="StaticBody2D5" type="StaticBody2D" parent="."]
+position = Vector2(1127, 113)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D5"]
 position = Vector2(1.5, 116.5)
 shape = SubResource("RectangleShape2D_1ga0c")
 script = ExtResource("10_0fwa4")
