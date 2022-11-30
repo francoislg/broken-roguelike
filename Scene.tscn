@@ -1,6 +1,33 @@
-[gd_scene load_steps=2 format=3 uid="uid://db4ll8cgpcygr"]
+[gd_scene load_steps=16 format=3 uid="uid://db4ll8cgpcygr"]
 
 [ext_resource type="Script" path="res://DebugGameVariables.gd" id="1_pwqor"]
+[ext_resource type="Script" path="res://PlayerMovement.gd" id="2_qh71o"]
+[ext_resource type="Texture2D" uid="uid://dvr3jo0ky2jp" path="res://run_animation/run-1.png" id="2_wpcup"]
+[ext_resource type="Texture2D" uid="uid://7kprjir7b1oq" path="res://run_animation/run-2.png" id="3_osum3"]
+[ext_resource type="Texture2D" uid="uid://cfriqed1wvd4l" path="res://run_animation/run-3.png" id="4_3gwbn"]
+[ext_resource type="Texture2D" uid="uid://bsft3641c8fkj" path="res://run_animation/run-4.png" id="5_814dw"]
+[ext_resource type="Texture2D" uid="uid://b2qu13v4l55wm" path="res://run_animation/run-5.png" id="6_hdbps"]
+[ext_resource type="Texture2D" uid="uid://duqf0jqjbq0ce" path="res://run_animation/run-6.png" id="7_tw6ut"]
+[ext_resource type="Texture2D" uid="uid://bloo2k1vx1e8r" path="res://run_animation/run-7.png" id="8_tmo8n"]
+[ext_resource type="Texture2D" uid="uid://bbgin8n10bajl" path="res://run_animation/run-8.png" id="9_pfejr"]
+[ext_resource type="Script" path="res://DrawSolidCollision.gd" id="10_0fwa4"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ywdt0"]
+size = Vector2(19, 23)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_3smmn"]
+animations = [{
+"frames": [ExtResource("2_wpcup"), ExtResource("3_osum3"), ExtResource("4_3gwbn"), ExtResource("5_814dw"), ExtResource("6_hdbps"), ExtResource("7_tw6ut"), ExtResource("8_tmo8n"), ExtResource("9_pfejr")],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hmdp8"]
+size = Vector2(354, 20)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1ga0c"]
+size = Vector2(23, 253)
 
 [node name="Node2D" type="Node2D"]
 
@@ -11,3 +38,31 @@ offset_right = 599.0
 offset_bottom = 445.0
 text = "Allo"
 script = ExtResource("1_pwqor")
+
+[node name="CharacterBody2D" type="CharacterBody2D" parent="."]
+script = ExtResource("2_qh71o")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CharacterBody2D"]
+position = Vector2(113, 184.5)
+shape = SubResource("RectangleShape2D_ywdt0")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="CharacterBody2D"]
+position = Vector2(113, 181)
+scale = Vector2(0.419776, 0.419776)
+frames = SubResource("SpriteFrames_3smmn")
+playing = true
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+position = Vector2(192, 630)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+shape = SubResource("RectangleShape2D_hmdp8")
+script = ExtResource("10_0fwa4")
+
+[node name="StaticBody2D2" type="StaticBody2D" parent="."]
+position = Vector2(17, 374)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D2"]
+position = Vector2(1.5, 116.5)
+shape = SubResource("RectangleShape2D_1ga0c")
+script = ExtResource("10_0fwa4")
