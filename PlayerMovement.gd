@@ -13,9 +13,13 @@ var gravity = 2000 #ProjectSettings.get_setting("physics/2d/default_gravity")
 var recently_wall_jumped = false
 var buffered_frames_jump = 0
 var jump_touched_a_wall = false
+var resetWallTimer := Timer.new()
 
 func _ready():
-	pass # Replace with function body.
+	add_child(resetWallTimer)
+	resetWallTimer.wait_time = 0.2
+	resetWallTimer.one_shot = true
+	resetWallTimer.connect("timeout", _on_timer_reset_wall_jump)
 
 func _physics_process(delta):
 	if (Input.is_action_just_pressed("LEFT") || Input.is_action_just_pressed("RIGHT")) and is_on_floor():
@@ -58,12 +62,7 @@ func _physics_process(delta):
 			buffered_frames_jump = 0
 			velocity.y = -JUMP_SPEED
 			if (touchesAWall):
-				var timer := Timer.new()
-				add_child(timer)
-				timer.wait_time = 0.2
-				timer.one_shot = true
-				timer.start()
-				timer.connect("timeout", _on_timer_reset_wall_jump)
+				resetWallTimer.start()
 				recently_wall_jumped = true
 				if (touchesLeft):
 					velocity.x = JUMP_SPEED
