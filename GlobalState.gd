@@ -145,14 +145,14 @@ func updateSpaceLeft():
 	state[States.SPACE_LEFT] = UnitConverter.convertBytesToGb(spaceLeft)
 	
 
-func _input(_event):
-	if (_event is InputEventKey and (_event as InputEventKey).pressed):
+func _input(event):
+	if (event is InputEventKey and (event as InputEventKey).pressed):
 		if (keysPressedLastTenSeconds.size() == 0):
-			keysPressedLastTenSeconds = [[_event,10]]
+			keysPressedLastTenSeconds = [[event,10]]
 			keyPressedTimer.wait_time = 10
 			keyPressedTimer.start()
 		else:
-			keysPressedLastTenSeconds += [[_event, keyPressedTimer.time_left]]
+			keysPressedLastTenSeconds += [[event, keyPressedTimer.time_left]]
 		state[States.KEY_PRESSED_TEN_SECONDS] = keysPressedLastTenSeconds.size()
 
 func onKeyPressedTimerEnd():
