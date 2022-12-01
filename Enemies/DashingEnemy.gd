@@ -13,7 +13,7 @@ const TIME_TO_PREPARE = 1
 const TIME_TO_DASH = 0.25
 const TIME_TO_COOLDOWN = 1
 
-enum Mode { Following, PreparingDash, Dashing, Standby }
+enum Mode { Following, PreparingDash, Dashing, PostDashing, Damaged }
 
 var mode := Mode.Following
 var modeTimer = Timer.new()
@@ -27,7 +27,7 @@ func _ready():
 	modeTimer.connect("timeout", nextMode)
 	add_child(modeTimer)
 
-func _process(delta):
+func _process(_delta):
 	var diff = character.position - position
 	
 	if mode == Mode.Following and diff.length() <= DISTANCE_FOR_DASH:
@@ -43,6 +43,8 @@ func _physics_process(delta):
 			velocity = velocity.move_toward(Vector2.ZERO, delta * TIME_TO_GET_TO_SPEED)
 		Mode.Dashing:
 			velocity = velocity.move_toward(directionDash * DASH_SPEED, delta * TIME_TO_GET_TO_SPEED * 4)
+		Mode.PostDashing:
+			velocity = velocity.move_toward(diff.normalized() * BASE_SPEED / 2, delta * TIME_TO_GET_TO_SPEED * 2)
 		_:
 			velocity = velocity.move_toward(Vector2.ZERO, delta * TIME_TO_GET_TO_SPEED * 4)
 	
@@ -60,10 +62,8 @@ func nextMode():
 			finish_dash()
 			modeTimer.wait_time = TIME_TO_COOLDOWN
 			modeTimer.start()
-		Mode.Standby:
-			finish_standby()
-			modeTimer.wait_time = TIME_TO_COOLDOWN
-			modeTimer.start()
+		Mode.PostDashing:
+			finish_post_dash()
 
 func prepare_dash():
 	ColoredRectangle.color = Color.ORANGE
@@ -82,17 +82,18 @@ func finish_prepare_dash():
 
 func finish_dash():
 	ColoredRectangle.color = Color.WHITE
-	mode = Mode.Standby
+	mode = Mode.PostDashing
 	
-func finish_standby():
+func finish_post_dash():
 	ColoredRectangle.color = Color.hex(0xba4fc2)
 	mode = Mode.Following
 	
 func receive_damage(direction: Vector2, damage: float):
 	super(direction, damage)
 	modeTimer.stop()
-	finish_dash()
+	ColoredRectangle.color = Color.WHITE
+	mode = Mode.Damaged
 
 func _on_timer_collision_refresh():
 	super()
-	finish_standby()
+	finish_post_dash()
