@@ -147,7 +147,7 @@ func updateSpaceLeft():
 	state[States.SPACE_LEFT] = UnitConverter.convertBytesToGb(spaceLeft)
 
 func _input(event):
-	if (event is InputEventKey and (event as InputEventKey).pressed):
+	if (event is InputEventKey and event.pressed and not event.echo):
 		state[States.KEY_PRESSED_TEN_SECONDS] += 1
 		keyPressedHistory[lastKeyPressedHistoryIndex] += 1
 		

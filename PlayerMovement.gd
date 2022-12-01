@@ -93,7 +93,7 @@ func _physics_process(delta):
 	if velocity.x != 0:
 		sprite.set_flip_h(velocity.x < 0)
 
-func stopMovementFor(time: int):
+func stopMovementFor(time: float):
 	movementStoppedTimer.wait_time = time
 	movementStoppedTimer.start()
 	movement_stopped = true

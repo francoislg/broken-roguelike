@@ -1,8 +1,8 @@
 extends BaseEnemy
 
-const BASE_SPEED = 100
+const BASE_SPEED = 200
 # The higher this is, the faster the enemy will get to speed
-const TIME_TO_GET_TO_SPEED = 500
+const TIME_TO_GET_TO_SPEED = 800
 
 func _physics_process(delta):
 	var vector = (character.position - position).normalized()

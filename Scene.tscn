@@ -65,7 +65,7 @@ shape = SubResource("RectangleShape2D_1ga0c")
 script = ExtResource("10_0fwa4")
 
 [node name="Enemy" parent="." instance=ExtResource("12_f21e5")]
-position = Vector2(680, 379)
+position = Vector2(691, 544)
 
 [node name="Enemy2" parent="." instance=ExtResource("12_f21e5")]
-position = Vector2(836, 486)
+position = Vector2(692, 483)
