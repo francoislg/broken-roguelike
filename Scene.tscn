@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://db4ll8cgpcygr"]
+[gd_scene load_steps=19 format=3 uid="uid://db4ll8cgpcygr"]
 
 [ext_resource type="Script" path="res://DebugGameVariables.gd" id="1_pwqor"]
 [ext_resource type="Script" path="res://PlayerMovement.gd" id="2_qh71o"]
@@ -11,6 +11,7 @@
 [ext_resource type="Texture2D" uid="uid://bloo2k1vx1e8r" path="res://run_animation/run-7.png" id="8_tmo8n"]
 [ext_resource type="Texture2D" uid="uid://bbgin8n10bajl" path="res://run_animation/run-8.png" id="9_pfejr"]
 [ext_resource type="Script" path="res://DrawSolidCollision.gd" id="10_0fwa4"]
+[ext_resource type="PackedScene" uid="uid://kpvuqsv3l53p" path="res://BasicFollowingEnemy.tscn" id="12_f21e5"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ywdt0"]
 size = Vector2(19, 23)
@@ -23,13 +24,19 @@ animations = [{
 "speed": 5.0
 }]
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hrxyt"]
+size = Vector2(52, 50)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_udxmh"]
+size = Vector2(132, 130)
+
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_hmdp8"]
 size = Vector2(1119, 20)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_1ga0c"]
 size = Vector2(23, 253)
 
-[node name="Node2D" type="Node2D"]
+[node name="Scene" type="Node2D"]
 
 [node name="RichTextLabel" type="RichTextLabel" parent="."]
 offset_left = 54.0
@@ -39,23 +46,42 @@ offset_bottom = 445.0
 text = "Allo"
 script = ExtResource("1_pwqor")
 
-[node name="CharacterBody2D" type="CharacterBody2D" parent="."]
+[node name="Character" type="CharacterBody2D" parent="."]
+position = Vector2(117, 479)
+collision_layer = 2
+collision_mask = 7
 script = ExtResource("2_qh71o")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="CharacterBody2D"]
-position = Vector2(113, 184.5)
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Character"]
+position = Vector2(-0.0979366, -0.437489)
 shape = SubResource("RectangleShape2D_ywdt0")
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="CharacterBody2D"]
-position = Vector2(113, 181)
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Character"]
+position = Vector2(-0.0979519, -3.9375)
 scale = Vector2(0.419776, 0.419776)
 frames = SubResource("SpriteFrames_3smmn")
 playing = true
 
-[node name="StaticBody2D" type="StaticBody2D" parent="."]
+[node name="AttackRangeArea" type="Area2D" parent="Character"]
+collision_layer = 8
+collision_mask = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Character/AttackRangeArea"]
+shape = SubResource("RectangleShape2D_hrxyt")
+debug_color = Color(0.635294, 0.52549, 0.133333, 0.419608)
+
+[node name="AttackDamageArea" type="Area2D" parent="Character"]
+collision_layer = 8
+collision_mask = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Character/AttackDamageArea"]
+shape = SubResource("RectangleShape2D_udxmh")
+debug_color = Color(0.690196, 0.458824, 0.541176, 0.419608)
+
+[node name="StaticBody2" type="StaticBody2D" parent="."]
 position = Vector2(192, 630)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2"]
 position = Vector2(382.5, 0)
 shape = SubResource("RectangleShape2D_hmdp8")
 script = ExtResource("10_0fwa4")
@@ -91,3 +117,10 @@ position = Vector2(1127, 113)
 position = Vector2(1.5, 116.5)
 shape = SubResource("RectangleShape2D_1ga0c")
 script = ExtResource("10_0fwa4")
+
+[node name="Enemy" parent="." instance=ExtResource("12_f21e5")]
+
+[node name="Enemy2" parent="." instance=ExtResource("12_f21e5")]
+position = Vector2(790, 485)
+
+[connection signal="body_entered" from="Character/AttackRangeArea" to="Character" method="_on_attack_range_area_body_entered"]
