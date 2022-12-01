@@ -16,23 +16,33 @@ var recently_wall_jumped = false
 var buffered_frames_jump = 0
 var jump_touched_a_wall = false
 var resetWallTimer := Timer.new()
+var preventMovementTimer := Timer.new()
+var cannot_move = false
 
 func _ready():
 	add_child(resetWallTimer)
 	resetWallTimer.wait_time = 0.2
 	resetWallTimer.one_shot = true
 	resetWallTimer.connect("timeout", _on_timer_reset_wall_jump)
+	
+	add_child(preventMovementTimer)
+	preventMovementTimer.one_shot = true
+	preventMovementTimer.connect("timeout", _on_timer_prevent_movement)
 
 func _physics_process(delta):
 	if (Input.is_action_just_pressed("LEFT") || Input.is_action_just_pressed("RIGHT")) and is_on_floor():
 		velocity.x = velocity.x / 2
+
 	var walk = WALK_FORCE * (Input.get_action_strength("RIGHT") - Input.get_action_strength("LEFT"))
+	
+	if cannot_move:
+		walk = 0
 	
 	if abs(walk) < WALK_FORCE * 0.2:
 		velocity.x = move_toward(velocity.x, 0, STOP_FORCE * delta)
 	else:
 		velocity.x += walk * delta
-	
+
 	#Stops most of the momentum if you press the opposite direction of the current velocity for better air control	
 	if walk < 0:
 		velocity.x = clamp(velocity.x, -WALK_MAX_SPEED, WALK_MAX_SPEED * 0.1)
@@ -87,11 +97,19 @@ func _physics_process(delta):
 func _on_timer_reset_wall_jump():
 	recently_wall_jumped = false
 
+func prevent_movement_for(time: float):
+	cannot_move = true
+	preventMovementTimer.wait_time = time
+	preventMovementTimer.start()
+	
+func _on_timer_prevent_movement():
+	cannot_move = false
 
 func _on_attack_range_area_body_entered(enemyHit: BaseEnemy):
 	var bodies = attackRangeArea.get_overlapping_bodies()
 	var playerHitDirection = (enemyHit.position - position).normalized()
 	velocity = -playerHitDirection * ENEMY_HIT_KNOCKBACK_FORCE
+	prevent_movement_for(0.5)
 	
 	for body in bodies:
 		if body is BaseEnemy:
