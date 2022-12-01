@@ -19,7 +19,7 @@ var buffered_frames_jump = 0
 var jump_touched_a_wall = false
 var lastJumpTimer := Timer.new()
 var movementStoppedTimer := Timer.new()
-var attackCooldown = 2
+const ATTACK_COOLDOWN = 2
 var attackCooldownTimer := Timer.new()
 var canAttack = true
 
