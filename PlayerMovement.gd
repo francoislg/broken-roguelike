@@ -120,16 +120,22 @@ func update_attackcooldown_bar():
 	attackCooldownBar.value = ratio * 100
 
 func _on_attack_range_area_body_entered(enemyHit: BaseEnemy):
-	var bodies = attackRangeArea.get_overlapping_bodies()
 	var playerHitDirection = (enemyHit.position - position).normalized()
 	velocity = -playerHitDirection * ENEMY_HIT_KNOCKBACK_FORCE * (ATTACK_COOLDOWN_HIT_KNOCKBACK_MODIFIER if not canAttack else 1)
 	stopMovementFor(0.2)
 	
-	for body in bodies:
-		if body is BaseEnemy && canAttack:
-			var enemyHitDirection = (body.position - position).normalized()
-			body.receive_damage(enemyHitDirection, 1)
-			canAttack = false
-			attackCooldownBar.show()
-			attackCooldownTimer.start()
-			break
+	var hasAttacked = false;
+	
+	if canAttack:
+		var bodies = attackRangeArea.get_overlapping_bodies()
+		for body in bodies:
+			if body is BaseEnemy:
+				var enemyHitDirection = (body.position - position).normalized()
+				body.receive_damage(enemyHitDirection, 1)
+				hasAttacked = true
+				
+	if  hasAttacked:
+		canAttack = false
+		attackCooldownBar.show()
+		attackCooldownTimer.start()
+
