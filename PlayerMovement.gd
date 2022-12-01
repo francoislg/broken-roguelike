@@ -11,6 +11,9 @@ const JUMP_SPEED = 700
 const WALL_GRAVITY_MODIFIER = 0.25
 const JUMP_BUTTON_GRAVITY_MODIFIER = 0.50
 const ENEMY_HIT_KNOCKBACK_FORCE = 700
+const ATTACK_COOLDOWN_HIT_KNOCKBACK_MODIFIER = 2.75
+const ATTACK_COOLDOWN = 2
+
 
 var gravity = 3000 #ProjectSettings.get_setting("physics/2d/default_gravity")
 
@@ -19,7 +22,6 @@ var buffered_frames_jump = 0
 var jump_touched_a_wall = false
 var lastJumpTimer := Timer.new()
 var movementStoppedTimer := Timer.new()
-const ATTACK_COOLDOWN = 2
 var attackCooldownTimer := Timer.new()
 var canAttack = true
 
@@ -29,10 +31,9 @@ func _ready():
 	movementStoppedTimer.one_shot = true
 	movementStoppedTimer.connect("timeout", _on_timer_movement_stopped)
 	add_child(attackCooldownTimer)
-	attackCooldownTimer.wait_time = attackCooldown
+	attackCooldownTimer.wait_time = ATTACK_COOLDOWN
 	attackCooldownTimer.one_shot = true
 	attackCooldownTimer.connect("timeout", _on_timer_attackcooldown_stopped)
-	attackCooldownBar.set("modulate", Color(0, 1, 0))
 
 func _physics_process(delta):
 	if (Input.is_action_just_pressed("LEFT") || Input.is_action_just_pressed("RIGHT")) and is_on_floor():
@@ -115,13 +116,13 @@ func _on_timer_attackcooldown_stopped():
 	canAttack = true
 
 func update_attackcooldown_bar():
-	var ratio = 1 - (attackCooldownTimer.time_left / attackCooldown)
+	var ratio = 1 - (attackCooldownTimer.time_left / ATTACK_COOLDOWN)
 	attackCooldownBar.value = ratio * 100
 
 func _on_attack_range_area_body_entered(enemyHit: BaseEnemy):
 	var bodies = attackRangeArea.get_overlapping_bodies()
 	var playerHitDirection = (enemyHit.position - position).normalized()
-	velocity = -playerHitDirection * ENEMY_HIT_KNOCKBACK_FORCE
+	velocity = -playerHitDirection * ENEMY_HIT_KNOCKBACK_FORCE * (ATTACK_COOLDOWN_HIT_KNOCKBACK_MODIFIER if not canAttack else 1)
 	stopMovementFor(0.2)
 	
 	for body in bodies:
