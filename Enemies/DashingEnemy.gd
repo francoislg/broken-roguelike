@@ -7,7 +7,7 @@ const DASH_SPEED = 2000
 const PREPARING_SPEED = 200
 # The higher this is, the faster the enemy will get to speed
 const TIME_TO_GET_TO_SPEED = 1400
-const DISTANCE_FOR_DASH = 100
+const DISTANCE_FOR_DASH = 120
 
 const TIME_TO_PREPARE = 1
 const TIME_TO_DASH = 0.25
@@ -18,6 +18,8 @@ enum Mode { Following, PreparingDash, Dashing, PostDashing, Damaged }
 var mode := Mode.Following
 var modeTimer = Timer.new()
 var directionDash := Vector2.ZERO
+var flippedPreparation := false
+var preparationVariation: float
 
 func _ready():
 	super()
@@ -33,17 +35,17 @@ func _process(_delta):
 		prepare_dash()
 
 func _physics_process(delta):
-	var diff = character.position - position
+	var normalizedDiff = (character.position - position).normalized()
 	
 	match (mode):
 		Mode.Following:
-			velocity = velocity.move_toward(diff.normalized() * BASE_SPEED, delta * TIME_TO_GET_TO_SPEED)
+			velocity = velocity.move_toward(normalizedDiff * BASE_SPEED, delta * TIME_TO_GET_TO_SPEED)
 		Mode.PreparingDash:
-			velocity = velocity.move_toward(diff.normalized().orthogonal() * BASE_SPEED / 4, delta * TIME_TO_GET_TO_SPEED / 2)
+			velocity = velocity.move_toward((1 if flippedPreparation else -1) * normalizedDiff.orthogonal().rotated(preparationVariation) * BASE_SPEED / 4, delta * TIME_TO_GET_TO_SPEED)
 		Mode.Dashing:
 			velocity = velocity.move_toward(directionDash * DASH_SPEED, delta * TIME_TO_GET_TO_SPEED * 4)
 		Mode.PostDashing:
-			velocity = velocity.move_toward(diff.normalized() * BASE_SPEED / 2, delta * TIME_TO_GET_TO_SPEED * 2)
+			velocity = velocity.move_toward(normalizedDiff * BASE_SPEED / 2, delta * TIME_TO_GET_TO_SPEED * 2)
 		_:
 			velocity = velocity.move_toward(Vector2.ZERO, delta * TIME_TO_GET_TO_SPEED * 4)
 	
@@ -67,6 +69,8 @@ func nextMode():
 func prepare_dash():
 	ColoredRectangle.color = Color.ORANGE
 	mode = Mode.PreparingDash
+	flippedPreparation = randi_range(0, 1) == 0
+	preparationVariation = randf_range(0, 1 / 12)
 	modeTimer.wait_time = TIME_TO_PREPARE
 	modeTimer.start()
 
