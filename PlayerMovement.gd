@@ -132,3 +132,4 @@ func _on_attack_range_area_body_entered(enemyHit: BaseEnemy):
 			canAttack = false
 			attackCooldownBar.show()
 			attackCooldownTimer.start()
+			break
