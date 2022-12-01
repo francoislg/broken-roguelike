@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://ct0tjraeq55st"]
+[gd_scene load_steps=14 format=3 uid="uid://2reqqlxhnpi5"]
 
 [ext_resource type="Script" path="res://PlayerMovement.gd" id="1_gqhlo"]
 [ext_resource type="Texture2D" uid="uid://dvr3jo0ky2jp" path="res://run_animation/run-1.png" id="2_025k3"]
@@ -57,5 +57,14 @@ collision_mask = 4
 [node name="CollisionShape2D" type="CollisionShape2D" parent="AttackDamageArea"]
 shape = SubResource("RectangleShape2D_udxmh")
 debug_color = Color(0.690196, 0.458824, 0.541176, 0.419608)
+
+[node name="AttackCooldownBar" type="ProgressBar" parent="."]
+visible = false
+modulate = Color(0, 1, 0, 1)
+offset_left = -10.0
+offset_top = -16.0
+offset_right = 10.0
+offset_bottom = -12.0
+show_percentage = false
 
 [connection signal="body_entered" from="AttackRangeArea" to="." method="_on_attack_range_area_body_entered"]

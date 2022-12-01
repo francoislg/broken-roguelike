@@ -2,6 +2,7 @@ extends CharacterBody2D
 
 @onready var sprite = $AnimatedSprite2D
 @onready var attackRangeArea := $AttackDamageArea
+@onready var attackCooldownBar = $AttackCooldownBar
 
 const WALK_FORCE = 3200
 const WALK_MAX_SPEED = 575
@@ -10,6 +11,9 @@ const JUMP_SPEED = 700
 const WALL_GRAVITY_MODIFIER = 0.25
 const JUMP_BUTTON_GRAVITY_MODIFIER = 0.50
 const ENEMY_HIT_KNOCKBACK_FORCE = 700
+const ATTACK_COOLDOWN_HIT_KNOCKBACK_MODIFIER = 2.75
+const ATTACK_COOLDOWN = 2
+
 
 var gravity = 3000 #ProjectSettings.get_setting("physics/2d/default_gravity")
 
@@ -18,12 +22,18 @@ var buffered_frames_jump = 0
 var jump_touched_a_wall = false
 var lastJumpTimer := Timer.new()
 var movementStoppedTimer := Timer.new()
+var attackCooldownTimer := Timer.new()
+var canAttack = true
 
 func _ready():
 	add_child(movementStoppedTimer)
 	movementStoppedTimer.wait_time = 0.2
 	movementStoppedTimer.one_shot = true
 	movementStoppedTimer.connect("timeout", _on_timer_movement_stopped)
+	add_child(attackCooldownTimer)
+	attackCooldownTimer.wait_time = ATTACK_COOLDOWN
+	attackCooldownTimer.one_shot = true
+	attackCooldownTimer.connect("timeout", _on_timer_attackcooldown_stopped)
 
 func _physics_process(delta):
 	if (Input.is_action_just_pressed("LEFT") || Input.is_action_just_pressed("RIGHT")) and is_on_floor():
@@ -87,7 +97,7 @@ func _physics_process(delta):
 					velocity.x = -JUMP_SPEED
 		else:
 			buffered_frames_jump -= delta;
-
+	update_attackcooldown_bar()
 	move_and_slide()
 	
 	if velocity.x != 0:
@@ -101,13 +111,31 @@ func stopMovementFor(time: float):
 func _on_timer_movement_stopped():
 	movement_stopped = false
 
+func _on_timer_attackcooldown_stopped():
+	attackCooldownBar.hide()
+	canAttack = true
+
+func update_attackcooldown_bar():
+	var ratio = 1 - (attackCooldownTimer.time_left / ATTACK_COOLDOWN)
+	attackCooldownBar.value = ratio * 100
+
 func _on_attack_range_area_body_entered(enemyHit: BaseEnemy):
-	var bodies = attackRangeArea.get_overlapping_bodies()
 	var playerHitDirection = (enemyHit.position - position).normalized()
-	velocity = -playerHitDirection * ENEMY_HIT_KNOCKBACK_FORCE
+	velocity = -playerHitDirection * ENEMY_HIT_KNOCKBACK_FORCE * (ATTACK_COOLDOWN_HIT_KNOCKBACK_MODIFIER if not canAttack else 1)
 	stopMovementFor(0.2)
 	
-	for body in bodies:
-		if body is BaseEnemy:
-			var enemyHitDirection = (body.position - position).normalized()
-			body.receive_damage(enemyHitDirection, 1)
+	var hasAttacked = false;
+	
+	if canAttack:
+		var bodies = attackRangeArea.get_overlapping_bodies()
+		for body in bodies:
+			if body is BaseEnemy:
+				var enemyHitDirection = (body.position - position).normalized()
+				body.receive_damage(enemyHitDirection, 1)
+				hasAttacked = true
+				
+	if  hasAttacked:
+		canAttack = false
+		attackCooldownBar.show()
+		attackCooldownTimer.start()
+
