@@ -26,7 +26,7 @@ func receive_damage(direction: Vector2, damage: float):
 	else:
 		velocity = direction * HIT_KNOCKBACK_FORCE
 		update_progress_bar(hp / initialHp)
-		set_collision_mask_value(3, false)
+		# set_collision_mask_value(3, false)
 		collisionTimer.start()
 		
 
@@ -37,4 +37,5 @@ func update_progress_bar(ratio: float):
 	health.set("modulate", Color(r, g, 0))
 
 func _on_timer_collision_refresh():
-	set_collision_mask_value(3, true)
+	#set_collision_mask_value(3, true)
+	pass
