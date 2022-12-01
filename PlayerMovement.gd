@@ -3,11 +3,11 @@ extends CharacterBody2D
 @onready var sprite = $AnimatedSprite2D
 @onready var attackRangeArea := $AttackDamageArea
 
-const WALK_FORCE = 1200
-const WALK_MAX_SPEED = 600
-const STOP_FORCE = 1300
+const WALK_FORCE = 3200
+const WALK_MAX_SPEED = 575
+const STOP_FORCE = 2000
 const JUMP_SPEED = 700
-const WALL_GRAVITY_MODIFIER = 0.2
+const WALL_GRAVITY_MODIFIER = 0.25
 
 var gravity = 2000 #ProjectSettings.get_setting("physics/2d/default_gravity")
 
@@ -25,7 +25,6 @@ func _ready():
 func _physics_process(delta):
 	if (Input.is_action_just_pressed("LEFT") || Input.is_action_just_pressed("RIGHT")) and is_on_floor():
 		velocity.x = velocity.x / 2
-
 	var walk = WALK_FORCE * (Input.get_action_strength("RIGHT") - Input.get_action_strength("LEFT"))
 	
 	if abs(walk) < WALK_FORCE * 0.2:
@@ -33,7 +32,13 @@ func _physics_process(delta):
 	else:
 		velocity.x += walk * delta
 	
-	velocity.x = clamp(velocity.x, -WALK_MAX_SPEED, WALK_MAX_SPEED)
+	#Stops most of the momentum if you press the opposite direction of the current velocity for better air control	
+	if(Input.is_action_just_pressed("LEFT")):
+		velocity.x = clamp(velocity.x, -WALK_MAX_SPEED, WALK_MAX_SPEED * 0.1)
+	elif(Input.is_action_just_pressed("RIGHT")):
+		velocity.x = clamp(velocity.x, -WALK_MAX_SPEED * 0.1, WALK_MAX_SPEED)
+	else:
+		velocity.x = clamp(velocity.x, -WALK_MAX_SPEED, WALK_MAX_SPEED)
 	
 	var touchesRight = test_move(self.transform, Vector2(1, 0))
 	var touchesLeft = test_move(self.transform, Vector2(-1, 0))
@@ -51,7 +56,7 @@ func _physics_process(delta):
 	
 	var baseGravity = gravity * delta
 	if (touchesAWall and not recently_wall_jumped):
-		velocity.y = clamp(velocity.y + baseGravity * WALL_GRAVITY_MODIFIER, 0, 10000)
+		velocity.y = clamp(velocity.y + baseGravity * WALL_GRAVITY_MODIFIER, -JUMP_SPEED * WALL_GRAVITY_MODIFIER, 10000)
 	else:
 		velocity.y += baseGravity
 		
