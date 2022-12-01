@@ -8,9 +8,6 @@ const WALK_MAX_SPEED = 575
 const STOP_FORCE = 2000
 const JUMP_SPEED = 700
 const WALL_GRAVITY_MODIFIER = 0.25
-const ENERGY_USED_PER_JUMP = 1
-const MAX_ENERGY = 5 #Energy could be use for movement action skills such as dashing and/or wall jumping.
-#EX: A player could wall jump 5 times... OR... could wall jump once, then dash twice to reach another wall, then wall jump twice before running out of energy.
 
 var gravity = 2000 #ProjectSettings.get_setting("physics/2d/default_gravity")
 
@@ -18,7 +15,6 @@ var recently_wall_jumped = false
 var buffered_frames_jump = 0
 var jump_touched_a_wall = false
 var resetWallTimer := Timer.new()
-var energy = MAX_ENERGY
 
 func _ready():
 	add_child(resetWallTimer)
@@ -29,8 +25,6 @@ func _ready():
 func _physics_process(delta):
 	if (Input.is_action_just_pressed("LEFT") || Input.is_action_just_pressed("RIGHT")) and is_on_floor():
 		velocity.x = velocity.x / 2
-	if (is_on_floor()):
-		energy = MAX_ENERGY;
 	var walk = WALK_FORCE * (Input.get_action_strength("RIGHT") - Input.get_action_strength("LEFT"))
 	
 	if abs(walk) < WALK_FORCE * 0.2:
@@ -69,7 +63,7 @@ func _physics_process(delta):
 	else:
 		velocity.y += baseGravity
 		
-	if (Input.is_action_just_pressed("JUMP") && energy > 0):
+	if (Input.is_action_just_pressed("JUMP")):
 		buffered_frames_jump = 0.1
 
 	if (buffered_frames_jump > 0):
@@ -79,7 +73,6 @@ func _physics_process(delta):
 			if (touchesAWall):
 				resetWallTimer.start()
 				recently_wall_jumped = true
-				energy -= ENERGY_USED_PER_JUMP
 				if (touchesLeft):
 					velocity.x = JUMP_SPEED
 				elif (touchesRight):
