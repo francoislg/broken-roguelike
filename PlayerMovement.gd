@@ -32,17 +32,14 @@ func _physics_process(delta):
 	else:
 		velocity.x += walk * delta
 	
-	#Same behavior as the line below, but maybe easier to read? Choose whichever.
-	#if(Input.is_action_just_pressed("LEFT")):
-		#velocity.x = clamp(velocity.x, -WALK_MAX_SPEED, WALK_MAX_SPEED * 0.1)
-	#elif(Input.is_action_just_pressed("RIGHT")):
-		#velocity.x = clamp(velocity.x, -WALK_MAX_SPEED * 0.1, WALK_MAX_SPEED)
-	#else:
-		#velocity.x = clamp(velocity.x, -WALK_MAX_SPEED, WALK_MAX_SPEED)
+	#Stops most of the momentum if you press the opposite direction of the current velocity for better air control	
+	if(Input.is_action_just_pressed("LEFT")):
+		velocity.x = clamp(velocity.x, -WALK_MAX_SPEED, WALK_MAX_SPEED * 0.1)
+	elif(Input.is_action_just_pressed("RIGHT")):
+		velocity.x = clamp(velocity.x, -WALK_MAX_SPEED * 0.1, WALK_MAX_SPEED)
+	else:
+		velocity.x = clamp(velocity.x, -WALK_MAX_SPEED, WALK_MAX_SPEED)
 	
-	#Stops most of the momentum if you press the opposite direction of the current velocity for better air control		
-	velocity.x = clamp(velocity.x, -WALK_MAX_SPEED * (0.1 if Input.is_action_just_pressed("RIGHT") else 1), WALK_MAX_SPEED * (0.1 if Input.is_action_just_pressed("LEFT") else 1))
-		
 	var touchesRight = test_move(self.transform, Vector2(1, 0))
 	var touchesLeft = test_move(self.transform, Vector2(-1, 0))
 	var touchesAWall = touchesLeft || touchesRight
