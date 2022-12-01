@@ -1,6 +1,7 @@
 extends CharacterBody2D
 
 @onready var sprite = $AnimatedSprite2D
+@onready var attackRangeArea := $AttackDamageArea
 
 const WALK_FORCE = 1200
 const WALK_MAX_SPEED = 600
@@ -81,8 +82,14 @@ func _on_timer_reset_wall_jump():
 	recently_wall_jumped = false
 
 
-func _on_area_2d_body_entered(body: BaseEnemy):
-	var direction = (body.position - position).normalized()
-	body.receive_damage(direction, 1)
-	velocity = -direction * 300
+func _on_attack_range_area_body_entered(enemyHit: BaseEnemy):
+	var bodies = attackRangeArea.get_overlapping_bodies()
+	var playerHitDirection = (enemyHit.position - position).normalized()
+	velocity = -playerHitDirection * 300
+	
+	for body in bodies:
+		if body is BaseEnemy:
+			var enemyHitDirection = (body.position - position).normalized()
+			body.receive_damage(enemyHitDirection, 1)
+	
 	pass # Replace with function body.

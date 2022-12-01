@@ -1,0 +1,17 @@
+[gd_scene load_steps=4 format=3 uid="uid://kpvuqsv3l53p"]
+
+[ext_resource type="Script" path="res://Enemies/FollowingEnemy.gd" id="1_vqfp6"]
+[ext_resource type="Script" path="res://DrawSolidCollision.gd" id="2_sqqvf"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_qays3"]
+
+[node name="Enemy" type="CharacterBody2D"]
+position = Vector2(619, 389)
+collision_layer = 4
+collision_mask = 2
+script = ExtResource("1_vqfp6")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_qays3")
+script = ExtResource("2_sqqvf")
+color = Color(0.960784, 0, 0, 1)
