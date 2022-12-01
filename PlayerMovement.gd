@@ -8,6 +8,7 @@ const WALK_MAX_SPEED = 575
 const STOP_FORCE = 2000
 const JUMP_SPEED = 700
 const WALL_GRAVITY_MODIFIER = 0.25
+const ENEMY_HIT_KNOCKBACK_FORCE = 500
 
 var gravity = 2000 #ProjectSettings.get_setting("physics/2d/default_gravity")
 
@@ -33,9 +34,9 @@ func _physics_process(delta):
 		velocity.x += walk * delta
 	
 	#Stops most of the momentum if you press the opposite direction of the current velocity for better air control	
-	if(Input.is_action_just_pressed("LEFT")):
+	if walk < 0:
 		velocity.x = clamp(velocity.x, -WALK_MAX_SPEED, WALK_MAX_SPEED * 0.1)
-	elif(Input.is_action_just_pressed("RIGHT")):
+	elif walk > 0:
 		velocity.x = clamp(velocity.x, -WALK_MAX_SPEED * 0.1, WALK_MAX_SPEED)
 	else:
 		velocity.x = clamp(velocity.x, -WALK_MAX_SPEED, WALK_MAX_SPEED)
@@ -90,7 +91,7 @@ func _on_timer_reset_wall_jump():
 func _on_attack_range_area_body_entered(enemyHit: BaseEnemy):
 	var bodies = attackRangeArea.get_overlapping_bodies()
 	var playerHitDirection = (enemyHit.position - position).normalized()
-	velocity = -playerHitDirection * 300
+	velocity = -playerHitDirection * ENEMY_HIT_KNOCKBACK_FORCE
 	
 	for body in bodies:
 		if body is BaseEnemy:
