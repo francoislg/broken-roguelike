@@ -17,7 +17,6 @@ enum Mode { Following, PreparingDash, Dashing, PostDashing, Damaged }
 
 var mode := Mode.Following
 var modeTimer = Timer.new()
-var preparingPosition := Vector2.ZERO
 var directionDash := Vector2.ZERO
 
 func _ready():
@@ -40,7 +39,7 @@ func _physics_process(delta):
 		Mode.Following:
 			velocity = velocity.move_toward(diff.normalized() * BASE_SPEED, delta * TIME_TO_GET_TO_SPEED)
 		Mode.PreparingDash:
-			velocity = velocity.move_toward(Vector2.ZERO, delta * TIME_TO_GET_TO_SPEED)
+			velocity = velocity.move_toward(diff.normalized().orthogonal() * BASE_SPEED / 4, delta * TIME_TO_GET_TO_SPEED / 2)
 		Mode.Dashing:
 			velocity = velocity.move_toward(directionDash * DASH_SPEED, delta * TIME_TO_GET_TO_SPEED * 4)
 		Mode.PostDashing:
@@ -67,10 +66,6 @@ func nextMode():
 
 func prepare_dash():
 	ColoredRectangle.color = Color.ORANGE
-	var direction = (character.position - position).normalized()
-	# var x = (randf() - 0.5) / 10
-	# var y = (randf() - 0.5) / 10
-	preparingPosition = direction# + Vector2(x, y)
 	mode = Mode.PreparingDash
 	modeTimer.wait_time = TIME_TO_PREPARE
 	modeTimer.start()
