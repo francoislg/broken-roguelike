@@ -2,6 +2,7 @@ extends CharacterBody2D
 
 @onready var sprite = $AnimatedSprite2D
 @onready var attackRangeArea := $AttackDamageArea
+@onready var attackCooldownBar = $AttackCooldownBar
 
 const WALK_FORCE = 3200
 const WALK_MAX_SPEED = 575
@@ -18,12 +19,20 @@ var buffered_frames_jump = 0
 var jump_touched_a_wall = false
 var lastJumpTimer := Timer.new()
 var movementStoppedTimer := Timer.new()
+var attackCooldown = 2
+var attackCooldownTimer := Timer.new()
+var canAttack = true
 
 func _ready():
 	add_child(movementStoppedTimer)
 	movementStoppedTimer.wait_time = 0.2
 	movementStoppedTimer.one_shot = true
 	movementStoppedTimer.connect("timeout", _on_timer_movement_stopped)
+	add_child(attackCooldownTimer)
+	attackCooldownTimer.wait_time = attackCooldown
+	attackCooldownTimer.one_shot = true
+	attackCooldownTimer.connect("timeout", _on_timer_attackcooldown_stopped)
+	attackCooldownBar.set("modulate", Color(0, 1, 0))
 
 func _physics_process(delta):
 	if (Input.is_action_just_pressed("LEFT") || Input.is_action_just_pressed("RIGHT")) and is_on_floor():
@@ -87,7 +96,7 @@ func _physics_process(delta):
 					velocity.x = -JUMP_SPEED
 		else:
 			buffered_frames_jump -= delta;
-
+	update_attackcooldown_bar()
 	move_and_slide()
 	
 	if velocity.x != 0:
@@ -101,6 +110,14 @@ func stopMovementFor(time: float):
 func _on_timer_movement_stopped():
 	movement_stopped = false
 
+func _on_timer_attackcooldown_stopped():
+	attackCooldownBar.hide()
+	canAttack = true
+
+func update_attackcooldown_bar():
+	var ratio = 1 - (attackCooldownTimer.time_left / attackCooldown)
+	attackCooldownBar.value = ratio * 100
+
 func _on_attack_range_area_body_entered(enemyHit: BaseEnemy):
 	var bodies = attackRangeArea.get_overlapping_bodies()
 	var playerHitDirection = (enemyHit.position - position).normalized()
@@ -108,6 +125,9 @@ func _on_attack_range_area_body_entered(enemyHit: BaseEnemy):
 	stopMovementFor(0.2)
 	
 	for body in bodies:
-		if body is BaseEnemy:
+		if body is BaseEnemy && canAttack:
 			var enemyHitDirection = (body.position - position).normalized()
 			body.receive_damage(enemyHitDirection, 1)
+			canAttack = false
+			attackCooldownBar.show()
+			attackCooldownTimer.start()

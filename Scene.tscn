@@ -1,7 +1,7 @@
 [gd_scene load_steps=7 format=3 uid="uid://db4ll8cgpcygr"]
 
 [ext_resource type="Script" path="res://DebugGameVariables.gd" id="1_pwqor"]
-[ext_resource type="PackedScene" uid="uid://ct0tjraeq55st" path="res://Player.tscn" id="2_aembg"]
+[ext_resource type="PackedScene" uid="uid://2reqqlxhnpi5" path="res://Player.tscn" id="2_aembg"]
 [ext_resource type="Script" path="res://DrawSolidCollision.gd" id="10_0fwa4"]
 [ext_resource type="PackedScene" uid="uid://kpvuqsv3l53p" path="res://BasicFollowingEnemy.tscn" id="12_f21e5"]
 
