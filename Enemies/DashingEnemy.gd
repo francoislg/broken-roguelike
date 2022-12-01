@@ -36,32 +36,34 @@ func _process(delta):
 func _physics_process(delta):
 	var diff = character.position - position
 	
-	if mode == Mode.Following:
-		velocity = velocity.move_toward(diff.normalized() * BASE_SPEED, delta * TIME_TO_GET_TO_SPEED)
-	elif mode == Mode.PreparingDash:
-		velocity = velocity.move_toward(Vector2.ZERO, delta * TIME_TO_GET_TO_SPEED)
-	elif mode == Mode.Dashing:
-		velocity = velocity.move_toward(directionDash * DASH_SPEED, delta * TIME_TO_GET_TO_SPEED * 4)
-	else:
-		velocity = velocity.move_toward(Vector2.ZERO, delta * TIME_TO_GET_TO_SPEED * 4)
+	match (mode):
+		Mode.Following:
+			velocity = velocity.move_toward(diff.normalized() * BASE_SPEED, delta * TIME_TO_GET_TO_SPEED)
+		Mode.PreparingDash:
+			velocity = velocity.move_toward(Vector2.ZERO, delta * TIME_TO_GET_TO_SPEED)
+		Mode.Dashing:
+			velocity = velocity.move_toward(directionDash * DASH_SPEED, delta * TIME_TO_GET_TO_SPEED * 4)
+		_:
+			velocity = velocity.move_toward(Vector2.ZERO, delta * TIME_TO_GET_TO_SPEED * 4)
 	
 	move_and_collide(velocity * delta)
 
 
 	
 func nextMode():
-	if mode == Mode.PreparingDash:
-		finish_prepare_dash()
-		modeTimer.wait_time = TIME_TO_DASH
-		modeTimer.start()
-	elif mode == Mode.Dashing:
-		finish_dash()
-		modeTimer.wait_time = TIME_TO_COOLDOWN
-		modeTimer.start()
-	elif mode == Mode.Standby:
-		finish_standby()
-		modeTimer.wait_time = TIME_TO_COOLDOWN
-		modeTimer.start()
+	match(mode):
+		Mode.PreparingDash:
+			finish_prepare_dash()
+			modeTimer.wait_time = TIME_TO_DASH
+			modeTimer.start()
+		Mode.Dashing:
+			finish_dash()
+			modeTimer.wait_time = TIME_TO_COOLDOWN
+			modeTimer.start()
+		Mode.Standby:
+			finish_standby()
+			modeTimer.wait_time = TIME_TO_COOLDOWN
+			modeTimer.start()
 
 func prepare_dash():
 	ColoredRectangle.color = Color.ORANGE
