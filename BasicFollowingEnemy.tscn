@@ -6,7 +6,6 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_qays3"]
 
 [node name="Enemy" type="CharacterBody2D"]
-position = Vector2(619, 389)
 collision_layer = 4
 collision_mask = 2
 script = ExtResource("1_vqfp6")
