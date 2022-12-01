@@ -12,6 +12,7 @@ enum States {
 	SCREEN_REFRESH_RATE,
 	DOWNLOAD_SIZE,
 	SPACE_LEFT,
+	KEY_PRESSED_TEN_SECONDS,
 	NUMBER_OF_DRIVES,
 	NUMBER_OF_CONTROLLERS,
 	# Time
@@ -26,6 +27,10 @@ var state := {}
 
 var mainThread: Thread
 var startTime: float
+var lastKeyPressedHistoryIndex: int = 0
+# If you adjust this, remember to adjust keyPressedTimer.wait_time. size 20 at 0.5 == 10 seconds
+var keyPressedHistory := [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+var keyPressedTimer: Timer
 var httpClient: HTTPClient;
 
 func _ready():
@@ -34,6 +39,12 @@ func _ready():
 	
 	httpClient = HTTPClient.new()
 	startTime = Time.get_unix_time_from_system()
+	
+	keyPressedTimer = Timer.new()
+	add_child(keyPressedTimer)
+	keyPressedTimer.wait_time = 0.5
+	keyPressedTimer.connect('timeout', onKeyPressedTimerEnd)
+	keyPressedTimer.start()
 	
 	mainThread = Thread.new()
 	mainThread.start(threadedUpdate)
@@ -76,8 +87,8 @@ func fastUpdates():
 	var threads = multiple_threads([updateCpuUsage])
 
 	updateClock()
+	state[States.FPS] = Engine.get_frames_per_second()
 	state[States.ELAPSED_TIME] = round(Time.get_unix_time_from_system() - startTime)
-	state[States.FPS] = Engine.get_frames_per_second();
 
 	await dispose_threads(threads)
 
@@ -125,15 +136,27 @@ func wmicCall(args: String):
 	
 func updateDownloadSize():
 	var downloadDir = DirAccess.open(OS.get_system_dir(OS.SYSTEM_DIR_DOWNLOADS))
-	var totalSize = 0;
+	var totalSize = 0
 	for file in downloadDir.get_files():
 		var fileDir = downloadDir.get_current_dir(true) + "/" + file
 		totalSize += FileAccess.open(fileDir, FileAccess.READ).get_length()
-	state[States.DOWNLOAD_SIZE] = UnitConverter.convertBytesToGb(totalSize);
+	state[States.DOWNLOAD_SIZE] = UnitConverter.convertBytesToGb(totalSize)
 
 func updateSpaceLeft():
 	var spaceLeft = DirAccess.open(OS.get_system_dir(0)).get_space_left()
-	state[States.SPACE_LEFT] = UnitConverter.convertBytesToGb(spaceLeft);
+	state[States.SPACE_LEFT] = UnitConverter.convertBytesToGb(spaceLeft)
+
+func _input(event):
+	if (event is InputEventKey and (event as InputEventKey).pressed):
+		state[States.KEY_PRESSED_TEN_SECONDS] += 1
+		keyPressedHistory[lastKeyPressedHistoryIndex] += 1
+		
+
+func onKeyPressedTimerEnd():
+	var newKeypressIndex = (lastKeyPressedHistoryIndex + 1) % keyPressedHistory.size()
+	state[States.KEY_PRESSED_TEN_SECONDS] -= keyPressedHistory[newKeypressIndex]
+	keyPressedHistory[newKeypressIndex] = 0
+	lastKeyPressedHistoryIndex = newKeypressIndex
 
 func multiple_threads(callables: Array[Callable]):
 	return callables.map(func (callable):
