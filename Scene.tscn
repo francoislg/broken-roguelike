@@ -1,7 +1,8 @@
-[gd_scene load_steps=7 format=3 uid="uid://db4ll8cgpcygr"]
+[gd_scene load_steps=8 format=3 uid="uid://db4ll8cgpcygr"]
 
 [ext_resource type="Script" path="res://DebugGameVariables.gd" id="1_pwqor"]
 [ext_resource type="PackedScene" uid="uid://ct0tjraeq55st" path="res://Player.tscn" id="2_aembg"]
+[ext_resource type="PackedScene" uid="uid://cfr7r3stmxy5q" path="res://BasicDashingEnemy.tscn" id="5_44kkm"]
 [ext_resource type="Script" path="res://DrawSolidCollision.gd" id="10_0fwa4"]
 [ext_resource type="PackedScene" uid="uid://kpvuqsv3l53p" path="res://BasicFollowingEnemy.tscn" id="12_f21e5"]
 
@@ -69,3 +70,6 @@ position = Vector2(691, 544)
 
 [node name="Enemy2" parent="." instance=ExtResource("12_f21e5")]
 position = Vector2(692, 483)
+
+[node name="DashingEnemy" parent="." instance=ExtResource("5_44kkm")]
+position = Vector2(595, 345)
