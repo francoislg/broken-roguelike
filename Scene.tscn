@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://db4ll8cgpcygr"]
+[gd_scene load_steps=19 format=3 uid="uid://db4ll8cgpcygr"]
 
 [ext_resource type="Script" path="res://DebugGameVariables.gd" id="1_pwqor"]
 [ext_resource type="Script" path="res://PlayerMovement.gd" id="2_qh71o"]
@@ -24,6 +24,9 @@ animations = [{
 "speed": 5.0
 }]
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hrxyt"]
+size = Vector2(58, 58)
+
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_hmdp8"]
 size = Vector2(1119, 20)
 
@@ -44,6 +47,8 @@ script = ExtResource("1_pwqor")
 
 [node name="Character" type="CharacterBody2D" parent="."]
 position = Vector2(117, 479)
+collision_layer = 2
+collision_mask = 7
 script = ExtResource("2_qh71o")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Character"]
@@ -56,10 +61,17 @@ scale = Vector2(0.419776, 0.419776)
 frames = SubResource("SpriteFrames_3smmn")
 playing = true
 
-[node name="StaticBody2D" type="StaticBody2D" parent="."]
+[node name="Area2D" type="Area2D" parent="Character"]
+collision_layer = 8
+collision_mask = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Character/Area2D"]
+shape = SubResource("RectangleShape2D_hrxyt")
+
+[node name="StaticBody2" type="StaticBody2D" parent="."]
 position = Vector2(192, 630)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2"]
 position = Vector2(382.5, 0)
 shape = SubResource("RectangleShape2D_hmdp8")
 script = ExtResource("10_0fwa4")
@@ -98,9 +110,13 @@ script = ExtResource("10_0fwa4")
 
 [node name="Enemy" type="CharacterBody2D" parent="."]
 position = Vector2(619, 389)
+collision_layer = 4
+collision_mask = 2
 script = ExtResource("12_ovyla")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Enemy"]
 shape = SubResource("RectangleShape2D_qays3")
 script = ExtResource("10_0fwa4")
 color = Color(0.960784, 0, 0, 1)
+
+[connection signal="body_entered" from="Character/Area2D" to="Character" method="_on_area_2d_body_entered"]

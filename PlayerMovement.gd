@@ -79,3 +79,10 @@ func _physics_process(delta):
 
 func _on_timer_reset_wall_jump():
 	recently_wall_jumped = false
+
+
+func _on_area_2d_body_entered(body: BaseEnemy):
+	var direction = (body.position - position).normalized()
+	body.receive_damage(direction, 1)
+	velocity = -direction * 300
+	pass # Replace with function body.

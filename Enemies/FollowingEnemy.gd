@@ -1,16 +1,15 @@
-extends CharacterBody2D
+extends BaseEnemy
 
-@onready var character: CharacterBody2D = $"/root/Scene/Character"
+const BASE_SPEED = 100
+# The higher this is, the faster the enemy will get to speed
+const TIME_TO_GET_TO_SPEED = 500
 
-# Called when the node enters the scene tree for the first time.
 func _ready():
-	pass # Replace with function body.
+	pass
 
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
 func _physics_process(delta):
 	var vector = (character.position - position).normalized()
 	
-	velocity = vector * 2000 * delta
+	velocity = velocity.move_toward(vector * BASE_SPEED, delta * TIME_TO_GET_TO_SPEED)
 	
-	move_and_slide()
+	move_and_collide(velocity * delta)
