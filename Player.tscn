@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://2reqqlxhnpi5"]
+[gd_scene load_steps=15 format=3 uid="uid://c74ialgxy2ab7"]
 
 [ext_resource type="Script" path="res://PlayerMovement.gd" id="1_gqhlo"]
 [ext_resource type="Texture2D" uid="uid://dvr3jo0ky2jp" path="res://run_animation/run-1.png" id="2_025k3"]
@@ -9,6 +9,7 @@
 [ext_resource type="Texture2D" uid="uid://duqf0jqjbq0ce" path="res://run_animation/run-6.png" id="7_ry1n7"]
 [ext_resource type="Texture2D" uid="uid://bloo2k1vx1e8r" path="res://run_animation/run-7.png" id="8_bb7xi"]
 [ext_resource type="Texture2D" uid="uid://bbgin8n10bajl" path="res://run_animation/run-8.png" id="9_nhfmb"]
+[ext_resource type="Script" path="res://Character/CharacterStats.gd" id="10_pmyef"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ywdt0"]
 size = Vector2(19, 23)
@@ -66,5 +67,8 @@ offset_top = -16.0
 offset_right = 10.0
 offset_bottom = -12.0
 show_percentage = false
+
+[node name="CharacterStats" type="Node" parent="."]
+script = ExtResource("10_pmyef")
 
 [connection signal="body_entered" from="AttackRangeArea" to="." method="_on_attack_range_area_body_entered"]
