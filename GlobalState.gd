@@ -193,6 +193,6 @@ func ratioedState(key: States) -> float:
 			# So, roughly, 4k gives ~0% bonus, 1440p gives ~25% bonus, 800x600 gives ~85%
 			return remap(log(value), log(640 * 480), log(3840 * 2160), 1, 0)
 		States.INTERNET_SPEED:
-			return clamp(remap(value, 0, 3, 0, 100), 0, 1)
+			return clamp(remap(value, 0, 3, 0, 1), 0, 100)
 		_:
 			return value / 100
