@@ -30,8 +30,8 @@ func _ready():
 	attackCooldownTimer.one_shot = true
 	attackCooldownTimer.connect("timeout", _on_timer_attackcooldown_stopped)
 	
-	CharacterStats.addCombo()
-	CharacterStats.addCombo()
+	CharacterStats.addRandomCombo()
+	CharacterStats.addRandomCombo()
 
 func _physics_process(delta):
 	if (Input.is_action_just_pressed("LEFT") || Input.is_action_just_pressed("RIGHT")) and is_on_floor():

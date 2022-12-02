@@ -1,5 +1,7 @@
 extends Node
 
+signal state_updated
+
 enum States {
 	# Game Stats
 	ELAPSED_TIME,
@@ -71,6 +73,8 @@ func oneShotUpdates():
 	updateDownloadSize()
 	updateSpaceLeft()
 	state[States.PROCESSOR_COUNT] = OS.get_processor_count()
+	
+	emit_signal('state_updated')
 
 
 func slowUpdates():
@@ -82,6 +86,8 @@ func slowUpdates():
 	updateWindowPixels()
 	
 	await dispose_threads(threads)
+	
+	emit_signal('state_updated')
 
 func fastUpdates():
 	var threads = multiple_threads([updateCpuUsage])
@@ -91,6 +97,8 @@ func fastUpdates():
 	state[States.ELAPSED_TIME] = round(Time.get_unix_time_from_system() - startTime)
 
 	await dispose_threads(threads)
+	
+	emit_signal('state_updated')
 
 func updateWindowPixels():
 	var size = DisplayServer.window_get_real_size();

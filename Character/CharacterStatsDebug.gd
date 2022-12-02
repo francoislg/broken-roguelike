@@ -16,12 +16,7 @@ func _process(_delta):
 		]
 
 func formatedCombos():
-	var allCombos = CharacterStats.combosPerEffects.values().reduce(func (all, comboList):
-		for combo in comboList:
-			all.push_front(combo)
-		return all
-	, []);
-	return allCombos.map(func (combo):
+	return CharacterStats.combos.map(func (combo):
 		return "%s/%s (%s%%)" % [allStates[combo.state], allEffects[combo.effect], GlobalState.ratioedState(combo.state) * 100]
 	).reduce(func (acc, value):
 		return "%s\n%s" % [acc, value]
