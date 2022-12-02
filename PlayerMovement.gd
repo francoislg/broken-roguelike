@@ -3,6 +3,7 @@ extends CharacterBody2D
 @onready var sprite = $AnimatedSprite2D
 @onready var attackRangeArea := $AttackDamageArea
 @onready var attackCooldownBar = $AttackCooldownBar
+@onready var CharacterStats := $CharacterStats
 
 const WALK_FORCE = 3200
 const WALK_MAX_SPEED = 575
@@ -12,8 +13,6 @@ const WALL_GRAVITY_MODIFIER = 0.25
 const JUMP_BUTTON_GRAVITY_MODIFIER = 0.50
 const ENEMY_HIT_KNOCKBACK_FORCE = 700
 const ATTACK_COOLDOWN_HIT_KNOCKBACK_MODIFIER = 2.75
-const ATTACK_COOLDOWN = 2
-
 
 var gravity = 3000 #ProjectSettings.get_setting("physics/2d/default_gravity")
 
@@ -31,9 +30,11 @@ func _ready():
 	movementStoppedTimer.one_shot = true
 	movementStoppedTimer.connect("timeout", _on_timer_movement_stopped)
 	add_child(attackCooldownTimer)
-	attackCooldownTimer.wait_time = ATTACK_COOLDOWN
 	attackCooldownTimer.one_shot = true
 	attackCooldownTimer.connect("timeout", _on_timer_attackcooldown_stopped)
+	
+	CharacterStats.addCombo()
+	CharacterStats.addCombo()
 
 func _physics_process(delta):
 	if (Input.is_action_just_pressed("LEFT") || Input.is_action_just_pressed("RIGHT")) and is_on_floor():
@@ -116,7 +117,7 @@ func _on_timer_attackcooldown_stopped():
 	canAttack = true
 
 func update_attackcooldown_bar():
-	var ratio = 1 - (attackCooldownTimer.time_left / ATTACK_COOLDOWN)
+	var ratio = 1 - (attackCooldownTimer.time_left / attackCooldownTimer.wait_time)
 	attackCooldownBar.value = ratio * 100
 
 func _on_attack_range_area_body_entered(enemyHit: BaseEnemy):
@@ -131,11 +132,12 @@ func _on_attack_range_area_body_entered(enemyHit: BaseEnemy):
 		for body in bodies:
 			if body is BaseEnemy:
 				var enemyHitDirection = (body.position - position).normalized()
-				body.receive_damage(enemyHitDirection, 1)
+				body.receive_damage(enemyHitDirection, CharacterStats.meleeDamage)
 				hasAttacked = true
 				
 	if  hasAttacked:
 		canAttack = false
 		attackCooldownBar.show()
+		attackCooldownTimer.wait_time = CharacterStats.meleeCooldown
 		attackCooldownTimer.start()
 

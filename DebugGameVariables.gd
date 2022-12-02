@@ -13,7 +13,7 @@ func _ready():
 
 func _process(_delta):
 	text = allStates.map(func (key):
-		return "%s=%s (%s%%)" % [key, state[States[key]], round(GlobalState.ratioedState(States[key]))]
+		return "%s=%s (%s%%)" % [key, state[States[key]], round(GlobalState.ratioedState(States[key]) * 100)]
 	).reduce(func (acc, value):
 		return "%s\n%s" % [acc, value]
 	, "")

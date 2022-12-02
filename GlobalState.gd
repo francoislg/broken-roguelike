@@ -176,22 +176,23 @@ func dispose_threads(threads: Array):
 func _exit_tree():
 	mainThread.wait_to_finish()
 
+# This must return 0 to 1 values
 func ratioedState(key: States) -> float:
-	var value = state[key]
+	var value = float(state[key])
 	match(key):
 		States.ELAPSED_TIME:
 			const timeInSecUntilKickoff = 60 * 5
 			const timeInSecUntilZero = 60 * 30
-			return clamp(lerpf(100, 0, (value - timeInSecUntilKickoff) / timeInSecUntilZero), 0, 100)
+			return clamp(lerpf(1, 0, (value - timeInSecUntilKickoff) / timeInSecUntilZero), 0, 1)
 		States.NUMBER_OF_DRIVES:
-			return value * 10
+			return value * 10 / 100
 		States.WINDOW_PIXELS:
 			# We use log (which is the ln() math equivalent) to flatten the difference between 4k and the low resolution
 			# (640 x 480) / (3840 x 2160) == 44% -> ln(2560 x 1440) / ln(3840 x 2160) = 94% 
 			# (640 x 480) / (3840 x 2160) == 3.7% -> ln(640 x 480) / ln(3840 x 2160) = 80%
 			# So, roughly, 4k gives ~0% bonus, 1440p gives ~25% bonus, 800x600 gives ~85%
-			return remap(log(value), log(640 * 480), log(3840 * 2160), 100, 0)
+			return remap(log(value), log(640 * 480), log(3840 * 2160), 1, 0)
 		States.INTERNET_SPEED:
-			return clamp(remap(value, 0, 3, 0, 100), 0, 100)
+			return clamp(remap(value, 0, 3, 0, 100), 0, 1)
 		_:
-			return value
+			return value / 100
