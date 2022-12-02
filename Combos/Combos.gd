@@ -6,7 +6,7 @@ enum Effects {
 	MeleeCooldown,
 	MeleeDamage,
 	MeleeRadius,
-	ProjectileSpeed,
+	ProjectileCooldown,
 	ProjectileDamage,
 	MovementSpeed,
 	JumpHeight,
@@ -35,7 +35,8 @@ func getCombo() -> Combo:
 	var states := States.values();
 	var randomStateIndex := randi_range(0, states.size() - 1)
 	
-	var effects := [Effects.MeleeCooldown, Effects.MeleeDamage, Effects.MovementSpeed, Effects.JumpHeight];
+	var effects := [Effects.MeleeCooldown, Effects.MeleeDamage, Effects.ProjectileCooldown,
+		Effects.ProjectileDamage, Effects.MovementSpeed, Effects.JumpHeight];
 	var randomEffectIndex := randi_range(0, effects.size() - 1)
 
 	return Combo.new(states[randomStateIndex], effects[randomEffectIndex], ComboConfig.new(false))

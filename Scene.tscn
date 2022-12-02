@@ -67,10 +67,13 @@ shape = SubResource("RectangleShape2D_1ga0c")
 script = ExtResource("10_0fwa4")
 
 [node name="Enemy" parent="." instance=ExtResource("12_f21e5")]
-position = Vector2(691, 544)
+position = Vector2(814, 595)
+
+[node name="Enemy2" parent="." instance=ExtResource("12_f21e5")]
+position = Vector2(885, 514)
 
 [node name="DashingEnemy" parent="." instance=ExtResource("5_44kkm")]
-position = Vector2(595, 345)
+position = Vector2(881, 390)
 
 [node name="CharacterDebugText" type="RichTextLabel" parent="."]
 offset_left = 769.0
