@@ -141,10 +141,10 @@ func _on_attack_range_area_body_entered(hit: PhysicsBody2D):
 		attackCooldownTimer.wait_time = CharacterStats.meleeCooldown
 		attackCooldownTimer.start()
 
-func addTimerToPlayer(wait_time, isOneShot, onTimerEndFunction):
+func addTimerToPlayer(waitTime, isOneShot, onTimerEndFunction):
 	var newTimer := Timer.new()
 	add_child(newTimer)
-	newTimer.wait_time = wait_time
+	newTimer.wait_time = waitTime
 	newTimer.one_shot = isOneShot
 	newTimer.connect("timeout", onTimerEndFunction)
 	return newTimer
