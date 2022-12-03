@@ -1,0 +1,43 @@
+[gd_scene load_steps=6 format=3 uid="uid://dkp04mdqk7joh"]
+
+[ext_resource type="Script" path="res://Character/Projectile.gd" id="1_w6n2x"]
+[ext_resource type="Script" path="res://DrawSolidCircle.gd" id="2_qbjji"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_bc6jq"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_puxs4"]
+radius = 14.0357
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ykxrt"]
+radius = 26.0
+
+[node name="Projectile" type="RigidBody2D"]
+collision_layer = 0
+collision_mask = 0
+gravity_scale = 0.0
+max_contacts_reported = 1
+contact_monitor = true
+script = ExtResource("1_w6n2x")
+
+[node name="Circle" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_bc6jq")
+debug_color = Color(0.827451, 0.317647, 0.619608, 0.419608)
+script = ExtResource("2_qbjji")
+radius = 5.0
+
+[node name="AttackRangeArea" type="Area2D" parent="."]
+collision_layer = 8
+collision_mask = 5
+
+[node name="AttackRangeArea" type="CollisionShape2D" parent="AttackRangeArea"]
+shape = SubResource("CircleShape2D_puxs4")
+
+[node name="AttackDamageArea" type="Area2D" parent="."]
+collision_layer = 8
+collision_mask = 4
+
+[node name="Circle" type="CollisionShape2D" parent="AttackDamageArea"]
+shape = SubResource("CircleShape2D_ykxrt")
+debug_color = Color(0.827451, 0.317647, 0.619608, 0.419608)
+
+[connection signal="body_entered" from="AttackRangeArea" to="." method="_on_attack_range_area_body_entered"]

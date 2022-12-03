@@ -1,9 +1,10 @@
 extends CharacterBody2D
 
 @onready var sprite = $AnimatedSprite2D
-@onready var attackRangeArea := $AttackDamageArea
+@onready var attackDamageArea := $AttackDamageArea
 @onready var attackCooldownBar = $AttackCooldownBar
 @onready var CharacterStats := $CharacterStats
+@onready var ProjectileSpawner := $ProjectileSpawner
 
 const STOP_FORCE = 2000
 const WALL_GRAVITY_MODIFIER = 0.25
@@ -16,22 +17,20 @@ var gravity = 3000 #ProjectSettings.get_setting("physics/2d/default_gravity")
 var movement_stopped = false
 var buffered_frames_jump = 0
 var jump_touched_a_wall = false
-var lastJumpTimer := Timer.new()
-var movementStoppedTimer := Timer.new()
-var attackCooldownTimer := Timer.new()
+var lastJumpTimer
+var movementStoppedTimer 
+var attackCooldownTimer
+var projectileTimer
 var canAttack = true
 
 func _ready():
-	add_child(movementStoppedTimer)
-	movementStoppedTimer.wait_time = 0.2
-	movementStoppedTimer.one_shot = true
-	movementStoppedTimer.connect("timeout", _on_timer_movement_stopped)
-	add_child(attackCooldownTimer)
-	attackCooldownTimer.one_shot = true
-	attackCooldownTimer.connect("timeout", _on_timer_attackcooldown_stopped)
+	movementStoppedTimer = addTimerToPlayer(0.2, true, _on_timer_movement_stopped)
+	attackCooldownTimer = addTimerToPlayer(CharacterStats.meleeCooldown, true, _on_timer_attackcooldown_stopped)
+	projectileTimer = addTimerToPlayer(CharacterStats.projectileCooldown, false, _on_timer_projectile)
+	projectileTimer.start()
 	
-	CharacterStats.addCombo()
-	CharacterStats.addCombo()
+	CharacterStats.addRandomCombo()
+	CharacterStats.addRandomCombo()
 
 func _physics_process(delta):
 	if (Input.is_action_just_pressed("LEFT") || Input.is_action_just_pressed("RIGHT")) and is_on_floor():
@@ -112,20 +111,24 @@ func _on_timer_movement_stopped():
 func _on_timer_attackcooldown_stopped():
 	attackCooldownBar.hide()
 	canAttack = true
+	
+func _on_timer_projectile():
+	ProjectileSpawner.create_projectile(position + (Vector2.UP * 10), (Vector2.LEFT if sprite.flip_h else Vector2.RIGHT) * 1000, CharacterStats.projectileDamage)
+	projectileTimer.wait_time = CharacterStats.projectileCooldown
 
 func update_attackcooldown_bar():
 	var ratio = 1 - (attackCooldownTimer.time_left / attackCooldownTimer.wait_time)
 	attackCooldownBar.value = ratio * 100
 
-func _on_attack_range_area_body_entered(enemyHit: BaseEnemy):
-	var playerHitDirection = (enemyHit.position - position).normalized()
+func _on_attack_range_area_body_entered(hit: PhysicsBody2D):
+	var playerHitDirection = (hit.position - position).normalized()
 	velocity = -playerHitDirection * ENEMY_HIT_KNOCKBACK_FORCE * (ATTACK_COOLDOWN_HIT_KNOCKBACK_MODIFIER if not canAttack else 1)
 	stopMovementFor(0.2)
 	
 	var hasAttacked = false;
 	
 	if canAttack:
-		var bodies = attackRangeArea.get_overlapping_bodies()
+		var bodies = attackDamageArea.get_overlapping_bodies()
 		for body in bodies:
 			if body is BaseEnemy:
 				var enemyHitDirection = (body.position - position).normalized()
@@ -138,3 +141,10 @@ func _on_attack_range_area_body_entered(enemyHit: BaseEnemy):
 		attackCooldownTimer.wait_time = CharacterStats.meleeCooldown
 		attackCooldownTimer.start()
 
+func addTimerToPlayer(waitTime, isOneShot, onTimerEndFunction):
+	var newTimer := Timer.new()
+	add_child(newTimer)
+	newTimer.wait_time = waitTime
+	newTimer.one_shot = isOneShot
+	newTimer.connect("timeout", onTimerEndFunction)
+	return newTimer
