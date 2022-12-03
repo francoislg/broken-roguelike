@@ -17,23 +17,16 @@ var gravity = 3000 #ProjectSettings.get_setting("physics/2d/default_gravity")
 var movement_stopped = false
 var buffered_frames_jump = 0
 var jump_touched_a_wall = false
-var lastJumpTimer := Timer.new()
-var movementStoppedTimer := Timer.new()
-var attackCooldownTimer := Timer.new()
-var projectileTimer := Timer.new()
+var lastJumpTimer
+var movementStoppedTimer 
+var attackCooldownTimer
+var projectileTimer
 var canAttack = true
 
 func _ready():
-	movementStoppedTimer.wait_time = 0.2
-	movementStoppedTimer.one_shot = true
-	movementStoppedTimer.connect("timeout", _on_timer_movement_stopped)
-	add_child(movementStoppedTimer)
-	attackCooldownTimer.one_shot = true
-	attackCooldownTimer.connect("timeout", _on_timer_attackcooldown_stopped)
-	add_child(attackCooldownTimer)
-	projectileTimer.wait_time = CharacterStats.projectileCooldown
-	projectileTimer.connect("timeout", _on_timer_projectile)
-	add_child(projectileTimer)
+	movementStoppedTimer = addTimerToPlayer(0.2, true, _on_timer_movement_stopped)
+	attackCooldownTimer = addTimerToPlayer(CharacterStats.meleeCooldown, true, _on_timer_attackcooldown_stopped)
+	projectileTimer = addTimerToPlayer(CharacterStats.projectileCooldown, false, _on_timer_projectile)
 	projectileTimer.start()
 	
 	CharacterStats.addRandomCombo()
@@ -148,3 +141,10 @@ func _on_attack_range_area_body_entered(hit: PhysicsBody2D):
 		attackCooldownTimer.wait_time = CharacterStats.meleeCooldown
 		attackCooldownTimer.start()
 
+func addTimerToPlayer(wait_time, isOneShot, onTimerEndFunction):
+	var newTimer := Timer.new()
+	add_child(newTimer)
+	newTimer.wait_time = wait_time
+	newTimer.one_shot = isOneShot
+	newTimer.connect("timeout", onTimerEndFunction)
+	return newTimer
