@@ -41,6 +41,13 @@ func onStateUpdated():
 	maximumSpeed = WALK_MAX_SPEED + (WALK_MAX_SPEED * sumPerEffect[Effects.MovementSpeed])
 	jumpHeight = BASE_JUMP_FORCE + (BASE_JUMP_FORCE * sumPerEffect[Effects.JumpHeight])
 
-func addRandomCombo():
-	combos.push_front(Combos.getCombo())
+func add_combo(combo: Combos.Combo):
+	combos.push_front(combo)
+	onStateUpdated()
 
+func addRandomCombo():
+	add_combo(Combos.getCombo())
+
+func reset_combos():
+	combos = []
+	onStateUpdated()

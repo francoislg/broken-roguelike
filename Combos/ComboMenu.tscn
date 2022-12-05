@@ -1,0 +1,46 @@
+[gd_scene load_steps=2 format=3 uid="uid://d32ur33isn5en"]
+
+[sub_resource type="GDScript" id="GDScript_20hiy"]
+script/source = "extends Node
+
+signal combo_choice(combo: Combos.Combo)
+
+@onready var Choices := [$FirstChoice, $SecondChoice, $ThirdChoice]
+var combos: Array[Combos.Combo] = []
+
+func _ready():
+	new_combos();
+	for i in len(Choices):
+		Choices[i].connect('pressed', func(): select_combo(i))
+
+func new_combos():
+	combos = [Combos.getCombo(), Combos.getCombo(), Combos.getCombo()]
+	
+	for i in len(Choices):
+		Choices[i].text = \"%s on %s\" % [GlobalState.stateKeys[combos[i].state], Combos.effectKeys[combos[i].effect]]
+
+func select_combo(index):
+	emit_signal('combo_choice', combos[index])
+"
+
+[node name="CanvasGroup" type="CanvasGroup"]
+visible = false
+script = SubResource("GDScript_20hiy")
+
+[node name="FirstChoice" type="Button" parent="."]
+offset_left = 46.0
+offset_top = 27.0
+offset_right = 490.0
+offset_bottom = 72.0
+
+[node name="SecondChoice" type="Button" parent="."]
+offset_left = 46.0
+offset_top = 88.0
+offset_right = 490.0
+offset_bottom = 133.0
+
+[node name="ThirdChoice" type="Button" parent="."]
+offset_left = 47.0
+offset_top = 150.0
+offset_right = 491.0
+offset_bottom = 195.0

@@ -14,6 +14,8 @@ enum Effects {
 	HPRegen
 }
 
+var effectKeys = Effects.keys()
+
 class Combo:
 	var state: GlobalState.States
 	var effect: Effects
