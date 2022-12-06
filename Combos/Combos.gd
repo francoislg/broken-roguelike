@@ -21,16 +21,16 @@ class Combo:
 	var effect: Effects
 	var comboConfig: ComboConfig
 
-	func _init(state: GlobalState.States, effect: Effects, comboConfig: ComboConfig):
-		self.state = state
-		self.effect = effect
-		self.comboConfig = comboConfig;
+	func _init(_state: GlobalState.States, _effect: Effects, _comboConfig: ComboConfig):
+		self.state = _state
+		self.effect = _effect
+		self.comboConfig = _comboConfig;
 
 class ComboConfig:
 	var inverted = false
 
-	func _init(inverted: bool):
-		self.inverted = inverted
+	func _init(_inverted: bool):
+		self.inverted = _inverted
 
 
 func getCombo() -> Combo:
