@@ -37,6 +37,7 @@ func _ready():
 	initTimer(receivedDamageFlashing, 0.1, false, _on_receive_damage_timer)
 	initTimer(receivedDamageEndTimer, 3, false, _on_receive_damage_end_timer)
 	projectileTimer.start()
+	emit_signal('player_hit', hp)
 
 func _physics_process(delta):
 	if (Input.is_action_just_pressed("LEFT") || Input.is_action_just_pressed("RIGHT")) and is_on_floor():
@@ -81,10 +82,10 @@ func _physics_process(delta):
 	else:
 		velocity.y += baseGravity * JUMP_BUTTON_GRAVITY_MODIFIER if isGoingUp and Input.is_action_pressed("JUMP") else baseGravity
 	
-	if Input.is_action_just_pressed("FALL"):
+	if not movement_stopped and Input.is_action_just_pressed("FALL"):
 		velocity.y = CharacterStats.jumpHeight
 
-	if (Input.is_action_just_pressed("JUMP")):
+	if not movement_stopped and Input.is_action_just_pressed("JUMP"):
 		buffered_frames_jump = 0.1
 
 	if (buffered_frames_jump > 0):
@@ -157,14 +158,21 @@ func on_receive_damage(hitDirection: Vector2):
 
 	set_collision_layer_value(2, false)
 	set_collision_mask_value(3, false)
-
-	_on_receive_damage_timer()
-	receivedDamageFlashing.start()
-	receivedDamageEndTimer.start()
-	projectileTimer.stop()
 	
 	hp -= 1
 	emit_signal('player_hit', hp)
+	
+	if hp > 0:
+		stopMovementFor(0.5)
+		receivedDamageEndTimer.start()
+	else:
+		attackCooldownBar.hide()
+		stopMovementFor(2)
+
+
+	receivedDamageFlashing.start()
+	projectileTimer.stop()
+
 
 func _on_receive_damage_timer():
 	visible = !visible
