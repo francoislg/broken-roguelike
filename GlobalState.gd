@@ -27,6 +27,8 @@ enum States {
 
 var state := {}
 
+var stateKeys = States.keys()
+
 var mainThread: Thread
 var startTime: float
 var lastKeyPressedHistoryIndex: int = 0

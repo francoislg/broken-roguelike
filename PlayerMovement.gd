@@ -28,9 +28,6 @@ func _ready():
 	attackCooldownTimer = addTimerToPlayer(CharacterStats.meleeCooldown, true, _on_timer_attackcooldown_stopped)
 	projectileTimer = addTimerToPlayer(CharacterStats.projectileCooldown, false, _on_timer_projectile)
 	projectileTimer.start()
-	
-	CharacterStats.addRandomCombo()
-	CharacterStats.addRandomCombo()
 
 func _physics_process(delta):
 	if (Input.is_action_just_pressed("LEFT") || Input.is_action_just_pressed("RIGHT")) and is_on_floor():
