@@ -33,10 +33,10 @@ func onStateUpdated():
 		return sums
 	, sums)
 	
-	meleeCooldown = max(BASE_ATTACK_COOLDOWN - (BASE_ATTACK_COOLDOWN * sumPerEffect[Effects.MeleeCooldown]), 0)
+	meleeCooldown = max(BASE_ATTACK_COOLDOWN - (BASE_ATTACK_COOLDOWN * sumPerEffect[Effects.MeleeCooldown]), 0.1)
 	meleeDamage = BASE_ATTACK_DAMAGE + (BASE_ATTACK_DAMAGE * sumPerEffect[Effects.MeleeDamage])
 	projectileDamage = BASE_PROJECTILE_DAMAGE + (BASE_PROJECTILE_DAMAGE * sumPerEffect[Effects.ProjectileDamage])
-	projectileCooldown = max(BASE_PROJECTILE_COOLDOWN - (BASE_PROJECTILE_COOLDOWN * sumPerEffect[Effects.ProjectileCooldown]), 0)
+	projectileCooldown = max(BASE_PROJECTILE_COOLDOWN - (BASE_PROJECTILE_COOLDOWN * sumPerEffect[Effects.ProjectileCooldown]), 0.1)
 	movementSpeed = WALK_FORCE + (WALK_FORCE * sumPerEffect[Effects.MovementSpeed])
 	maximumSpeed = WALK_MAX_SPEED + (WALK_MAX_SPEED * sumPerEffect[Effects.MovementSpeed])
 	jumpHeight = BASE_JUMP_FORCE + (BASE_JUMP_FORCE * sumPerEffect[Effects.JumpHeight])

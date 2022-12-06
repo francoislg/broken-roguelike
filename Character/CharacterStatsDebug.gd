@@ -1,6 +1,6 @@
 extends RichTextLabel
 
-@onready var CharacterStats := $"../Character/CharacterStats"
+@onready var CharacterStats := $"../../Character/CharacterStats"
 
 var allStates = GlobalState.States.keys()
 var allEffects = Combos.Effects.keys()

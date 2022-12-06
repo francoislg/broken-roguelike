@@ -1,7 +1,7 @@
 extends Button
 
 @onready var ComboMenu := $"../ComboMenu"
-@onready var Character := $"../Character"
+@onready var Character := $"../../Character"
 
 func _ready():
 	ComboMenu.connect("combo_choice", on_combo_selected)
