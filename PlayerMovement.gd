@@ -1,6 +1,8 @@
 extends CharacterBody2D
 
-@onready var sprite = $AnimatedSprite2D
+signal player_hit(hp: int)
+
+@onready var sprite := $AnimatedSprite2D
 @onready var attackDamageArea := $AttackDamageArea
 @onready var attackCooldownBar = $AttackCooldownBar
 @onready var CharacterStats := $CharacterStats
@@ -10,7 +12,7 @@ const STOP_FORCE = 2000
 const WALL_GRAVITY_MODIFIER = 0.25
 const JUMP_BUTTON_GRAVITY_MODIFIER = 0.50
 const ENEMY_HIT_KNOCKBACK_FORCE = 700
-const ATTACK_COOLDOWN_HIT_KNOCKBACK_MODIFIER = 2.75
+const RECEIVE_DAMAGE_KNOCKBACK_FORCE = 1200
 
 var gravity = 3000 #ProjectSettings.get_setting("physics/2d/default_gravity")
 
@@ -18,15 +20,22 @@ var movement_stopped = false
 var buffered_frames_jump = 0
 var jump_touched_a_wall = false
 var lastJumpTimer
-var movementStoppedTimer 
-var attackCooldownTimer
-var projectileTimer
+var movementStoppedTimer := Timer.new() 
+var attackCooldownTimer := Timer.new() 
+var projectileTimer = Timer.new() 
+var receivedDamageFlashing = Timer.new() 
+var receivedDamageEndTimer = Timer.new() 
 var canAttack = true
+var isOnDamageCooldown = false
+
+var hp := 3
 
 func _ready():
-	movementStoppedTimer = addTimerToPlayer(0.2, true, _on_timer_movement_stopped)
-	attackCooldownTimer = addTimerToPlayer(CharacterStats.meleeCooldown, true, _on_timer_attackcooldown_stopped)
-	projectileTimer = addTimerToPlayer(CharacterStats.projectileCooldown, false, _on_timer_projectile)
+	initTimer(movementStoppedTimer, 0.2, false, _on_timer_movement_stopped)
+	initTimer(attackCooldownTimer, CharacterStats.meleeCooldown, true, _on_timer_attackcooldown_stopped)
+	initTimer(projectileTimer, CharacterStats.projectileCooldown, false, _on_timer_projectile)
+	initTimer(receivedDamageFlashing, 0.1, false, _on_receive_damage_timer)
+	initTimer(receivedDamageEndTimer, 3, false, _on_receive_damage_end_timer)
 	projectileTimer.start()
 
 func _physics_process(delta):
@@ -119,29 +128,58 @@ func update_attackcooldown_bar():
 
 func _on_attack_range_area_body_entered(hit: PhysicsBody2D):
 	var playerHitDirection = (hit.position - position).normalized()
-	velocity = -playerHitDirection * ENEMY_HIT_KNOCKBACK_FORCE * (ATTACK_COOLDOWN_HIT_KNOCKBACK_MODIFIER if not canAttack else 1)
-	stopMovementFor(0.2)
 	
-	var hasAttacked = false;
-	
-	if canAttack:
-		var bodies = attackDamageArea.get_overlapping_bodies()
-		for body in bodies:
-			if body is BaseEnemy:
-				var enemyHitDirection = (body.position - position).normalized()
-				body.receive_damage(enemyHitDirection, CharacterStats.meleeDamage)
-				hasAttacked = true
+	if not isOnDamageCooldown:
+		var enemies = attackDamageArea.get_overlapping_bodies().filter(func(body): return body is BaseEnemy)
+		
+		if enemies.size() > 0:
+			if canAttack:
+				canAttack = false
+				attackCooldownBar.show()
+				attackCooldownTimer.wait_time = CharacterStats.meleeCooldown
+				attackCooldownTimer.start()
 				
-	if  hasAttacked:
-		canAttack = false
-		attackCooldownBar.show()
-		attackCooldownTimer.wait_time = CharacterStats.meleeCooldown
-		attackCooldownTimer.start()
+				velocity = -playerHitDirection * ENEMY_HIT_KNOCKBACK_FORCE
+				stopMovementFor(0.2)
+				
+				for enemy in enemies:
+					var enemyHitDirection = (enemy.position - position).normalized()
+					enemy.receive_damage(enemyHitDirection, CharacterStats.meleeDamage)
+			else:
+				on_receive_damage(playerHitDirection)
 
-func addTimerToPlayer(waitTime, isOneShot, onTimerEndFunction):
-	var newTimer := Timer.new()
+func on_receive_damage(hitDirection: Vector2):
+	isOnDamageCooldown = true
+
+	var direction := Vector2.LEFT if hitDirection.x > 0 else Vector2.RIGHT
+	velocity = (direction * RECEIVE_DAMAGE_KNOCKBACK_FORCE) + (Vector2.UP * RECEIVE_DAMAGE_KNOCKBACK_FORCE / 4)
+	stopMovementFor(0.5)
+
+	set_collision_layer_value(2, false)
+	set_collision_mask_value(3, false)
+
+	_on_receive_damage_timer()
+	receivedDamageFlashing.start()
+	receivedDamageEndTimer.start()
+	projectileTimer.stop()
+	
+	hp -= 1
+	emit_signal('player_hit', hp)
+
+func _on_receive_damage_timer():
+	visible = !visible
+
+func _on_receive_damage_end_timer():
+	isOnDamageCooldown = false
+	receivedDamageFlashing.stop()
+	visible = true
+	set_collision_layer_value(2, true)
+	set_collision_mask_value(3, true)
+	_on_timer_projectile()
+	projectileTimer.start()
+
+func initTimer(newTimer: Timer, waitTime: float, isOneShot: bool, onTimerEndFunction: Callable):
 	add_child(newTimer)
 	newTimer.wait_time = waitTime
 	newTimer.one_shot = isOneShot
 	newTimer.connect("timeout", onTimerEndFunction)
-	return newTimer
