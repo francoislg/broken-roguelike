@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=3 uid="uid://daxnvwii14dnn"]
+
+[ext_resource type="Script" path="res://Stages/Area.gd" id="1_xkro6"]
+[ext_resource type="Script" path="res://DrawSolidCollision.gd" id="2_2dqdh"]
+
+[node name="Area" type="Area2D"]
+collision_layer = 16
+collision_mask = 2
+script = ExtResource("1_xkro6")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+modulate = Color(1, 1, 1, 0.196078)
+script = ExtResource("2_2dqdh")
+color = Color(0.537255, 1, 1, 1)
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="body_exited" from="." to="." method="_on_body_exited"]

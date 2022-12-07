@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://ysjgoyjkxmlw"]
+[gd_scene load_steps=11 format=3 uid="uid://ysjgoyjkxmlw"]
 
 [ext_resource type="PackedScene" uid="uid://d3lqabdfkasx" path="res://Stages/BaseStage.tscn" id="1_vaij1"]
 [ext_resource type="PackedScene" uid="uid://dn0ma3hk1naix" path="res://Stages/Floor.tscn" id="2_y1eo2"]
@@ -7,6 +7,13 @@
 [ext_resource type="PackedScene" uid="uid://kpvuqsv3l53p" path="res://Enemies/BasicFollowingEnemy.tscn" id="5_4neuv"]
 [ext_resource type="PackedScene" uid="uid://o3v3wdg0q66m" path="res://Stages/Coin.tscn" id="6_dajti"]
 [ext_resource type="PackedScene" uid="uid://dlxru70euhnqr" path="res://Stages/Flag.tscn" id="7_8dnbt"]
+[ext_resource type="PackedScene" uid="uid://daxnvwii14dnn" path="res://Stages/Area.tscn" id="8_dey78"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_kyjpw"]
+size = Vector2(362, 116)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_r72mv"]
+size = Vector2(284, 85)
 
 [node name="Stage" instance=ExtResource("1_vaij1")]
 
@@ -22,12 +29,12 @@ position = Vector2(840, 869)
 [node name="Floor4" parent="Walls" index="2" instance=ExtResource("2_y1eo2")]
 position = Vector2(656, 578)
 scale = Vector2(1.5, 1)
-stage_layer = 1
+stage_layer = 9
 
 [node name="Floor9" parent="Walls" index="3" instance=ExtResource("2_y1eo2")]
 position = Vector2(552, 734)
 scale = Vector2(2.5, 1)
-stage_layer = 3
+stage_layer = 11
 
 [node name="Floor5" parent="Walls" index="4" instance=ExtResource("2_y1eo2")]
 position = Vector2(1386, 922)
@@ -63,7 +70,7 @@ stage_layer = 3
 [node name="Wall5" parent="Walls" index="12" instance=ExtResource("3_iohxa")]
 position = Vector2(343, 627)
 scale = Vector2(1, 0.5)
-stage_layer = 3
+stage_layer = 11
 
 [node name="Floor" parent="Walls" index="13" instance=ExtResource("2_y1eo2")]
 position = Vector2(1445, 1068)
@@ -121,3 +128,19 @@ position = Vector2(557, 1033)
 
 [node name="FlagDestination" parent="." index="6"]
 position = Vector2(73, 965)
+
+[node name="Area" parent="Areas" index="0" instance=ExtResource("8_dey78")]
+position = Vector2(373, 654)
+
+[node name="CollisionShape2D" parent="Areas/Area" index="0"]
+shape = SubResource("RectangleShape2D_kyjpw")
+
+[node name="Area2" parent="Areas" index="1" instance=ExtResource("8_dey78")]
+position = Vector2(1156, 646)
+
+[node name="CollisionShape2D" parent="Areas/Area2" index="0"]
+position = Vector2(129, -32.5)
+shape = SubResource("RectangleShape2D_r72mv")
+
+[editable path="Areas/Area"]
+[editable path="Areas/Area2"]

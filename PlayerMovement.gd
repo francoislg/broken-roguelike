@@ -1,5 +1,7 @@
 extends CharacterBody2D
 
+class_name Player
+
 signal player_hit(hp: int)
 
 @onready var sprite := $AnimatedSprite2D

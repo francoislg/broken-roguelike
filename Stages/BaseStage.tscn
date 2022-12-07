@@ -1,9 +1,10 @@
-[gd_scene load_steps=8 format=3 uid="uid://d3lqabdfkasx"]
+[gd_scene load_steps=9 format=3 uid="uid://d3lqabdfkasx"]
 
 [ext_resource type="Script" path="res://Stages/StageManager.gd" id="1_b623s"]
 [ext_resource type="Script" path="res://Stages/Behaviors/CoinStage.gd" id="2_2sxar"]
 [ext_resource type="Script" path="res://Stages/Behaviors/WavesStage.gd" id="3_f7pak"]
 [ext_resource type="Script" path="res://Stages/Behaviors/CaptureTheFlagStage.gd" id="4_h05u1"]
+[ext_resource type="Script" path="res://Stages/Behaviors/AreaControlStage.gd" id="5_cnf2b"]
 [ext_resource type="Script" path="res://Stages/FlagDestination.gd" id="6_sh677"]
 [ext_resource type="Script" path="res://DrawSolidCircle.gd" id="7_6cwpu"]
 
@@ -31,6 +32,9 @@ script = ExtResource("3_f7pak")
 [node name="CaptureTheFlagStage" type="Node" parent="Behaviors"]
 script = ExtResource("4_h05u1")
 
+[node name="AreaControlStage" type="Node" parent="Behaviors"]
+script = ExtResource("5_cnf2b")
+
 [node name="Flags" type="Node2D" parent="."]
 
 [node name="FlagDestination" type="StaticBody2D" parent="."]
@@ -44,3 +48,5 @@ debug_color = Color(0.627451, 0.419608, 0.843137, 0.419608)
 script = ExtResource("7_6cwpu")
 radius = 10.0
 color = Color(0.247059, 0.529412, 0.345098, 1)
+
+[node name="Areas" type="Node2D" parent="."]

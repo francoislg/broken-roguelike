@@ -9,6 +9,16 @@
 config_version=5
 
 _global_script_classes=[{
+"base": "Area2D",
+"class": &"Area",
+"language": &"GDScript",
+"path": "res://Stages/Area.gd"
+}, {
+"base": "Node",
+"class": &"AreaControlStage",
+"language": &"GDScript",
+"path": "res://Stages/Behaviors/AreaControlStage.gd"
+}, {
 "base": "CharacterBody2D",
 "class": &"BaseEnemy",
 "language": &"GDScript",
@@ -44,6 +54,11 @@ _global_script_classes=[{
 "language": &"GDScript",
 "path": "res://Stages/FloorOrWall.gd"
 }, {
+"base": "CharacterBody2D",
+"class": &"Player",
+"language": &"GDScript",
+"path": "res://PlayerMovement.gd"
+}, {
 "base": "RefCounted",
 "class": &"StageTypes",
 "language": &"GDScript",
@@ -55,6 +70,8 @@ _global_script_classes=[{
 "path": "res://Stages/Behaviors/WavesStage.gd"
 }]
 _global_script_class_icons={
+"Area": "",
+"AreaControlStage": "",
 "BaseEnemy": "",
 "CaptureTheFlagStage": "",
 "Coin": "",
@@ -62,6 +79,7 @@ _global_script_class_icons={
 "Flag": "",
 "FlagDestination": "",
 "FloorOrWall": "",
+"Player": "",
 "StageTypes": "",
 "WavesStage": ""
 }
