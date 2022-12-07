@@ -127,13 +127,15 @@ func update_attackcooldown_bar():
 	var ratio = 1 - (attackCooldownTimer.time_left / attackCooldownTimer.wait_time)
 	attackCooldownBar.value = ratio * 100
 
-func _on_attack_range_area_body_entered(hit: PhysicsBody2D):
-	var playerHitDirection = (hit.position - position).normalized()
+func _on_attack_range_area_body_entered(hit):
+	if hit is Coin:
+		hit.queue_free()
 	
 	if not isOnDamageCooldown:
 		var enemies = attackDamageArea.get_overlapping_bodies().filter(func(body): return body is BaseEnemy)
 		
 		if enemies.size() > 0:
+			var playerHitDirection = (hit.position - position).normalized()
 			if canAttack:
 				canAttack = false
 				attackCooldownBar.show()
@@ -172,7 +174,6 @@ func on_receive_damage(hitDirection: Vector2):
 
 	receivedDamageFlashing.start()
 	projectileTimer.stop()
-
 
 func _on_receive_damage_timer():
 	visible = !visible

@@ -3,12 +3,12 @@
 [ext_resource type="Script" path="res://Character/Projectile.gd" id="1_w6n2x"]
 [ext_resource type="Script" path="res://DrawSolidCircle.gd" id="2_qbjji"]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_y0ukb"]
+[sub_resource type="CircleShape2D" id="CircleShape2D_stc0n"]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_fi3us"]
+[sub_resource type="CircleShape2D" id="CircleShape2D_4hqsm"]
 radius = 14.0357
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_ccswg"]
+[sub_resource type="CircleShape2D" id="CircleShape2D_oivho"]
 radius = 26.0
 
 [node name="Projectile" type="RigidBody2D"]
@@ -20,7 +20,7 @@ contact_monitor = true
 script = ExtResource("1_w6n2x")
 
 [node name="Circle" type="CollisionShape2D" parent="."]
-shape = SubResource("CircleShape2D_y0ukb")
+shape = SubResource("CircleShape2D_stc0n")
 debug_color = Color(0.827451, 0.317647, 0.619608, 0.419608)
 script = ExtResource("2_qbjji")
 radius = 5.0
@@ -30,14 +30,14 @@ collision_layer = 8
 collision_mask = 5
 
 [node name="AttackRangeArea" type="CollisionShape2D" parent="AttackRangeArea"]
-shape = SubResource("CircleShape2D_fi3us")
+shape = SubResource("CircleShape2D_4hqsm")
 
 [node name="AttackDamageArea" type="Area2D" parent="."]
 collision_layer = 8
 collision_mask = 4
 
 [node name="Circle" type="CollisionShape2D" parent="AttackDamageArea"]
-shape = SubResource("CircleShape2D_ccswg")
+shape = SubResource("CircleShape2D_oivho")
 debug_color = Color(0.827451, 0.317647, 0.619608, 0.419608)
 
 [connection signal="body_entered" from="AttackRangeArea" to="." method="_on_attack_range_area_body_entered"]

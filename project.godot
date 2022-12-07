@@ -13,9 +13,27 @@ _global_script_classes=[{
 "class": &"BaseEnemy",
 "language": &"GDScript",
 "path": "res://Enemies/BaseEnemy.gd"
+}, {
+"base": "StaticBody2D",
+"class": &"Coin",
+"language": &"GDScript",
+"path": "res://Stages/Coin.gd"
+}, {
+"base": "Node",
+"class": &"FloorOrWall",
+"language": &"GDScript",
+"path": "res://Stages/FloorOrWall.gd"
+}, {
+"base": "RefCounted",
+"class": &"StageTypes",
+"language": &"GDScript",
+"path": "res://Stages/StageTypes.gd"
 }]
 _global_script_class_icons={
-"BaseEnemy": ""
+"BaseEnemy": "",
+"Coin": "",
+"FloorOrWall": "",
+"StageTypes": ""
 }
 
 [application]
@@ -72,3 +90,4 @@ FALL={
 2d_physics/layer_2="player"
 2d_physics/layer_3="enemies"
 2d_physics/layer_4="player_attack_radius"
+2d_physics/layer_5="props (coins)"
