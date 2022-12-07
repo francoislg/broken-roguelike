@@ -6,7 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://2c2nkuhtirnt" path="res://Floor.tscn" id="3_766qk"]
 [ext_resource type="PackedScene" uid="uid://bdk261jttat2w" path="res://Wall.tscn" id="4_bskj3"]
 [ext_resource type="PackedScene" uid="uid://cfr7r3stmxy5q" path="res://BasicDashingEnemy.tscn" id="5_44kkm"]
-[ext_resource type="Script" path="res://Enemies/LeapingEnemy.gd" id="7_0umry"]
+[ext_resource type="PackedScene" uid="uid://dsi627wc6bgt2" path="res://BasicLeapingEnemy.tscn" id="6_v6idj"]
 [ext_resource type="Script" path="res://Character/CharacterStatsDebug.gd" id="7_hgrfn"]
 [ext_resource type="PackedScene" uid="uid://d32ur33isn5en" path="res://Combos/ComboMenu.tscn" id="7_pickd"]
 [ext_resource type="Script" path="res://Combos/PlusComboDebug.gd" id="8_avcs3"]
@@ -87,12 +87,8 @@ scale = Vector2(1, 0.5)
 
 [node name="Enemies" type="Node" parent="Stage"]
 
-[node name="Enemy" parent="Stage/Enemies" instance=ExtResource("12_f21e5")]
-position = Vector2(964, 990)
-
-[node name="LeapingEnemy" parent="Stage/Enemies" instance=ExtResource("12_f21e5")]
-position = Vector2(964, 990)
-script = ExtResource("7_0umry")
+[node name="LeapingEnemy" parent="Stage/Enemies" instance=ExtResource("6_v6idj")]
+position = Vector2(1137, 1010)
 
 [node name="Enemy2" parent="Stage/Enemies" instance=ExtResource("12_f21e5")]
 position = Vector2(1353, 833)
