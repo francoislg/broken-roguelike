@@ -1,3 +1,4 @@
+@tool
 extends CollisionShape2D
 
 @export var color := Color.WHITE:
@@ -11,7 +12,7 @@ var _color := Color.WHITE
 var queueRecolor := true
 
 func _process(_delta):
-	if queueRecolor:
+	if Engine.is_editor_hint() or queueRecolor:
 		queue_redraw()
 		queueRecolor = false
 

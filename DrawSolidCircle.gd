@@ -1,4 +1,5 @@
-extends CollisionShape2D
+@tool
+extends Node2D
 
 @export var radius: float
 
@@ -13,7 +14,7 @@ var _color := Color.GREEN_YELLOW
 var queueRecolor := true
 
 func _process(_delta):
-	if queueRecolor:
+	if Engine.is_editor_hint() or queueRecolor:
 		queue_redraw()
 		queueRecolor = false
 
