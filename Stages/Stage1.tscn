@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://ysjgoyjkxmlw"]
+[gd_scene load_steps=12 format=3 uid="uid://ysjgoyjkxmlw"]
 
 [ext_resource type="PackedScene" uid="uid://d3lqabdfkasx" path="res://Stages/BaseStage.tscn" id="1_vaij1"]
 [ext_resource type="PackedScene" uid="uid://dn0ma3hk1naix" path="res://Stages/Floor.tscn" id="2_y1eo2"]
@@ -8,6 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://o3v3wdg0q66m" path="res://Stages/Coin.tscn" id="6_dajti"]
 [ext_resource type="PackedScene" uid="uid://dlxru70euhnqr" path="res://Stages/Flag.tscn" id="7_8dnbt"]
 [ext_resource type="PackedScene" uid="uid://daxnvwii14dnn" path="res://Stages/Area.tscn" id="8_dey78"]
+[ext_resource type="PackedScene" uid="uid://bntpgdab8uuj3" path="res://Stages/Props/Spring.tscn" id="9_ku4ms"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_kyjpw"]
 size = Vector2(362, 116)
@@ -19,6 +20,13 @@ size = Vector2(284, 85)
 
 [node name="StartingPoint" parent="." index="0"]
 position = Vector2(118, 1033)
+
+[node name="Spring" parent="Props" index="0" instance=ExtResource("9_ku4ms")]
+position = Vector2(1812, 1053)
+
+[node name="Spring2" parent="Props" index="1" instance=ExtResource("9_ku4ms")]
+position = Vector2(1338, 662)
+stage_layer = 7
 
 [node name="Floor2" parent="Walls" index="0" instance=ExtResource("2_y1eo2")]
 position = Vector2(472, 967)
@@ -118,15 +126,15 @@ position = Vector2(1390, 869)
 position = Vector2(472, 926)
 
 [node name="Flag2" parent="Flags" index="1" instance=ExtResource("7_8dnbt")]
-position = Vector2(1380, 641)
+position = Vector2(1286, 595)
 
 [node name="Flag3" parent="Flags" index="2" instance=ExtResource("7_8dnbt")]
-position = Vector2(469, 1032)
+position = Vector2(1631, 484)
 
 [node name="Flag4" parent="Flags" index="3" instance=ExtResource("7_8dnbt")]
-position = Vector2(557, 1033)
+position = Vector2(474, 1026)
 
-[node name="FlagDestination" parent="." index="6"]
+[node name="FlagDestination" parent="." index="7"]
 position = Vector2(73, 965)
 
 [node name="Area" parent="Areas" index="0" instance=ExtResource("8_dey78")]

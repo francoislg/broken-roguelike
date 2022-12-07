@@ -10,6 +10,7 @@ signal stage_win
 @onready var FlagDestination := $FlagDestination
 @onready var Areas := $Areas
 @onready var Enemies := $Enemies
+@onready var Props := $Props
 @onready var Walls := $Walls
 @onready var Character := %Character
 @onready var StartingPoint := $StartingPoint
@@ -60,6 +61,10 @@ func set_up_stage():
 		if floorOrWall.stage_layer & currentType == 0:
 			Walls.remove_child(floorOrWall)
 	
+	for prop in Props.get_children().filter(func(prop): return prop is Prop):
+		if prop.stage_layer & currentType == 0:
+			Props.remove_child(prop)
+	
 	if currentType & StageTypes.types.Coins == 0:
 		remove_child(Coins)
 	
@@ -78,6 +83,9 @@ func set_visibility_for_stage_type(type: StageTypes.types):
 	
 	for enemy in Enemies.get_children().filter(func(enemy): return enemy is BaseEnemy):
 		enemy.visible = enemy.stage_layer & type != 0
+		
+	for prop in Props.get_children().filter(func(prop): return prop is Prop):
+		prop.visible = prop.stage_layer & type != 0
 	
 	for floorOrWall in Walls.get_children().filter(func(wall): return wall is FloorOrWall):
 		floorOrWall.visible = floorOrWall.stage_layer & type != 0

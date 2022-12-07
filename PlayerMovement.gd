@@ -82,7 +82,7 @@ func _physics_process(delta):
 	var isGoingUp = velocity.y < 0;
 	
 	var baseGravity = gravity * delta
-	if (touchesAWall and not movement_stopped):
+	if touchesAWall and not movement_stopped and abs(walk) > 0:
 		velocity.y = clamp(velocity.y + baseGravity * WALL_GRAVITY_MODIFIER, -CharacterStats.jumpHeight * WALL_GRAVITY_MODIFIER, 10000)
 	else:
 		velocity.y += baseGravity * JUMP_BUTTON_GRAVITY_MODIFIER if isGoingUp and Input.is_action_pressed("JUMP") else baseGravity
@@ -141,6 +141,9 @@ func _on_attack_range_area_body_entered(hit):
 		
 	if hit is FlagDestination:
 		claim_flags()
+		
+	if hit is Spring:
+		on_spring()
 	
 	if not isOnDamageCooldown:
 		var enemies = attackDamageArea.get_overlapping_bodies().filter(func(body): return body is BaseEnemy)
@@ -214,6 +217,9 @@ func claim_flags():
 		flag.claim()
 	picked_up_flags = []
 	HoldingFlags.set_number_of_flags(0)
+	
+func on_spring():
+	velocity.y = -CharacterStats.jumpHeight * 2
 
 func initTimer(newTimer: Timer, waitTime: float, isOneShot: bool, onTimerEndFunction: Callable):
 	add_child(newTimer)

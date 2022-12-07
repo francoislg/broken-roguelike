@@ -15,6 +15,8 @@ script = ExtResource("1_b623s")
 
 [node name="StartingPoint" type="Node2D" parent="."]
 
+[node name="Props" type="Node" parent="."]
+
 [node name="Walls" type="CanvasGroup" parent="."]
 
 [node name="Enemies" type="Node" parent="."]

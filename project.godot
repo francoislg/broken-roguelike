@@ -49,7 +49,7 @@ _global_script_classes=[{
 "language": &"GDScript",
 "path": "res://Stages/FlagDestination.gd"
 }, {
-"base": "Node",
+"base": "Prop",
 "class": &"FloorOrWall",
 "language": &"GDScript",
 "path": "res://Stages/FloorOrWall.gd"
@@ -58,6 +58,16 @@ _global_script_classes=[{
 "class": &"Player",
 "language": &"GDScript",
 "path": "res://PlayerMovement.gd"
+}, {
+"base": "Node2D",
+"class": &"Prop",
+"language": &"GDScript",
+"path": "res://Stages/Props/Prop.gd"
+}, {
+"base": "Prop",
+"class": &"Spring",
+"language": &"GDScript",
+"path": "res://Stages/Props/Spring.gd"
 }, {
 "base": "RefCounted",
 "class": &"StageTypes",
@@ -80,6 +90,8 @@ _global_script_class_icons={
 "FlagDestination": "",
 "FloorOrWall": "",
 "Player": "",
+"Prop": "",
+"Spring": "",
 "StageTypes": "",
 "WavesStage": ""
 }
