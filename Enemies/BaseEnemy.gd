@@ -1,6 +1,9 @@
+@tool
 extends CharacterBody2D
 
 class_name BaseEnemy
+
+@export_flags("Coins", "Waves") var stage_layer = StageTypes.types.Coins | StageTypes.types.Waves
 
 @onready var health := $Health
 @onready var character: CharacterBody2D = $"/root/Scene/Character"

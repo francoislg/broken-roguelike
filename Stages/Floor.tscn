@@ -1,0 +1,14 @@
+[gd_scene load_steps=4 format=3 uid="uid://dn0ma3hk1naix"]
+
+[ext_resource type="Script" path="res://Stages/FloorOrWall.gd" id="1_nyltn"]
+[ext_resource type="Script" path="res://DrawSolidCollision.gd" id="2_itkgk"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hmdp8"]
+size = Vector2(288, 20)
+
+[node name="StaticBody2" type="StaticBody2D"]
+script = ExtResource("1_nyltn")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_hmdp8")
+script = ExtResource("2_itkgk")

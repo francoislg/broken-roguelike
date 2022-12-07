@@ -18,10 +18,22 @@ _global_script_classes=[{
 "class": &"Coin",
 "language": &"GDScript",
 "path": "res://Stages/Coin.gd"
+}, {
+"base": "Node",
+"class": &"FloorOrWall",
+"language": &"GDScript",
+"path": "res://Stages/FloorOrWall.gd"
+}, {
+"base": "RefCounted",
+"class": &"StageTypes",
+"language": &"GDScript",
+"path": "res://Stages/StageTypes.gd"
 }]
 _global_script_class_icons={
 "BaseEnemy": "",
-"Coin": ""
+"Coin": "",
+"FloorOrWall": "",
+"StageTypes": ""
 }
 
 [application]

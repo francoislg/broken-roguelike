@@ -1,13 +1,14 @@
-[gd_scene load_steps=7 format=3 uid="uid://bmn45rso4pjuv"]
+[gd_scene load_steps=7 format=3 uid="uid://ysjgoyjkxmlw"]
 
 [ext_resource type="PackedScene" uid="uid://d3lqabdfkasx" path="res://Stages/BaseStage.tscn" id="1_vaij1"]
-[ext_resource type="PackedScene" uid="uid://2c2nkuhtirnt" path="res://Floor.tscn" id="2_y1eo2"]
-[ext_resource type="PackedScene" uid="uid://bdk261jttat2w" path="res://Wall.tscn" id="3_iohxa"]
+[ext_resource type="PackedScene" uid="uid://dn0ma3hk1naix" path="res://Stages/Floor.tscn" id="2_y1eo2"]
+[ext_resource type="PackedScene" uid="uid://bdk261jttat2w" path="res://Stages/Wall.tscn" id="3_iohxa"]
 [ext_resource type="PackedScene" uid="uid://cfr7r3stmxy5q" path="res://Enemies/BasicDashingEnemy.tscn" id="4_33yct"]
 [ext_resource type="PackedScene" uid="uid://kpvuqsv3l53p" path="res://Enemies/BasicFollowingEnemy.tscn" id="5_4neuv"]
 [ext_resource type="PackedScene" uid="uid://o3v3wdg0q66m" path="res://Stages/Coin.tscn" id="6_dajti"]
 
 [node name="Stage" instance=ExtResource("1_vaij1")]
+editorType = 2
 
 [node name="StartingPoint" parent="." index="0"]
 position = Vector2(92, 999)
@@ -21,6 +22,7 @@ position = Vector2(840, 869)
 [node name="Floor4" parent="Walls" index="2" instance=ExtResource("2_y1eo2")]
 position = Vector2(656, 578)
 scale = Vector2(1.5, 1)
+stage_layer = 1
 
 [node name="Floor9" parent="Walls" index="3" instance=ExtResource("2_y1eo2")]
 position = Vector2(552, 734)
@@ -38,6 +40,7 @@ position = Vector2(1285, 677)
 
 [node name="Floor8" parent="Walls" index="7" instance=ExtResource("2_y1eo2")]
 position = Vector2(1549, 531)
+stage_layer = 1
 
 [node name="Wall" parent="Walls" index="8" instance=ExtResource("3_iohxa")]
 position = Vector2(15, 101)
@@ -50,6 +53,7 @@ scale = Vector2(1, 5)
 [node name="Wall3" parent="Walls" index="10" instance=ExtResource("3_iohxa")]
 position = Vector2(1709, 616)
 scale = Vector2(1, 2)
+stage_layer = 1
 
 [node name="Wall4" parent="Walls" index="11" instance=ExtResource("3_iohxa")]
 position = Vector2(1046, 691)
@@ -62,11 +66,13 @@ scale = Vector2(1, 0.5)
 position = Vector2(1445, 1068)
 scale = Vector2(10, 1)
 
-[node name="FollowingEnemy" parent="Enemies" index="0" instance=ExtResource("5_4neuv")]
-position = Vector2(964, 789)
-
-[node name="FollowingEnemy2" parent="Enemies" index="1" instance=ExtResource("5_4neuv")]
+[node name="FollowingEnemy2" parent="Enemies" index="0" instance=ExtResource("5_4neuv")]
 position = Vector2(1525, 390)
+stage_layer = 2
+
+[node name="FollowingEnemy3" parent="Enemies" index="1" instance=ExtResource("5_4neuv")]
+position = Vector2(1108, 861)
+stage_layer = 1
 
 [node name="DashingEnemy" parent="Enemies" index="2" instance=ExtResource("4_33yct")]
 position = Vector2(647, 441)
