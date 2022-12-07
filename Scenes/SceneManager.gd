@@ -1,21 +1,35 @@
 extends Node
 
 @onready var Character := %Character
+@onready var Stage := %Stage
 
 func _ready():
-	Character.connect("player_hit", func(hp):
-		if hp <= 0:
-			var tree = get_tree()
-			tree.paused = true
-			
-			doAfter(1, func():
-				tree.paused = false
-				Engine.time_scale = 0.2
-				doAfter(0.8, func():
-					Engine.time_scale = 1
-					tree.reload_current_scene()
-				)
+	var endDetected = false
+	Stage.connect("stage_win", func():
+		if not endDetected:
+			endDetected = true
+			Engine.time_scale = 0.2
+			doAfter(0.8, func():
+				Engine.time_scale = 1
+				var tree = get_tree()
+				tree.reload_current_scene()
 			)
+	)
+	Character.connect("player_hit", func(hp):
+		if not endDetected:
+			endDetected = true
+			if hp <= 0:
+				var tree = get_tree()
+				tree.paused = true
+				
+				doAfter(1, func():
+					tree.paused = false
+					Engine.time_scale = 0.2
+					doAfter(0.8, func():
+						Engine.time_scale = 1
+						tree.reload_current_scene()
+					)
+				)
 	)
 
 func doAfter(wait_time: float, do: Callable):

@@ -20,6 +20,11 @@ _global_script_classes=[{
 "path": "res://Stages/Coin.gd"
 }, {
 "base": "Node",
+"class": &"CoinStage",
+"language": &"GDScript",
+"path": "res://Stages/Behaviors/CoinStage.gd"
+}, {
+"base": "Node",
 "class": &"FloorOrWall",
 "language": &"GDScript",
 "path": "res://Stages/FloorOrWall.gd"
@@ -28,12 +33,19 @@ _global_script_classes=[{
 "class": &"StageTypes",
 "language": &"GDScript",
 "path": "res://Stages/StageTypes.gd"
+}, {
+"base": "Node",
+"class": &"WavesStage",
+"language": &"GDScript",
+"path": "res://Stages/Behaviors/WavesStage.gd"
 }]
 _global_script_class_icons={
 "BaseEnemy": "",
 "Coin": "",
+"CoinStage": "",
 "FloorOrWall": "",
-"StageTypes": ""
+"StageTypes": "",
+"WavesStage": ""
 }
 
 [application]

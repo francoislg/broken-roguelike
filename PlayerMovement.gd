@@ -129,7 +129,7 @@ func update_attackcooldown_bar():
 
 func _on_attack_range_area_body_entered(hit):
 	if hit is Coin:
-		hit.queue_free()
+		hit.pick_up()
 	
 	if not isOnDamageCooldown:
 		var enemies = attackDamageArea.get_overlapping_bodies().filter(func(body): return body is BaseEnemy)
@@ -170,7 +170,6 @@ func on_receive_damage(hitDirection: Vector2):
 	else:
 		attackCooldownBar.hide()
 		stopMovementFor(2)
-
 
 	receivedDamageFlashing.start()
 	projectileTimer.stop()

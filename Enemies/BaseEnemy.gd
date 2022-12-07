@@ -3,6 +3,8 @@ extends CharacterBody2D
 
 class_name BaseEnemy
 
+signal dies
+
 @export_flags("Coins", "Waves") var stage_layer = StageTypes.types.Coins | StageTypes.types.Waves
 
 @onready var health := $Health
@@ -25,6 +27,7 @@ func _ready():
 func receive_damage(direction: Vector2, damage: float):
 	hp -= damage
 	if hp <= 0:
+		emit_signal('dies')
 		queue_free()
 	else:
 		velocity = direction * HIT_KNOCKBACK_FORCE

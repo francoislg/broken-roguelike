@@ -13,6 +13,7 @@
 [node name="Scene" type="Node2D"]
 
 [node name="Stage" parent="." instance=ExtResource("1_hj8et")]
+unique_name_in_owner = true
 
 [node name="RichTextLabel" type="RichTextLabel" parent="."]
 offset_left = 54.0

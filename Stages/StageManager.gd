@@ -1,6 +1,8 @@
 @tool
 extends Node
 
+signal stage_win
+
 @export_flags("Coins", "Waves") var supported_types = StageTypes.types.Coins | StageTypes.types.Waves
 
 @onready var Coins := $Coins
@@ -8,6 +10,10 @@ extends Node
 @onready var Walls := $Walls
 @onready var Character := %Character
 @onready var StartingPoint := $StartingPoint
+@onready var StagesBehaviors := {
+	StageTypes.types.Coins: $Behaviors/CoinStage,
+	StageTypes.types.Waves: $Behaviors/WavesStage
+}
 
 @export_flags("Coins", 'Waves') var editorType:
 	set(type):
@@ -17,16 +23,21 @@ extends Node
 				set_visibility_for_stage_type(type)
 
 var currentType: StageTypes.types = StageTypes.types.Coins
+var currentBehavior
 
 func _ready():
 	set_visibility_for_stage_type(StageTypes.types.Coins | StageTypes.types.Waves)
 	
 	var arrayOfSupportedTypes = [
-		supported_types & StageTypes.types.Coins != 0,
-		supported_types & StageTypes.types.Waves != 0, 
-	]
-	currentType = StageTypes.types.values()[randi_range(0, arrayOfSupportedTypes.size() - 1)]
+		StageTypes.types.Coins if supported_types & StageTypes.types.Coins != 0 else 0,
+		StageTypes.types.Waves if supported_types & StageTypes.types.Waves != 0 else 0, 
+	].filter(func(type): return type != 0)
+	
+	currentType = arrayOfSupportedTypes[randi_range(0, arrayOfSupportedTypes.size() - 1)]
+	currentBehavior = StagesBehaviors[currentType]
 	set_up_stage()
+	currentBehavior.do_ready()
+	currentBehavior.connect('stage_win', func(): emit_signal('stage_win'))
 	
 func set_up_stage():
 	Character.position = StartingPoint.position
@@ -48,3 +59,6 @@ func set_visibility_for_stage_type(type: StageTypes.types):
 	Coins.visible = type & StageTypes.types.Coins != 0
 	for floorOrWall in Walls.get_children().filter(func(wall): return wall is FloorOrWall):
 		floorOrWall.visible = floorOrWall.stage_layer & type != 0
+		
+func _process(delta):
+	currentBehavior.do_process(delta)

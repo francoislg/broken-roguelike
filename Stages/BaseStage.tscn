@@ -1,6 +1,8 @@
-[gd_scene load_steps=2 format=3 uid="uid://d3lqabdfkasx"]
+[gd_scene load_steps=4 format=3 uid="uid://d3lqabdfkasx"]
 
 [ext_resource type="Script" path="res://Stages/StageManager.gd" id="1_b623s"]
+[ext_resource type="Script" path="res://Stages/Behaviors/CoinStage.gd" id="2_2sxar"]
+[ext_resource type="Script" path="res://Stages/Behaviors/WavesStage.gd" id="3_f7pak"]
 
 [node name="Stage" type="Node"]
 script = ExtResource("1_b623s")
@@ -13,3 +15,11 @@ editorType = 0
 [node name="Enemies" type="Node" parent="."]
 
 [node name="Coins" type="Node2D" parent="."]
+
+[node name="Behaviors" type="Node" parent="."]
+
+[node name="CoinStage" type="Node" parent="Behaviors"]
+script = ExtResource("2_2sxar")
+
+[node name="WavesStage" type="Node" parent="Behaviors"]
+script = ExtResource("3_f7pak")
