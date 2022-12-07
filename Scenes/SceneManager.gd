@@ -1,6 +1,6 @@
 extends Node
 
-@onready var Character := $"../Character"
+@onready var Character := %Character
 
 func _ready():
 	Character.connect("player_hit", func(hp):

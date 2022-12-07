@@ -1,0 +1,14 @@
+[gd_scene load_steps=2 format=3 uid="uid://d3lqabdfkasx"]
+
+[ext_resource type="Script" path="res://Stages/StageManager.gd" id="1_b623s"]
+
+[node name="Stage" type="Node"]
+script = ExtResource("1_b623s")
+
+[node name="StartingPoint" type="Node2D" parent="."]
+
+[node name="Walls" type="CanvasGroup" parent="."]
+
+[node name="Enemies" type="Node" parent="."]
+
+[node name="Coins" type="Node" parent="."]

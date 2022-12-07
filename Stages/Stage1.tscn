@@ -1,0 +1,99 @@
+[gd_scene load_steps=7 format=3 uid="uid://bmn45rso4pjuv"]
+
+[ext_resource type="PackedScene" uid="uid://d3lqabdfkasx" path="res://Stages/BaseStage.tscn" id="1_vaij1"]
+[ext_resource type="PackedScene" uid="uid://2c2nkuhtirnt" path="res://Floor.tscn" id="2_y1eo2"]
+[ext_resource type="PackedScene" uid="uid://bdk261jttat2w" path="res://Wall.tscn" id="3_iohxa"]
+[ext_resource type="PackedScene" uid="uid://cfr7r3stmxy5q" path="res://Enemies/BasicDashingEnemy.tscn" id="4_33yct"]
+[ext_resource type="PackedScene" uid="uid://kpvuqsv3l53p" path="res://Enemies/BasicFollowingEnemy.tscn" id="5_4neuv"]
+[ext_resource type="PackedScene" uid="uid://o3v3wdg0q66m" path="res://Stages/Coin.tscn" id="6_dajti"]
+
+[node name="Stage" instance=ExtResource("1_vaij1")]
+
+[node name="StartingPoint" parent="." index="0"]
+position = Vector2(92, 999)
+
+[node name="Floor2" parent="Walls" index="0" instance=ExtResource("2_y1eo2")]
+position = Vector2(472, 967)
+
+[node name="Floor3" parent="Walls" index="1" instance=ExtResource("2_y1eo2")]
+position = Vector2(840, 869)
+
+[node name="Floor4" parent="Walls" index="2" instance=ExtResource("2_y1eo2")]
+position = Vector2(656, 578)
+scale = Vector2(1.5, 1)
+
+[node name="Floor9" parent="Walls" index="3" instance=ExtResource("2_y1eo2")]
+position = Vector2(552, 734)
+scale = Vector2(2.5, 1)
+
+[node name="Floor5" parent="Walls" index="4" instance=ExtResource("2_y1eo2")]
+position = Vector2(1386, 922)
+scale = Vector2(1.5, 1)
+
+[node name="Floor6" parent="Walls" index="5" instance=ExtResource("2_y1eo2")]
+position = Vector2(1485, 798)
+
+[node name="Floor7" parent="Walls" index="6" instance=ExtResource("2_y1eo2")]
+position = Vector2(1285, 677)
+
+[node name="Floor8" parent="Walls" index="7" instance=ExtResource("2_y1eo2")]
+position = Vector2(1549, 531)
+
+[node name="Wall" parent="Walls" index="8" instance=ExtResource("3_iohxa")]
+position = Vector2(15, 101)
+scale = Vector2(1, 5)
+
+[node name="Wall2" parent="Walls" index="9" instance=ExtResource("3_iohxa")]
+position = Vector2(1904, 96)
+scale = Vector2(1, 5)
+
+[node name="Wall3" parent="Walls" index="10" instance=ExtResource("3_iohxa")]
+position = Vector2(1709, 616)
+scale = Vector2(1, 2)
+
+[node name="Wall4" parent="Walls" index="11" instance=ExtResource("3_iohxa")]
+position = Vector2(1046, 691)
+
+[node name="Wall5" parent="Walls" index="12" instance=ExtResource("3_iohxa")]
+position = Vector2(343, 627)
+scale = Vector2(1, 0.5)
+
+[node name="Floor" parent="Walls" index="13" instance=ExtResource("2_y1eo2")]
+position = Vector2(1445, 1068)
+scale = Vector2(10, 1)
+
+[node name="FollowingEnemy" parent="Enemies" index="0" instance=ExtResource("5_4neuv")]
+position = Vector2(964, 789)
+
+[node name="FollowingEnemy2" parent="Enemies" index="1" instance=ExtResource("5_4neuv")]
+position = Vector2(1525, 390)
+
+[node name="DashingEnemy" parent="Enemies" index="2" instance=ExtResource("4_33yct")]
+position = Vector2(647, 441)
+
+[node name="Coin" parent="Coins" index="0" instance=ExtResource("6_dajti")]
+position = Vector2(474, 922)
+
+[node name="Coin9" parent="Coins" index="1" instance=ExtResource("6_dajti")]
+position = Vector2(242, 1046)
+
+[node name="Coin2" parent="Coins" index="2" instance=ExtResource("6_dajti")]
+position = Vector2(403, 678)
+
+[node name="Coin3" parent="Coins" index="3" instance=ExtResource("6_dajti")]
+position = Vector2(272, 676)
+
+[node name="Coin4" parent="Coins" index="4" instance=ExtResource("6_dajti")]
+position = Vector2(825, 528)
+
+[node name="Coin5" parent="Coins" index="5" instance=ExtResource("6_dajti")]
+position = Vector2(1289, 629)
+
+[node name="Coin6" parent="Coins" index="6" instance=ExtResource("6_dajti")]
+position = Vector2(1538, 469)
+
+[node name="Coin7" parent="Coins" index="7" instance=ExtResource("6_dajti")]
+position = Vector2(1481, 746)
+
+[node name="Coin8" parent="Coins" index="8" instance=ExtResource("6_dajti")]
+position = Vector2(1390, 869)
