@@ -9,7 +9,7 @@ extends Node
 @onready var Character := %Character
 @onready var StartingPoint := $StartingPoint
 
-@export var editorType: StageTypes.types:
+@export_flags("Coins", 'Waves') var editorType:
 	set(type):
 		if type != editorType:
 			editorType = type
