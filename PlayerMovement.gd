@@ -7,6 +7,7 @@ signal player_hit(hp: int)
 @onready var attackCooldownBar = $AttackCooldownBar
 @onready var CharacterStats := $CharacterStats
 @onready var ProjectileSpawner := $ProjectileSpawner
+@onready var HoldingFlags := $HoldingFlags
 
 const STOP_FORCE = 2000
 const WALL_GRAVITY_MODIFIER = 0.25
@@ -29,6 +30,8 @@ var canAttack = true
 var isOnDamageCooldown = false
 
 var hp := 3
+
+var picked_up_flags: Array[Flag] = []
 
 func _ready():
 	initTimer(movementStoppedTimer, 0.2, false, _on_timer_movement_stopped)
@@ -130,6 +133,12 @@ func update_attackcooldown_bar():
 func _on_attack_range_area_body_entered(hit):
 	if hit is Coin:
 		hit.pick_up()
+		
+	if hit is Flag:
+		pick_up_flag(hit)
+		
+	if hit is FlagDestination:
+		claim_flags()
 	
 	if not isOnDamageCooldown:
 		var enemies = attackDamageArea.get_overlapping_bodies().filter(func(body): return body is BaseEnemy)
@@ -167,6 +176,7 @@ func on_receive_damage(hitDirection: Vector2):
 	if hp > 0:
 		stopMovementFor(0.5)
 		receivedDamageEndTimer.start()
+		drop_all_flags()
 	else:
 		attackCooldownBar.hide()
 		stopMovementFor(2)
@@ -185,6 +195,23 @@ func _on_receive_damage_end_timer():
 	set_collision_mask_value(3, true)
 	_on_timer_projectile()
 	projectileTimer.start()
+
+func pick_up_flag(flag: Flag):
+	if flag.pick_up():
+		picked_up_flags.push_front(flag)
+		HoldingFlags.set_number_of_flags(picked_up_flags.size())
+
+func drop_all_flags():
+	for flag in picked_up_flags:
+		flag.reset()
+	picked_up_flags = []
+	HoldingFlags.set_number_of_flags(0)
+
+func claim_flags():
+	for flag in picked_up_flags:
+		flag.claim()
+	picked_up_flags = []
+	HoldingFlags.set_number_of_flags(0)
 
 func initTimer(newTimer: Timer, waitTime: float, isOneShot: bool, onTimerEndFunction: Callable):
 	add_child(newTimer)

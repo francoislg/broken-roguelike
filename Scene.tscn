@@ -25,7 +25,7 @@ script = ExtResource("1_pwqor")
 
 [node name="Character" parent="." instance=ExtResource("2_aembg")]
 unique_name_in_owner = true
-position = Vector2(92, 999)
+position = Vector2(118, 1033)
 
 [node name="SceneManager" type="Node" parent="."]
 process_mode = 3

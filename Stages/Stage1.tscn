@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://ysjgoyjkxmlw"]
+[gd_scene load_steps=8 format=3 uid="uid://ysjgoyjkxmlw"]
 
 [ext_resource type="PackedScene" uid="uid://d3lqabdfkasx" path="res://Stages/BaseStage.tscn" id="1_vaij1"]
 [ext_resource type="PackedScene" uid="uid://dn0ma3hk1naix" path="res://Stages/Floor.tscn" id="2_y1eo2"]
@@ -6,12 +6,12 @@
 [ext_resource type="PackedScene" uid="uid://cfr7r3stmxy5q" path="res://Enemies/BasicDashingEnemy.tscn" id="4_33yct"]
 [ext_resource type="PackedScene" uid="uid://kpvuqsv3l53p" path="res://Enemies/BasicFollowingEnemy.tscn" id="5_4neuv"]
 [ext_resource type="PackedScene" uid="uid://o3v3wdg0q66m" path="res://Stages/Coin.tscn" id="6_dajti"]
+[ext_resource type="PackedScene" uid="uid://dlxru70euhnqr" path="res://Stages/Flag.tscn" id="7_8dnbt"]
 
 [node name="Stage" instance=ExtResource("1_vaij1")]
-editorType = 3
 
 [node name="StartingPoint" parent="." index="0"]
-position = Vector2(92, 999)
+position = Vector2(118, 1033)
 
 [node name="Floor2" parent="Walls" index="0" instance=ExtResource("2_y1eo2")]
 position = Vector2(472, 967)
@@ -27,6 +27,7 @@ stage_layer = 1
 [node name="Floor9" parent="Walls" index="3" instance=ExtResource("2_y1eo2")]
 position = Vector2(552, 734)
 scale = Vector2(2.5, 1)
+stage_layer = 3
 
 [node name="Floor5" parent="Walls" index="4" instance=ExtResource("2_y1eo2")]
 position = Vector2(1386, 922)
@@ -40,7 +41,7 @@ position = Vector2(1285, 677)
 
 [node name="Floor8" parent="Walls" index="7" instance=ExtResource("2_y1eo2")]
 position = Vector2(1549, 531)
-stage_layer = 1
+stage_layer = 5
 
 [node name="Wall" parent="Walls" index="8" instance=ExtResource("3_iohxa")]
 position = Vector2(15, 101)
@@ -53,14 +54,16 @@ scale = Vector2(1, 5)
 [node name="Wall3" parent="Walls" index="10" instance=ExtResource("3_iohxa")]
 position = Vector2(1709, 616)
 scale = Vector2(1, 2)
-stage_layer = 1
+stage_layer = 5
 
 [node name="Wall4" parent="Walls" index="11" instance=ExtResource("3_iohxa")]
 position = Vector2(1046, 691)
+stage_layer = 3
 
 [node name="Wall5" parent="Walls" index="12" instance=ExtResource("3_iohxa")]
 position = Vector2(343, 627)
 scale = Vector2(1, 0.5)
+stage_layer = 3
 
 [node name="Floor" parent="Walls" index="13" instance=ExtResource("2_y1eo2")]
 position = Vector2(1445, 1068)
@@ -68,11 +71,11 @@ scale = Vector2(10, 1)
 
 [node name="FollowingEnemy2" parent="Enemies" index="0" instance=ExtResource("5_4neuv")]
 position = Vector2(1525, 390)
-stage_layer = 2
+stage_layer = 6
 
 [node name="FollowingEnemy3" parent="Enemies" index="1" instance=ExtResource("5_4neuv")]
 position = Vector2(1108, 861)
-stage_layer = 1
+stage_layer = 5
 
 [node name="DashingEnemy" parent="Enemies" index="2" instance=ExtResource("4_33yct")]
 position = Vector2(647, 441)
@@ -103,3 +106,18 @@ position = Vector2(1481, 746)
 
 [node name="Coin8" parent="Coins" index="8" instance=ExtResource("6_dajti")]
 position = Vector2(1390, 869)
+
+[node name="Flag" parent="Flags" index="0" instance=ExtResource("7_8dnbt")]
+position = Vector2(472, 926)
+
+[node name="Flag2" parent="Flags" index="1" instance=ExtResource("7_8dnbt")]
+position = Vector2(1380, 641)
+
+[node name="Flag3" parent="Flags" index="2" instance=ExtResource("7_8dnbt")]
+position = Vector2(469, 1032)
+
+[node name="Flag4" parent="Flags" index="3" instance=ExtResource("7_8dnbt")]
+position = Vector2(557, 1033)
+
+[node name="FlagDestination" parent="." index="6"]
+position = Vector2(73, 965)

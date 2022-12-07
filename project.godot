@@ -14,6 +14,11 @@ _global_script_classes=[{
 "language": &"GDScript",
 "path": "res://Enemies/BaseEnemy.gd"
 }, {
+"base": "Node",
+"class": &"CaptureTheFlagStage",
+"language": &"GDScript",
+"path": "res://Stages/Behaviors/CaptureTheFlagStage.gd"
+}, {
 "base": "StaticBody2D",
 "class": &"Coin",
 "language": &"GDScript",
@@ -23,6 +28,16 @@ _global_script_classes=[{
 "class": &"CoinStage",
 "language": &"GDScript",
 "path": "res://Stages/Behaviors/CoinStage.gd"
+}, {
+"base": "Node2D",
+"class": &"Flag",
+"language": &"GDScript",
+"path": "res://Stages/Flag.gd"
+}, {
+"base": "Node",
+"class": &"FlagDestination",
+"language": &"GDScript",
+"path": "res://Stages/FlagDestination.gd"
 }, {
 "base": "Node",
 "class": &"FloorOrWall",
@@ -41,8 +56,11 @@ _global_script_classes=[{
 }]
 _global_script_class_icons={
 "BaseEnemy": "",
+"CaptureTheFlagStage": "",
 "Coin": "",
 "CoinStage": "",
+"Flag": "",
+"FlagDestination": "",
 "FloorOrWall": "",
 "StageTypes": "",
 "WavesStage": ""

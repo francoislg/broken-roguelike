@@ -2,4 +2,4 @@ extends Node
 
 class_name FloorOrWall
 
-@export_flags("Coins", "Waves") var stage_layer = StageTypes.types.Coins | StageTypes.types.Waves
+@export_flags("Coins", "Waves", "CaptureTheFlag") var stage_layer = StageTypes.types.Coins | StageTypes.types.Waves | StageTypes.types.CaptureTheFlag

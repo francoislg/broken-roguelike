@@ -5,7 +5,7 @@ class_name BaseEnemy
 
 signal dies
 
-@export_flags("Coins", "Waves") var stage_layer = StageTypes.types.Coins | StageTypes.types.Waves
+@export_flags("Coins", "Waves", "CaptureTheFlag") var stage_layer = StageTypes.types.Coins | StageTypes.types.Waves | StageTypes.types.CaptureTheFlag
 
 @onready var health := $Health
 @onready var character: CharacterBody2D = $"/root/Scene/Character"
