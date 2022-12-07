@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://6uiqgf5rqvoe"]
+[gd_scene load_steps=11 format=3 uid="uid://6uiqgf5rqvoe"]
 
 [ext_resource type="PackedScene" uid="uid://ysjgoyjkxmlw" path="res://Stages/Stage1.tscn" id="1_hj8et"]
 [ext_resource type="Script" path="res://DebugGameVariables.gd" id="1_pwqor"]
@@ -8,6 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://d32ur33isn5en" path="res://Combos/ComboMenu.tscn" id="7_pickd"]
 [ext_resource type="Script" path="res://Combos/PlusComboDebug.gd" id="8_avcs3"]
 [ext_resource type="Script" path="res://Combos/ResetComboDebug.gd" id="9_u0v3h"]
+[ext_resource type="Script" path="res://UI/ResetScene.gd" id="10_uqdk8"]
 [ext_resource type="Script" path="res://UI/HpLabel.gd" id="10_ypa48"]
 
 [node name="Scene" type="Node2D"]
@@ -15,11 +16,12 @@
 [node name="Stage" parent="." instance=ExtResource("1_hj8et")]
 unique_name_in_owner = true
 
-[node name="RichTextLabel" type="RichTextLabel" parent="."]
-offset_left = 54.0
-offset_top = 25.0
-offset_right = 410.0
-offset_bottom = 605.0
+[node name="Debug Variables" type="RichTextLabel" parent="."]
+visible = false
+offset_left = 49.0
+offset_top = 54.0
+offset_right = 405.0
+offset_bottom = 634.0
 text = "Allo"
 script = ExtResource("1_pwqor")
 
@@ -81,6 +83,15 @@ offset_right = 48.0
 offset_bottom = 1072.0
 script = ExtResource("10_ypa48")
 
+[node name="Reset Stage" type="Button" parent="UI Stuff"]
+offset_left = 43.0
+offset_top = 11.0
+offset_right = 51.0
+offset_bottom = 19.0
+text = "New Stage"
+script = ExtResource("10_uqdk8")
+
 [connection signal="player_hit" from="Character" to="UI Stuff/Hp Label" method="_on_character_player_hit"]
 [connection signal="pressed" from="UI Stuff/NewComboButtom" to="UI Stuff/NewComboButtom" method="_on_pressed"]
 [connection signal="pressed" from="UI Stuff/ResetCombosButton" to="UI Stuff/ResetCombosButton" method="_on_pressed"]
+[connection signal="pressed" from="UI Stuff/Reset Stage" to="UI Stuff/Reset Stage" method="_on_pressed"]
