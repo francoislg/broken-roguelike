@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://ysjgoyjkxmlw"]
+[gd_scene load_steps=8 format=3 uid="uid://ysjgoyjkxmlw"]
 
 [ext_resource type="PackedScene" uid="uid://d3lqabdfkasx" path="res://Stages/BaseStage.tscn" id="1_vaij1"]
 [ext_resource type="PackedScene" uid="uid://dn0ma3hk1naix" path="res://Stages/Floor.tscn" id="2_y1eo2"]
@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://cfr7r3stmxy5q" path="res://Enemies/BasicDashingEnemy.tscn" id="4_33yct"]
 [ext_resource type="PackedScene" uid="uid://kpvuqsv3l53p" path="res://Enemies/BasicFollowingEnemy.tscn" id="5_4neuv"]
 [ext_resource type="PackedScene" uid="uid://o3v3wdg0q66m" path="res://Stages/Coin.tscn" id="6_dajti"]
+[ext_resource type="PackedScene" uid="uid://dsi627wc6bgt2" path="res://Enemies/BasicLeapingEnemy.tscn" id="6_nywo0"]
 
 [node name="Stage" instance=ExtResource("1_vaij1")]
 editorType = 2
@@ -76,6 +77,9 @@ stage_layer = 1
 
 [node name="DashingEnemy" parent="Enemies" index="2" instance=ExtResource("4_33yct")]
 position = Vector2(647, 441)
+
+[node name="LeapingEnemy" parent="Enemies" index="3" instance=ExtResource("6_nywo0")]
+position = Vector2(1082, 1033)
 
 [node name="Coin" parent="Coins" index="0" instance=ExtResource("6_dajti")]
 position = Vector2(474, 922)
