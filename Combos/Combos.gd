@@ -3,15 +3,12 @@ extends Node
 var States := GlobalState.States
 
 enum Effects {
-	MeleeCooldown,
-	MeleeDamage,
-	MeleeRadius,
-	ProjectileCooldown,
-	ProjectileDamage,
-	MovementSpeed,
-	JumpHeight,
-	PlayerSize,
-	HPRegen
+	MeleeStrength,
+	MeleeSpeed,
+	ProjectileStrength,
+	ProjectileSpeed,
+	AgilityMovement,
+	AgilityJump
 }
 
 var effectKeys = Effects.keys()
@@ -37,8 +34,8 @@ func getCombo() -> Combo:
 	var states := States.values();
 	var randomStateIndex := randi_range(0, states.size() - 1)
 	
-	var effects := [Effects.MeleeCooldown, Effects.MeleeDamage, Effects.ProjectileCooldown,
-		Effects.ProjectileDamage, Effects.MovementSpeed, Effects.JumpHeight];
+	var effects := [Effects.MeleeStrength, Effects.MeleeSpeed, Effects.ProjectileStrength,
+		Effects.ProjectileSpeed, Effects.AgilityMovement, Effects.AgilityJump];
 	var randomEffectIndex := randi_range(0, effects.size() - 1)
 
 	return Combo.new(states[randomStateIndex], effects[randomEffectIndex], ComboConfig.new(false))
