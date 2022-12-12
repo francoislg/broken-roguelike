@@ -1,5 +1,14 @@
 extends Node
 
+class PlayerVariables:
+	var meleeCooldown: float
+	var meleeDamage: float
+	var projectileCooldown: float
+	var projectileDamage: float
+	var movementSpeed: float
+	var maximumSpeed: float
+	var jumpHeight: float
+
 var Effects := Combos.Effects;
 
 const BASE_ATTACK_DAMAGE = 1
@@ -11,19 +20,17 @@ const WALK_FORCE = 3200
 const WALK_MAX_SPEED = 575
 
 var combos: Array[Combos.Combo] = []
-var meleeCooldown: float
-var meleeDamage: float
-var projectileCooldown: float
-var projectileDamage: float
-var movementSpeed: float
-var maximumSpeed: float
-var jumpHeight: float
+
+var playerVariables := PlayerVariables.new()
 
 func _init():
 	onStateUpdated()
 	GlobalState.connect("state_updated", onStateUpdated)
 
 func onStateUpdated():
+	updateStatsFromCombo(playerVariables, combos)
+
+func updateStatsFromCombo(variables: PlayerVariables, combos: Array[Combos.Combo]):
 	var sums = Effects.values().reduce(func (sums, effect):
 		sums[effect] = 0
 		return sums
@@ -33,13 +40,13 @@ func onStateUpdated():
 		return sums
 	, sums)
 	
-	meleeCooldown = max(BASE_ATTACK_COOLDOWN - (BASE_ATTACK_COOLDOWN * sumPerEffect[Effects.MeleeCooldown]), 0.1)
-	meleeDamage = BASE_ATTACK_DAMAGE + (BASE_ATTACK_DAMAGE * sumPerEffect[Effects.MeleeDamage])
-	projectileDamage = BASE_PROJECTILE_DAMAGE + (BASE_PROJECTILE_DAMAGE * sumPerEffect[Effects.ProjectileDamage])
-	projectileCooldown = max(BASE_PROJECTILE_COOLDOWN - (BASE_PROJECTILE_COOLDOWN * sumPerEffect[Effects.ProjectileCooldown]), 0.1)
-	movementSpeed = WALK_FORCE + (WALK_FORCE * sumPerEffect[Effects.MovementSpeed])
-	maximumSpeed = WALK_MAX_SPEED + (WALK_MAX_SPEED * sumPerEffect[Effects.MovementSpeed])
-	jumpHeight = BASE_JUMP_FORCE + (BASE_JUMP_FORCE * sumPerEffect[Effects.JumpHeight])
+	variables.meleeCooldown = max(BASE_ATTACK_COOLDOWN - (BASE_ATTACK_COOLDOWN * sumPerEffect[Effects.MeleeCooldown]), 0.1)
+	variables.meleeDamage = BASE_ATTACK_DAMAGE + (BASE_ATTACK_DAMAGE * sumPerEffect[Effects.MeleeDamage])
+	variables.projectileDamage = BASE_PROJECTILE_DAMAGE + (BASE_PROJECTILE_DAMAGE * sumPerEffect[Effects.ProjectileDamage])
+	variables.projectileCooldown = max(BASE_PROJECTILE_COOLDOWN - (BASE_PROJECTILE_COOLDOWN * sumPerEffect[Effects.ProjectileCooldown]), 0.1)
+	variables.movementSpeed = WALK_FORCE + (WALK_FORCE * sumPerEffect[Effects.MovementSpeed])
+	variables.maximumSpeed = WALK_MAX_SPEED + (WALK_MAX_SPEED * sumPerEffect[Effects.MovementSpeed])
+	variables.jumpHeight = BASE_JUMP_FORCE + (BASE_JUMP_FORCE * sumPerEffect[Effects.JumpHeight])
 
 func add_combo(combo: Combos.Combo):
 	combos.push_front(combo)

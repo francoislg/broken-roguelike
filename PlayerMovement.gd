@@ -11,6 +11,8 @@ signal player_hit(hp: int)
 @onready var ProjectileSpawner := $ProjectileSpawner
 @onready var HoldingFlags := $HoldingFlags
 
+@onready var playerVariables = CharacterStats.playerVariables
+
 const STOP_FORCE = 2000
 const WALL_GRAVITY_MODIFIER = 0.25
 const JUMP_BUTTON_GRAVITY_MODIFIER = 0.50
@@ -37,8 +39,8 @@ var picked_up_flags: Array[Flag] = []
 
 func _ready():
 	initTimer(movementStoppedTimer, 0.2, false, _on_timer_movement_stopped)
-	initTimer(attackCooldownTimer, CharacterStats.meleeCooldown, true, _on_timer_attackcooldown_stopped)
-	initTimer(projectileTimer, CharacterStats.projectileCooldown, false, _on_timer_projectile)
+	initTimer(attackCooldownTimer, playerVariables.meleeCooldown, true, _on_timer_attackcooldown_stopped)
+	initTimer(projectileTimer, playerVariables.projectileCooldown, false, _on_timer_projectile)
 	initTimer(receivedDamageFlashing, 0.1, false, _on_receive_damage_timer)
 	initTimer(receivedDamageEndTimer, 3, false, _on_receive_damage_end_timer)
 	projectileTimer.start()
@@ -47,23 +49,23 @@ func _ready():
 func _physics_process(delta):
 	if (Input.is_action_just_pressed("LEFT") || Input.is_action_just_pressed("RIGHT")) and is_on_floor():
 		velocity.x = velocity.x / 2
-	var walk = CharacterStats.movementSpeed * (Input.get_action_strength("RIGHT") - Input.get_action_strength("LEFT"))
+	var walk = playerVariables.movementSpeed * (Input.get_action_strength("RIGHT") - Input.get_action_strength("LEFT"))
 	
 	if movement_stopped:
 		walk = 0
 	
-	if abs(walk) < CharacterStats.movementSpeed * 0.2:
+	if abs(walk) < playerVariables.movementSpeed * 0.2:
 		velocity.x = move_toward(velocity.x, 0, STOP_FORCE * delta)
 	else:
 		velocity.x += walk * delta
 	
 	#Stops most of the momentum if you press the opposite direction of the current velocity for better air control
 	if walk < 0:
-		velocity.x = clamp(velocity.x, -CharacterStats.maximumSpeed, CharacterStats.maximumSpeed * 0.1)
+		velocity.x = clamp(velocity.x, -playerVariables.maximumSpeed, playerVariables.maximumSpeed * 0.1)
 	elif walk > 0:
-		velocity.x = clamp(velocity.x, -CharacterStats.maximumSpeed * 0.1, CharacterStats.maximumSpeed)
+		velocity.x = clamp(velocity.x, -playerVariables.maximumSpeed * 0.1, playerVariables.maximumSpeed)
 	else:
-		velocity.x = clamp(velocity.x, -CharacterStats.maximumSpeed, CharacterStats.maximumSpeed)
+		velocity.x = clamp(velocity.x, -playerVariables.maximumSpeed, playerVariables.maximumSpeed)
 	
 	var touchesRight = test_move(self.transform, Vector2(1, 0))
 	var touchesLeft = test_move(self.transform, Vector2(-1, 0))
@@ -75,20 +77,20 @@ func _physics_process(delta):
 		jump_touched_a_wall = false
 	
 	if (touchesLeft):
-		velocity.x = clamp(velocity.x, 0, CharacterStats.maximumSpeed)
+		velocity.x = clamp(velocity.x, 0, playerVariables.maximumSpeed)
 	if (touchesRight):
-		velocity.x = clamp(velocity.x, -CharacterStats.maximumSpeed, 0)
+		velocity.x = clamp(velocity.x, -playerVariables.maximumSpeed, 0)
 	
 	var isGoingUp = velocity.y < 0;
 	
 	var baseGravity = gravity * delta
 	if touchesAWall and not movement_stopped and abs(walk) > 0:
-		velocity.y = clamp(velocity.y + baseGravity * WALL_GRAVITY_MODIFIER, -CharacterStats.jumpHeight * WALL_GRAVITY_MODIFIER, 10000)
+		velocity.y = clamp(velocity.y + baseGravity * WALL_GRAVITY_MODIFIER, -playerVariables.jumpHeight * WALL_GRAVITY_MODIFIER, 10000)
 	else:
 		velocity.y += baseGravity * JUMP_BUTTON_GRAVITY_MODIFIER if isGoingUp and Input.is_action_pressed("JUMP") else baseGravity
 	
 	if not movement_stopped and Input.is_action_just_pressed("FALL"):
-		velocity.y = CharacterStats.jumpHeight
+		velocity.y = playerVariables.jumpHeight
 
 	if not movement_stopped and Input.is_action_just_pressed("JUMP"):
 		buffered_frames_jump = 0.1
@@ -96,14 +98,14 @@ func _physics_process(delta):
 	if (buffered_frames_jump > 0):
 		if (is_on_floor() or touchesAWall):
 			buffered_frames_jump = 0
-			velocity.y = -CharacterStats.jumpHeight
+			velocity.y = -playerVariables.jumpHeight
 			if (touchesAWall):
 				stopMovementFor(0.2)
 				movement_stopped = true
 				if (touchesLeft):
-					velocity.x = CharacterStats.jumpHeight
+					velocity.x = playerVariables.jumpHeight
 				elif (touchesRight):
-					velocity.x = -CharacterStats.jumpHeight
+					velocity.x = -playerVariables.jumpHeight
 		else:
 			buffered_frames_jump -= delta;
 	update_attackcooldown_bar()
@@ -125,8 +127,8 @@ func _on_timer_attackcooldown_stopped():
 	canAttack = true
 	
 func _on_timer_projectile():
-	ProjectileSpawner.create_projectile(position + (Vector2.UP * 10), (Vector2.LEFT if sprite.flip_h else Vector2.RIGHT) * 1000, CharacterStats.projectileDamage)
-	projectileTimer.wait_time = CharacterStats.projectileCooldown
+	ProjectileSpawner.create_projectile(position + (Vector2.UP * 10), (Vector2.LEFT if sprite.flip_h else Vector2.RIGHT) * 1000, playerVariables.projectileDamage)
+	projectileTimer.wait_time = playerVariables.projectileCooldown
 
 func update_attackcooldown_bar():
 	var ratio = 1 - (attackCooldownTimer.time_left / attackCooldownTimer.wait_time)
@@ -153,7 +155,7 @@ func _on_attack_range_area_body_entered(hit):
 			if canAttack:
 				canAttack = false
 				attackCooldownBar.show()
-				attackCooldownTimer.wait_time = CharacterStats.meleeCooldown
+				attackCooldownTimer.wait_time = playerVariables.meleeCooldown
 				attackCooldownTimer.start()
 				
 				velocity = -playerHitDirection * ENEMY_HIT_KNOCKBACK_FORCE
@@ -161,7 +163,7 @@ func _on_attack_range_area_body_entered(hit):
 				
 				for enemy in enemies:
 					var enemyHitDirection = (enemy.position - position).normalized()
-					enemy.receive_damage(enemyHitDirection, CharacterStats.meleeDamage)
+					enemy.receive_damage(enemyHitDirection, playerVariables.meleeDamage)
 			else:
 				on_receive_damage(playerHitDirection)
 
@@ -219,7 +221,7 @@ func claim_flags():
 	HoldingFlags.set_number_of_flags(0)
 	
 func on_spring():
-	velocity.y = -CharacterStats.jumpHeight * 2
+	velocity.y = -playerVariables.jumpHeight * 2
 
 func initTimer(newTimer: Timer, waitTime: float, isOneShot: bool, onTimerEndFunction: Callable):
 	add_child(newTimer)
