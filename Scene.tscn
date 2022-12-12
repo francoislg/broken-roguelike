@@ -46,7 +46,7 @@ script = ExtResource("7_hgrfn")
 
 [node name="ComboMenu" parent="UI Stuff" instance=ExtResource("7_pickd")]
 process_mode = 2
-position = Vector2(716, 261)
+position = Vector2(552, 237)
 
 [node name="NewComboButtom" type="Button" parent="UI Stuff"]
 process_mode = 3

@@ -1,0 +1,21 @@
+[gd_scene format=3 uid="uid://cas4qdiy60r81"]
+
+[node name="FirstChoice" type="Button"]
+offset_left = 46.0
+offset_top = 27.0
+offset_right = 816.0
+offset_bottom = 105.0
+alignment = 0
+
+[node name="Bonuses" type="RichTextLabel" parent="."]
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -239.0
+offset_top = -55.0
+grow_horizontal = 0
+grow_vertical = 0
+mouse_filter = 2
+scroll_active = false

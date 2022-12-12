@@ -38,6 +38,8 @@ var keyPressedTimer: Timer
 var httpClient: HTTPClient;
 
 func _ready():
+	process_mode = Node.PROCESS_MODE_ALWAYS
+	
 	for k in States.values():
 		state[k] = 0
 	

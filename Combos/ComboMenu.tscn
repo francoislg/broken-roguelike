@@ -1,14 +1,19 @@
-[gd_scene load_steps=2 format=3 uid="uid://d32ur33isn5en"]
+[gd_scene load_steps=3 format=3 uid="uid://d32ur33isn5en"]
+
+[ext_resource type="PackedScene" uid="uid://cas4qdiy60r81" path="res://Combos/ComboChoice.tscn" id="1_quoc2"]
 
 [sub_resource type="GDScript" id="GDScript_20hiy"]
-script/source = "extends Node
+script/source = "extends CanvasGroup
 
 signal combo_choice(combo: Combos.Combo)
 
+@onready var CharacterStats := %Character/CharacterStats
 @onready var Choices := [$FirstChoice, $SecondChoice, $ThirdChoice]
+@onready var ChoicesBonuses := [$FirstChoice/Bonuses, $SecondChoice/Bonuses, $ThirdChoice/Bonuses]
 var combos: Array[Combos.Combo] = []
 
 func _ready():
+	visible = false
 	new_combos();
 	for i in len(Choices):
 		Choices[i].connect('pressed', func(): select_combo(i))
@@ -18,29 +23,50 @@ func new_combos():
 	
 	for i in len(Choices):
 		Choices[i].text = \"%s on %s\" % [GlobalState.stateKeys[combos[i].state], Combos.effectKeys[combos[i].effect]]
+		
+	update_combo_bonus();
+	GlobalState.connect(\"state_updated\", update_combo_bonus)
+
+func update_combo_bonus():
+	for i in len(Choices):
+		var previousStats = CharacterStats.PlayerStats.new()
+		previousStats.updateFromCombos(CharacterStats.combos)
+		var newStats = CharacterStats.PlayerStats.new()
+		var combosCopy: Array[Combos.Combo] = [] + CharacterStats.combos
+		combosCopy.push_front(combos[i])
+		newStats.updateFromCombos(combosCopy)
+		ChoicesBonuses[i].text = combo_text_for_effect(combos[i].effect, previousStats, newStats)
+
+func combo_text_for_effect(effect: Combos.Effects, previousStats, newStats):
+	match(effect):
+		Combos.Effects.MeleeStrength:
+			return \"Melee Strength %.3f\" % [newStats.meleeStr - previousStats.meleeStr]
+		Combos.Effects.MeleeSpeed:
+			return \"Melee Speed %.3f\" % [newStats.meleeSpd - previousStats.meleeSpd]
+		Combos.Effects.ProjectileStrength:
+			return \"Projectile Strength %.3f\" % [newStats.projectileStr - previousStats.projectileStr]
+		Combos.Effects.ProjectileSpeed:
+			return \"Projectile Speed %.3f\" % [newStats.projectileSpd - previousStats.projectileSpd]
+		Combos.Effects.AgilityMovement:
+			return \"Agility (Movement) %.3f\" % [newStats.agiMovement - previousStats.agiMovement]
+		Combos.Effects.AgilityJump:
+			return \"Agility (Jump) +%.3f\" % [newStats.agiJump - previousStats.agiJump]
+
 
 func select_combo(index):
+	GlobalState.disconnect(\"state_updated\", update_combo_bonus)
 	emit_signal('combo_choice', combos[index])
 "
 
 [node name="CanvasGroup" type="CanvasGroup"]
-visible = false
 script = SubResource("GDScript_20hiy")
 
-[node name="FirstChoice" type="Button" parent="."]
-offset_left = 46.0
-offset_top = 27.0
-offset_right = 490.0
-offset_bottom = 72.0
+[node name="FirstChoice" parent="." instance=ExtResource("1_quoc2")]
 
-[node name="SecondChoice" type="Button" parent="."]
-offset_left = 46.0
-offset_top = 88.0
-offset_right = 490.0
-offset_bottom = 133.0
+[node name="SecondChoice" parent="." instance=ExtResource("1_quoc2")]
+offset_top = 127.0
+offset_bottom = 205.0
 
-[node name="ThirdChoice" type="Button" parent="."]
-offset_left = 47.0
-offset_top = 150.0
-offset_right = 491.0
-offset_bottom = 195.0
+[node name="ThirdChoice" parent="." instance=ExtResource("1_quoc2")]
+offset_top = 227.0
+offset_bottom = 305.0
