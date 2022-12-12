@@ -47,13 +47,13 @@ class PlayerVariables:
 	var jumpHeight: float
 	
 	func updateFromStats(stats: PlayerStats):
-		self.meleeDamage = BASE_ATTACK_DAMAGE + remap(stats.meleeStr, 1, 5, 0, BASE_ATTACK_DAMAGE)
-		self.meleeCooldown = max(BASE_ATTACK_COOLDOWN - remap(stats.meleeSpd, 1, 5, 0, BASE_ATTACK_COOLDOWN), 0.1)
-		self.projectileDamage = BASE_PROJECTILE_DAMAGE + remap(stats.projectileStr, 1, 5, 0, BASE_PROJECTILE_DAMAGE)
-		self.projectileCooldown = max(BASE_PROJECTILE_COOLDOWN - remap(stats.projectileSpd, 1, 5, 0, BASE_PROJECTILE_COOLDOWN), 0.1)
-		self.movementSpeed = WALK_FORCE + remap(stats.agiMovement, 1, 5, 0, WALK_FORCE)
-		self.maximumSpeed = WALK_MAX_SPEED + remap(stats.agiMovement, 1, 5, 0, WALK_MAX_SPEED)
-		self.jumpHeight = BASE_JUMP_FORCE + remap(stats.agiMovement, 1, 5, 0, BASE_JUMP_FORCE)
+		self.meleeDamage = BASE_ATTACK_DAMAGE + remap(stats.meleeStr, 1, 5, 0, BASE_ATTACK_DAMAGE) + remap(stats.projectileStr, 1, 10, 0, BASE_ATTACK_DAMAGE)
+		self.meleeCooldown = max(BASE_ATTACK_COOLDOWN - (remap(stats.meleeSpd, 1, 5, 0, BASE_ATTACK_COOLDOWN) + remap(stats.projectileSpd, 1, 10, 0, BASE_ATTACK_COOLDOWN)), 0.1)
+		self.projectileDamage = BASE_PROJECTILE_DAMAGE + remap(stats.projectileStr, 1, 5, 0, BASE_PROJECTILE_DAMAGE) + remap(stats.meleeStr, 1, 10, 0, BASE_PROJECTILE_DAMAGE)
+		self.projectileCooldown = max(BASE_PROJECTILE_COOLDOWN - (remap(stats.projectileSpd, 1, 5, 0, BASE_PROJECTILE_COOLDOWN) + remap(stats.meleeSpd, 1, 10, 0, BASE_PROJECTILE_COOLDOWN)), 0.1)
+		self.movementSpeed = WALK_FORCE + remap(stats.agiMovement, 1, 5, 0, WALK_FORCE) + remap(stats.agiJump, 1, 10, 0, WALK_FORCE)
+		self.maximumSpeed = WALK_MAX_SPEED + remap(stats.agiMovement, 1, 5, 0, WALK_MAX_SPEED) + remap(stats.agiJump, 1, 10, 0, WALK_MAX_SPEED)
+		self.jumpHeight = BASE_JUMP_FORCE + remap(stats.agiJump, 1, 5, 0, BASE_JUMP_FORCE) + remap(stats.agiMovement, 1, 10, 0, BASE_JUMP_FORCE)
 
 var combos: Array[Combos.Combo] = []
 
