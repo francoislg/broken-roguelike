@@ -31,11 +31,26 @@ func update_combo_bonus():
 	for i in len(Choices):
 		var previousStats = CharacterStats.PlayerStats.new()
 		previousStats.updateFromCombos(CharacterStats.combos)
+		var previousVariables = CharacterStats.PlayerVariables.new()
+		previousVariables.updateFromStats(previousStats)
+		
 		var newStats = CharacterStats.PlayerStats.new()
 		var combosCopy: Array[Combos.Combo] = [] + CharacterStats.combos
 		combosCopy.push_front(combos[i])
 		newStats.updateFromCombos(combosCopy)
-		ChoicesBonuses[i].text = combo_text_for_effect(combos[i].effect, previousStats, newStats)
+		var newVariables = CharacterStats.PlayerVariables.new()
+		newVariables.updateFromStats(newStats)
+		
+		ChoicesBonuses[i].text = format_diff(previousVariables.getDiff(newVariables))
+
+func format_diff(diff):
+	if diff.size() == 0:
+		return \"No bonus\"
+	
+	return diff.keys().reduce(func (acc, key): 
+		acc += \"%s: %.1f%%\\n\" % [key, diff[key] * 100]
+		return acc
+	, \"\")
 
 func combo_text_for_effect(effect: Combos.Effects, previousStats, newStats):
 	match(effect):
@@ -51,7 +66,6 @@ func combo_text_for_effect(effect: Combos.Effects, previousStats, newStats):
 			return \"Agility (Movement) %.3f\" % [newStats.agiMovement - previousStats.agiMovement]
 		Combos.Effects.AgilityJump:
 			return \"Agility (Jump) +%.3f\" % [newStats.agiJump - previousStats.agiJump]
-
 
 func select_combo(index):
 	GlobalState.disconnect(\"state_updated\", update_combo_bonus)

@@ -8,13 +8,14 @@ offset_bottom = 105.0
 alignment = 0
 
 [node name="Bonuses" type="RichTextLabel" parent="."]
+layout_mode = 1
 anchors_preset = 3
 anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = -239.0
-offset_top = -55.0
+offset_top = -78.0
 grow_horizontal = 0
 grow_vertical = 0
 mouse_filter = 2

@@ -54,6 +54,20 @@ class PlayerVariables:
 		self.movementSpeed = WALK_FORCE + remap(stats.agiMovement, 1, 5, 0, WALK_FORCE) + remap(stats.agiJump, 1, 10, 0, WALK_FORCE)
 		self.maximumSpeed = WALK_MAX_SPEED + remap(stats.agiMovement, 1, 5, 0, WALK_MAX_SPEED) + remap(stats.agiJump, 1, 10, 0, WALK_MAX_SPEED)
 		self.jumpHeight = BASE_JUMP_FORCE + remap(stats.agiJump, 1, 5, 0, BASE_JUMP_FORCE) + remap(stats.agiMovement, 1, 10, 0, BASE_JUMP_FORCE)
+		
+	func getDiff(variables: PlayerVariables):
+		var listNames = ["meleeCooldown", "meleeDamage", "projectileCooldown", "projectileDamage", "movementSpeed", "maximumSpeed", "jumpHeight"]
+		var listA = [meleeCooldown, meleeDamage, projectileCooldown, projectileDamage, movementSpeed, maximumSpeed, jumpHeight]
+		var listB = [variables.meleeCooldown, variables.meleeDamage, variables.projectileCooldown, variables.projectileDamage, variables.movementSpeed, variables.maximumSpeed, variables.jumpHeight]
+		
+		var fullDiff = {}
+		
+		for i in range(listA.size()):
+			var diff = listB[i] - listA[i];
+			if abs(diff) >= 0.01:
+				fullDiff[listNames[i]] = diff / listA[i]
+		
+		return fullDiff
 
 var combos: Array[Combos.Combo] = []
 
