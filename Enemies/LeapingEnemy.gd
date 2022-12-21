@@ -30,6 +30,7 @@ func _ready():
 
 func _process(delta):
 	super(delta)
+
 	var diff = character.position - position
 	
 	if mode == Mode.Following and diff.length() <= DISTANCE_FOR_DASH:

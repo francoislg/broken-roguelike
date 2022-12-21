@@ -10,4 +10,3 @@ func _physics_process(delta):
 	velocity = velocity.move_toward(vector * BASE_SPEED, delta * TIME_TO_GET_TO_SPEED)
 	
 	move_and_collide(velocity * delta)
-

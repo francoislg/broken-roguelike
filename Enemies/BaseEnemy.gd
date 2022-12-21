@@ -1,4 +1,3 @@
-@tool
 extends CharacterBody2D
 
 class_name BaseEnemy
@@ -12,9 +11,9 @@ signal dies
 @export var initialHp: float = 5
 
 @export_subgroup("Respawn")
-@export var timeToRespawnInSec: float
+@export_range(0, 10, 0.1) var timeToRespawnInSec: float
 @export var numberOfRespawns: int = -1
-@export_node_path(Node2D) var respawner
+@export var respawner: Node2D
 
 @onready var health := $Health
 @onready var character: CharacterBody2D = $"/root/Scene/Character"
@@ -39,11 +38,12 @@ func _ready():
 	collisionTimer.wait_time = 1
 	collisionTimer.connect("timeout", _on_timer_collision_refresh)
 	
-	add_child(respawnTimer)
-	respawnTimer.one_shot = true
-	respawnTimer.wait_time = timeToRespawnInSec;
-	respawnTimer.connect("timeout", respawn)
-	respawnTimer.process_mode = Node.PROCESS_MODE_ALWAYS
+	if timeToRespawnInSec > 0:
+		add_child(respawnTimer)
+		respawnTimer.one_shot = true
+		respawnTimer.wait_time = timeToRespawnInSec;
+		respawnTimer.connect("timeout", respawn)
+		respawnTimer.process_mode = Node.PROCESS_MODE_ALWAYS
 
 func _process(_delta):
 	pass
@@ -67,16 +67,18 @@ func update_progress_bar(ratio: float):
 	health.set("modulate", Color(r, g, 0))
 
 func die():
-	if remainingRespawns > 0:
+	if remainingRespawns == 0:
 		queue_free()
 	else:
-		remainingRespawns -= 1
+		if remainingRespawns > 0:
+			remainingRespawns -= 1
 		visible = false
 		process_mode = Node.PROCESS_MODE_DISABLED
-		respawnTimer.start()
+		if timeToRespawnInSec > 0:
+			respawnTimer.start()
 		
 func respawn():
-	position = get_node(respawner).position if respawner != null else initialPosition
+	position = respawner.position if respawner != null else initialPosition
 	visible = true
 	process_mode = Node.PROCESS_MODE_ALWAYS
 

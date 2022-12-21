@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=3 uid="uid://dklsjrx6aa5bq"]
+[gd_scene load_steps=5 format=3 uid="uid://dklsjrx6aa5bq"]
 
 [ext_resource type="Script" path="res://Enemies/DashingEnemy.gd" id="1_pw6pw"]
 [ext_resource type="Script" path="res://DrawSolidCollision.gd" id="2_5jt4m"]
+[ext_resource type="Script" path="res://Enemies/Debug/DrawLineToRespawn.gd" id="3_3lgwi"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_qays3"]
 
@@ -22,3 +23,6 @@ offset_right = 10.0
 offset_bottom = -12.0
 value = 100.0
 show_percentage = false
+
+[node name="RespawnLine" type="Node2D" parent="."]
+script = ExtResource("3_3lgwi")
