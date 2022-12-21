@@ -31,7 +31,7 @@ func _ready():
 	hp = initialHp
 	initialPosition = position
 	remainingRespawns = numberOfRespawns
-	update_progress_bar(1)
+	update_progress_bar()
 
 	add_child(collisionTimer)
 	collisionTimer.one_shot = true;
@@ -55,32 +55,39 @@ func receive_damage(direction: Vector2, damage: float):
 		emit_signal('dies')
 	else:
 		velocity = direction * HIT_KNOCKBACK_FORCE
-		update_progress_bar(hp / initialHp)
+		update_progress_bar()
 		# set_collision_mask_value(3, false)
 		collisionTimer.start()
 		
 
-func update_progress_bar(ratio: float):
+func update_progress_bar():
+	var ratio = hp / initialHp
 	health.value = ratio * 100
 	var r = lerpf(1, 0, ratio)
 	var g = lerpf(0, 1, ratio)
 	health.set("modulate", Color(r, g, 0))
 
+var previousProcessMode
 func die():
+	collisionTimer.stop()
+	
 	if remainingRespawns == 0:
 		queue_free()
 	else:
 		if remainingRespawns > 0:
 			remainingRespawns -= 1
 		visible = false
+		previousProcessMode = process_mode
 		process_mode = Node.PROCESS_MODE_DISABLED
 		if timeToRespawnInSec > 0:
 			respawnTimer.start()
 		
 func respawn():
 	position = respawner.position if respawner != null else initialPosition
+	hp = initialHp
+	update_progress_bar()
 	visible = true
-	process_mode = Node.PROCESS_MODE_ALWAYS
+	process_mode = previousProcessMode
 
 func _on_timer_collision_refresh():
 	#set_collision_mask_value(3, true)

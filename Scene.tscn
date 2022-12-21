@@ -29,11 +29,17 @@ script = ExtResource("1_pwqor")
 unique_name_in_owner = true
 position = Vector2(118, 1033)
 
+[node name="MainCamera" type="Camera2D" parent="Character"]
+current = true
+limit_left = 0
+limit_bottom = 1080
+position_smoothing_enabled = true
+
 [node name="SceneManager" type="Node" parent="."]
 process_mode = 3
 script = ExtResource("1_unev7")
 
-[node name="UI Stuff" type="Node" parent="."]
+[node name="UI Stuff" type="CanvasLayer" parent="."]
 
 [node name="CharacterDebugText" type="RichTextLabel" parent="UI Stuff"]
 offset_left = 1183.0
@@ -86,8 +92,8 @@ script = ExtResource("10_ypa48")
 [node name="Reset Stage" type="Button" parent="UI Stuff"]
 offset_left = 43.0
 offset_top = 11.0
-offset_right = 51.0
-offset_bottom = 19.0
+offset_right = 133.0
+offset_bottom = 42.0
 text = "New Stage"
 script = ExtResource("10_uqdk8")
 
