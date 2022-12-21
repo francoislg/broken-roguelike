@@ -4,14 +4,20 @@ class_name WavesStage
 
 signal stage_win
 
+## Adds to the number of enemies
+@export_range(0, 10, 1) var addition: int = 0
+## Multiplies to the number of enemies, after the addition, rounded down. (e.g. multiplier = 1.5, addition = 1, total = floor((1 + (nb)) * 1.5))
+@export_range(1, 10, 0.5, " * (totalNumberOfEnemies + plus)") var multiplier: float = 1
+
 @onready var Enemies := $"../../Enemies"
 
-var numberOfEnemies := 0
+var numberOfEnemies: int = addition
 
 func do_ready():
 	for enemy in Enemies.get_children().filter(func(c): return c is BaseEnemy):
 		numberOfEnemies += 1
 		enemy.connect("dies", on_enemy_dies)
+	numberOfEnemies = floor(numberOfEnemies * max(multiplier, 1))
 
 func do_process(_delta):
 	pass

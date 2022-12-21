@@ -128,6 +128,9 @@ position = Vector2(1481, 746)
 [node name="Coin8" parent="Coins" index="8" instance=ExtResource("6_dajti")]
 position = Vector2(1390, 869)
 
+[node name="WavesStage" parent="Behaviors" index="1"]
+multiplier = 1.5
+
 [node name="Flag" parent="Flags" index="0" instance=ExtResource("7_8dnbt")]
 position = Vector2(472, 926)
 
