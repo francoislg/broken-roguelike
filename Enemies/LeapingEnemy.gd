@@ -28,7 +28,8 @@ func _ready():
 	modeTimer.connect("timeout", nextMode)
 	add_child(modeTimer)
 
-func _process(_delta):
+func _process(delta):
+	super(delta)
 	var diff = character.position - position
 	
 	if mode == Mode.Following and diff.length() <= DISTANCE_FOR_DASH:

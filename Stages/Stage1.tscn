@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://ysjgoyjkxmlw"]
+[gd_scene load_steps=12 format=3 uid="uid://ysjgoyjkxmlw"]
 
 [ext_resource type="PackedScene" uid="uid://d3lqabdfkasx" path="res://Stages/BaseStage.tscn" id="1_vaij1"]
 [ext_resource type="PackedScene" uid="uid://dn0ma3hk1naix" path="res://Stages/Floor.tscn" id="2_y1eo2"]
@@ -7,9 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://kpvuqsv3l53p" path="res://Enemies/BasicFollowingEnemy.tscn" id="5_4neuv"]
 [ext_resource type="PackedScene" uid="uid://o3v3wdg0q66m" path="res://Stages/Coin.tscn" id="6_dajti"]
 [ext_resource type="PackedScene" uid="uid://dlxru70euhnqr" path="res://Stages/Flag.tscn" id="7_8dnbt"]
-[ext_resource type="PackedScene" uid="uid://bwcnea4egc11" path="res://Stages/Respawner.tscn" id="7_hdc5q"]
 [ext_resource type="PackedScene" uid="uid://daxnvwii14dnn" path="res://Stages/Area.tscn" id="8_dey78"]
-[ext_resource type="Script" path="res://Stages/RespawnStrategies/AllAtOnceStrategy.gd" id="8_lcxw0"]
 [ext_resource type="PackedScene" uid="uid://bntpgdab8uuj3" path="res://Stages/Props/Spring.tscn" id="9_ku4ms"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_kyjpw"]
@@ -86,26 +84,20 @@ stage_layer = 11
 position = Vector2(1445, 1068)
 scale = Vector2(10, 1)
 
-[node name="Respawner" parent="Enemies" index="0" instance=ExtResource("7_hdc5q")]
-
-[node name="FollowingEnemy3" parent="Enemies/Respawner" index="0" instance=ExtResource("5_4neuv")]
+[node name="FollowingEnemy3" parent="Enemies" index="0" instance=ExtResource("5_4neuv")]
 position = Vector2(771, 912)
 stage_layer = 5
 initialHp = 1.0
-
-[node name="Strategy" type="Node" parent="Enemies/Respawner" index="1"]
-script = ExtResource("8_lcxw0")
-timeToRespawnInSec = 1.0
-
-[node name="StaticRespawnPoint" parent="Enemies/Respawner" index="2"]
-position = Vector2(906, 646)
+respawner = NodePath("../../Respawners/Respawn1")
 
 [node name="DashingEnemy" parent="Enemies" index="1" instance=ExtResource("4_33yct")]
 position = Vector2(647, 441)
+respawner = NodePath("../../Respawners/Respawn1")
 
 [node name="FollowingEnemy2" parent="Enemies" index="2" instance=ExtResource("5_4neuv")]
-position = Vector2(1525, 390)
+position = Vector2(1471, 400)
 stage_layer = 6
+respawner = NodePath("../../Respawners/Respawn1")
 
 [node name="Coin" parent="Coins" index="0" instance=ExtResource("6_dajti")]
 position = Vector2(474, 922)
@@ -162,6 +154,8 @@ position = Vector2(1156, 646)
 position = Vector2(129, -32.5)
 shape = SubResource("RectangleShape2D_r72mv")
 
-[editable path="Enemies/Respawner"]
+[node name="Respawn1" type="Node2D" parent="Respawners" index="0"]
+position = Vector2(838, 221)
+
 [editable path="Areas/Area"]
 [editable path="Areas/Area2"]

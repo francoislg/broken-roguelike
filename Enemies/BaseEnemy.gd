@@ -5,27 +5,48 @@ class_name BaseEnemy
 
 signal dies
 
+@export_subgroup("Map")
 @export_flags("Coins", "Waves", "CaptureTheFlag", "AreaControl") var stage_layer = StageTypes.types.Coins | StageTypes.types.Waves | StageTypes.types.CaptureTheFlag | StageTypes.types.AreaControl
+
+@export_subgroup("Stats")
+@export var initialHp: float = 5
+
+@export_subgroup("Respawn")
+@export var timeToRespawnInSec: float
+@export var numberOfRespawns: int = -1
+@export_node_path(Node2D) var respawner
 
 @onready var health := $Health
 @onready var character: CharacterBody2D = $"/root/Scene/Character"
 
-@export var initialHp: float = 5
+var remainingRespawns: int = numberOfRespawns
 var initialPosition: Vector2
 var hp: float
 const HIT_KNOCKBACK_FORCE = 500
 var collisionTimer = Timer.new()
-var freeOnDeath = true
+var respawnTimer = Timer.new()
+
+var isSelected = true
 
 func _ready():
 	hp = initialHp
 	initialPosition = position
+	remainingRespawns = numberOfRespawns
 	update_progress_bar(1)
 
 	add_child(collisionTimer)
 	collisionTimer.one_shot = true;
 	collisionTimer.wait_time = 1
 	collisionTimer.connect("timeout", _on_timer_collision_refresh)
+	
+	add_child(respawnTimer)
+	respawnTimer.one_shot = true
+	respawnTimer.wait_time = timeToRespawnInSec;
+	respawnTimer.connect("timeout", respawn)
+	respawnTimer.process_mode = Node.PROCESS_MODE_ALWAYS
+
+func _process(_delta):
+	pass
 
 func receive_damage(direction: Vector2, damage: float):
 	hp -= damage
@@ -46,19 +67,18 @@ func update_progress_bar(ratio: float):
 	health.set("modulate", Color(r, g, 0))
 
 func die():
-	if freeOnDeath:
+	if remainingRespawns > 0:
 		queue_free()
 	else:
+		remainingRespawns -= 1
 		visible = false
 		process_mode = Node.PROCESS_MODE_DISABLED
+		respawnTimer.start()
 		
 func respawn():
-	position = initialPosition
+	position = get_node(respawner).position if respawner != null else initialPosition
 	visible = true
 	process_mode = Node.PROCESS_MODE_ALWAYS
-
-func disable_free_on_death():
-	freeOnDeath = false
 
 func _on_timer_collision_refresh():
 	#set_collision_mask_value(3, true)

@@ -52,3 +52,6 @@ radius = 10.0
 color = Color(0.247059, 0.529412, 0.345098, 1)
 
 [node name="Areas" type="Node2D" parent="."]
+
+[node name="Respawners" type="Node" parent="."]
+editor_description = "Put some Node2D in here to reference them by the Enemies"
