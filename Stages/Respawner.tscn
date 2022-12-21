@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://bwcnea4egc11"]
+
+[ext_resource type="Script" path="res://Stages/Respawner.gd" id="1_48t60"]
+
+[node name="Respawner" type="Node2D"]
+script = ExtResource("1_48t60")
+
+[node name="StaticRespawnPoint" type="Node2D" parent="."]
