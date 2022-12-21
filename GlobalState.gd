@@ -105,7 +105,7 @@ func fastUpdates():
 	emit_signal('state_updated')
 
 func updateWindowPixels():
-	var size = DisplayServer.window_get_real_size();
+	var size = DisplayServer.window_get_max_size();
 	state[States.WINDOW_PIXELS] = size.x * size.y;
 	
 func updateInternetSpeed():
