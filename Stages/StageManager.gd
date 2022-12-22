@@ -3,7 +3,9 @@ extends Node
 
 signal stage_win
 
+@export_group("Map")
 @export_flags("Coins", "Waves", "CaptureTheFlag", "AreaControl") var supported_types = StageTypes.types.Coins | StageTypes.types.Waves | StageTypes.types.CaptureTheFlag | StageTypes.types.AreaControl
+@export var bounds: Vector2
 
 @onready var Coins := $Coins
 @onready var Flags := $Flags
@@ -20,7 +22,12 @@ signal stage_win
 	StageTypes.types.CaptureTheFlag: $Behaviors/CaptureTheFlagStage,
 	StageTypes.types.AreaControl: $Behaviors/AreaControlStage
 }
+@onready var Bounds := {
+	"Right": $"Bounds/Right".position.x,
+	"Bottom": $"Bounds/Bottom".position.y,	
+}
 
+@export_group("Editor")
 @export_flags("Coins", 'Waves', 'CaptureTheFlag', 'AreaControl') var editorType = StageTypes.types.Coins | StageTypes.types.Waves | StageTypes.types.CaptureTheFlag | StageTypes.types.AreaControl:
 	set(type):
 		if type != editorType:

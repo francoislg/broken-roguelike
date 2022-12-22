@@ -4,6 +4,7 @@
 [ext_resource type="Script" path="res://Stages/FloorOrWall.gd" id="1_62tkt"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_1ga0c"]
+resource_local_to_scene = true
 size = Vector2(28.5, 392.5)
 
 [node name="Wall" type="StaticBody2D"]

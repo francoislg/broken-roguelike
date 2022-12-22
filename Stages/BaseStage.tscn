@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://d3lqabdfkasx"]
+[gd_scene load_steps=13 format=3 uid="uid://d3lqabdfkasx"]
 
 [ext_resource type="Script" path="res://Stages/StageManager.gd" id="1_b623s"]
 [ext_resource type="Script" path="res://Stages/Behaviors/CoinStage.gd" id="2_2sxar"]
@@ -7,11 +7,22 @@
 [ext_resource type="Script" path="res://Stages/Behaviors/AreaControlStage.gd" id="5_cnf2b"]
 [ext_resource type="Script" path="res://Stages/FlagDestination.gd" id="6_sh677"]
 [ext_resource type="Script" path="res://DrawSolidCircle.gd" id="7_6cwpu"]
+[ext_resource type="PackedScene" uid="uid://dn0ma3hk1naix" path="res://Stages/Floor.tscn" id="8_6n6he"]
+[ext_resource type="PackedScene" uid="uid://bdk261jttat2w" path="res://Stages/Wall.tscn" id="9_u8ty2"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_r87at"]
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hrv1d"]
+resource_local_to_scene = true
+size = Vector2(288, 20)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ujh8m"]
+resource_local_to_scene = true
+size = Vector2(28.5, 392.5)
+
 [node name="Stage" type="Node"]
 script = ExtResource("1_b623s")
+bounds = Vector2(0, 0)
 
 [node name="StartingPoint" type="Node2D" parent="."]
 
@@ -55,3 +66,40 @@ color = Color(0.247059, 0.529412, 0.345098, 1)
 
 [node name="Respawners" type="Node" parent="."]
 editor_description = "Put some Node2D in here to reference them by the Enemies"
+
+[node name="Bounds" type="Node" parent="."]
+
+[node name="Bottom" parent="Bounds" instance=ExtResource("8_6n6he")]
+position = Vector2(0, 1500)
+scale = Vector2(100, 1)
+
+[node name="CollisionShape2D" parent="Bounds/Bottom" index="0"]
+shape = SubResource("RectangleShape2D_hrv1d")
+color = Color(0.219608, 1, 1, 1)
+
+[node name="Top" parent="Bounds" instance=ExtResource("8_6n6he")]
+scale = Vector2(10000, 1)
+
+[node name="CollisionShape2D" parent="Bounds/Top" index="0"]
+shape = SubResource("RectangleShape2D_hrv1d")
+color = Color(0.219608, 1, 1, 1)
+
+[node name="Left" parent="Bounds" instance=ExtResource("9_u8ty2")]
+scale = Vector2(1, 100)
+
+[node name="CollisionShape2D" parent="Bounds/Left" index="0"]
+shape = SubResource("RectangleShape2D_ujh8m")
+color = Color(0.219608, 1, 1, 1)
+
+[node name="Right" parent="Bounds" instance=ExtResource("9_u8ty2")]
+position = Vector2(2500, 0)
+scale = Vector2(1, 100)
+
+[node name="CollisionShape2D" parent="Bounds/Right" index="0"]
+shape = SubResource("RectangleShape2D_ujh8m")
+color = Color(0.219608, 1, 1, 1)
+
+[editable path="Bounds/Bottom"]
+[editable path="Bounds/Top"]
+[editable path="Bounds/Left"]
+[editable path="Bounds/Right"]
