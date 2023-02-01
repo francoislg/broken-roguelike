@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://c74ialgxy2ab7"]
+[gd_scene load_steps=30 format=3 uid="uid://c74ialgxy2ab7"]
 
 [ext_resource type="Script" path="res://PlayerMovement.gd" id="1_gqhlo"]
 [ext_resource type="Texture2D" uid="uid://dvr3jo0ky2jp" path="res://run_animation/run-1.png" id="2_025k3"]
@@ -13,6 +13,17 @@
 [ext_resource type="Script" path="res://Character/ProjectileSpawner.gd" id="11_jlnt7"]
 [ext_resource type="Script" path="res://DrawSolidCircle.gd" id="12_hk18l"]
 [ext_resource type="Script" path="res://Character/HoldingFlags.gd" id="12_kiobk"]
+[ext_resource type="Texture2D" uid="uid://bwiw8r3rvcy0c" path="res://Character/Shield/frame_00_delay-0.1s.png" id="14_eht8k"]
+[ext_resource type="Texture2D" uid="uid://bl337oiohd2pj" path="res://Character/Shield/frame_01_delay-0.1s.png" id="15_mdubf"]
+[ext_resource type="Texture2D" uid="uid://b78loxr2pe6p6" path="res://Character/Shield/frame_02_delay-0.1s.png" id="16_uocb0"]
+[ext_resource type="Texture2D" uid="uid://dah1g4frfxb8e" path="res://Character/Shield/frame_03_delay-0.1s.png" id="17_8ts00"]
+[ext_resource type="Texture2D" uid="uid://dc2ucd2rqmyp3" path="res://Character/Shield/frame_04_delay-0.1s.png" id="18_1dh7q"]
+[ext_resource type="Texture2D" uid="uid://cc11f8qde3v2f" path="res://Character/Shield/frame_05_delay-0.1s.png" id="19_7q8js"]
+[ext_resource type="Texture2D" uid="uid://cpbej700hyo13" path="res://Character/Shield/frame_06_delay-0.1s.png" id="20_wvjbc"]
+[ext_resource type="Texture2D" uid="uid://c6pkgjmx123ms" path="res://Character/Shield/frame_07_delay-0.1s.png" id="21_4wcgk"]
+[ext_resource type="Texture2D" uid="uid://bva3kuwh2bbrv" path="res://Character/Shield/frame_08_delay-0.1s.png" id="22_e5ux5"]
+[ext_resource type="Texture2D" uid="uid://74fgawv3wg8y" path="res://Character/Shield/frame_09_delay-0.1s.png" id="23_lvkd8"]
+[ext_resource type="Script" path="res://Character/Shield.gd" id="24_myaqt"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ywdt0"]
 size = Vector2(19, 23)
@@ -30,6 +41,14 @@ size = Vector2(52, 50)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_udxmh"]
 size = Vector2(132, 130)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_prma6"]
+animations = [{
+"frames": [ExtResource("14_eht8k"), ExtResource("15_mdubf"), ExtResource("16_uocb0"), ExtResource("17_8ts00"), ExtResource("18_1dh7q"), ExtResource("19_7q8js"), ExtResource("20_wvjbc"), ExtResource("21_4wcgk"), ExtResource("22_e5ux5"), ExtResource("23_lvkd8")],
+"loop": false,
+"name": &"default",
+"speed": 45.0
+}]
 
 [node name="Character" type="CharacterBody2D"]
 collision_layer = 2
@@ -98,4 +117,10 @@ script = ExtResource("12_hk18l")
 radius = 2.0
 color = Color(0.243137, 0.65098, 0.184314, 1)
 
+[node name="Shield" type="AnimatedSprite2D" parent="."]
+visible = false
+frames = SubResource("SpriteFrames_prma6")
+script = ExtResource("24_myaqt")
+
 [connection signal="body_entered" from="AttackRangeArea" to="." method="_on_attack_range_area_body_entered"]
+[connection signal="animation_finished" from="Shield" to="Shield" method="_on_animation_finished"]

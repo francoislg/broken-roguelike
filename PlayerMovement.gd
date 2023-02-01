@@ -10,6 +10,7 @@ signal player_hit(hp: int)
 @onready var CharacterStats := $CharacterStats
 @onready var ProjectileSpawner := $ProjectileSpawner
 @onready var HoldingFlags := $HoldingFlags
+@onready var Shield := $Shield
 
 @onready var playerVariables = CharacterStats.playerVariables
 
@@ -157,6 +158,9 @@ func _on_attack_range_area_body_entered(hit):
 				attackCooldownBar.show()
 				attackCooldownTimer.wait_time = playerVariables.meleeCooldown
 				attackCooldownTimer.start()
+				
+				Shield.visible = true
+				Shield.play()
 				
 				velocity = -playerHitDirection * ENEMY_HIT_KNOCKBACK_FORCE
 				stopMovementFor(0.2)
