@@ -30,8 +30,10 @@ var movementStoppedTimer := Timer.new()
 var attackCooldownTimer := Timer.new() 
 var projectileTimer = Timer.new() 
 var receivedDamageFlashing = Timer.new() 
-var receivedDamageEndTimer = Timer.new() 
+var receivedDamageEndTimer = Timer.new()
+var fallAttackGraceTimer = Timer.new()
 var canAttack = true
+var justUsedFallAttack = false
 var isOnDamageCooldown = false
 
 var hp := 3
@@ -44,6 +46,7 @@ func _ready():
 	initTimer(projectileTimer, playerVariables.projectileCooldown, false, _on_timer_projectile)
 	initTimer(receivedDamageFlashing, 0.1, false, _on_receive_damage_timer)
 	initTimer(receivedDamageEndTimer, 3, false, _on_receive_damage_end_timer)
+	initTimer(fallAttackGraceTimer, 0.5, true, func(): justUsedFallAttack = false)
 	projectileTimer.start()
 	emit_signal('player_hit', hp)
 
@@ -76,6 +79,9 @@ func _physics_process(delta):
 		jump_touched_a_wall = true
 	else:
 		jump_touched_a_wall = false
+		
+	if justUsedFallAttack and is_on_floor():
+		justUsedFallAttack = false
 	
 	if (touchesLeft):
 		velocity.x = clamp(velocity.x, 0, playerVariables.maximumSpeed)
@@ -92,6 +98,7 @@ func _physics_process(delta):
 	
 	if not movement_stopped and Input.is_action_just_pressed("FALL"):
 		velocity.y = playerVariables.jumpHeight
+		justUsedFallAttack = true
 
 	if not movement_stopped and Input.is_action_just_pressed("JUMP"):
 		buffered_frames_jump = 0.1
@@ -163,12 +170,17 @@ func _on_attack_range_area_body_entered(hit):
 				Shield.play()
 				
 				velocity = -playerHitDirection * ENEMY_HIT_KNOCKBACK_FORCE
+				if justUsedFallAttack:
+					velocity.y *= 2
+
 				stopMovementFor(0.2)
 				
 				for enemy in enemies:
 					var enemyHitDirection = (enemy.position - position).normalized()
 					enemy.receive_damage(enemyHitDirection, playerVariables.meleeDamage)
-			else:
+					
+				fallAttackGraceTimer.start()
+			elif not justUsedFallAttack:
 				on_receive_damage(playerHitDirection)
 
 func on_receive_damage(hitDirection: Vector2):
