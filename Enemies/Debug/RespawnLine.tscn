@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://be7ooiqeib5wb"]
+
+[ext_resource type="Script" path="res://Enemies/Debug/DrawLineToRespawn.gd" id="1_5nbuc"]
+
+[node name="RespawnLine" type="Node2D"]
+script = ExtResource("1_5nbuc")

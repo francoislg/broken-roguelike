@@ -31,7 +31,6 @@ unique_name_in_owner = true
 position = Vector2(118, 1033)
 
 [node name="MainCamera" type="Camera2D" parent="Character"]
-current = true
 process_callback = 0
 limit_left = 0
 limit_top = 0

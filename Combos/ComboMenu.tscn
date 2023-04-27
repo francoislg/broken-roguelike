@@ -35,7 +35,7 @@ func update_combo_bonus():
 		previousVariables.updateFromStats(previousStats)
 		
 		var newStats = CharacterStats.PlayerStats.new()
-		var combosCopy: Array[Combos.Combo] = [] + CharacterStats.combos
+		var combosCopy: Array[Combos.Combo] = CharacterStats.combos.duplicate()
 		combosCopy.push_front(combos[i])
 		newStats.updateFromCombos(combosCopy)
 		var newVariables = CharacterStats.PlayerVariables.new()

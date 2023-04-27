@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://Enemies/FollowingEnemy.gd" id="1_vqfp6"]
 [ext_resource type="Script" path="res://DrawSolidCollision.gd" id="2_sqqvf"]
-[ext_resource type="Script" path="res://Enemies/Debug/DrawLineToRespawn.gd" id="3_dk34w"]
+[ext_resource type="PackedScene" uid="uid://be7ooiqeib5wb" path="res://Enemies/Debug/RespawnLine.tscn" id="3_kdmsm"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_qays3"]
 
@@ -10,7 +10,6 @@
 collision_layer = 4
 collision_mask = 2
 script = ExtResource("1_vqfp6")
-timeToRespawnInSec = 0.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_qays3")
@@ -26,5 +25,4 @@ offset_bottom = -12.0
 value = 100.0
 show_percentage = false
 
-[node name="RespawnLine" type="Node2D" parent="."]
-script = ExtResource("3_dk34w")
+[node name="RespawnLine" parent="." instance=ExtResource("3_kdmsm")]

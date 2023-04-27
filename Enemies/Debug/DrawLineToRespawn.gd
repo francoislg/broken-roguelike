@@ -9,16 +9,17 @@ var isParentSelected: bool = false
 func _ready():
 	if Engine.is_editor_hint():
 		parent = get_owner()
-		
-		var selection = EditorPlugin.new().get_editor_interface().get_selection()
-		selection.connect("selection_changed", func():
-			isParentSelected = parent.get_instance_id() in selection.get_selected_nodes().map(func(node): return node.get_instance_id())
-			
-			if isParentSelected:
-				check_respawner_prop()
-			
-			queue_redraw()
-		)
+
+# Doesn't work for now, wait until EditorInterface is a proper singleton
+#		var selection = EditorPlugin.new().get_editor_interface().get_selection()
+#		selection.connect("selection_changed", func():
+#			isParentSelected = parent.get_instance_id() in selection.get_selected_nodes().map(func(node): return node.get_instance_id())
+#
+#			if isParentSelected:
+#				check_respawner_prop()
+#
+#			queue_redraw()
+#		)
 
 
 func check_respawner_prop():

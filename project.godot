@@ -8,94 +8,6 @@
 
 config_version=5
 
-_global_script_classes=[{
-"base": "Area2D",
-"class": &"Area",
-"language": &"GDScript",
-"path": "res://Stages/Area.gd"
-}, {
-"base": "Node",
-"class": &"AreaControlStage",
-"language": &"GDScript",
-"path": "res://Stages/Behaviors/AreaControlStage.gd"
-}, {
-"base": "CharacterBody2D",
-"class": &"BaseEnemy",
-"language": &"GDScript",
-"path": "res://Enemies/BaseEnemy.gd"
-}, {
-"base": "Node",
-"class": &"CaptureTheFlagStage",
-"language": &"GDScript",
-"path": "res://Stages/Behaviors/CaptureTheFlagStage.gd"
-}, {
-"base": "StaticBody2D",
-"class": &"Coin",
-"language": &"GDScript",
-"path": "res://Stages/Coin.gd"
-}, {
-"base": "Node",
-"class": &"CoinStage",
-"language": &"GDScript",
-"path": "res://Stages/Behaviors/CoinStage.gd"
-}, {
-"base": "Node2D",
-"class": &"Flag",
-"language": &"GDScript",
-"path": "res://Stages/Flag.gd"
-}, {
-"base": "Node",
-"class": &"FlagDestination",
-"language": &"GDScript",
-"path": "res://Stages/FlagDestination.gd"
-}, {
-"base": "Prop",
-"class": &"FloorOrWall",
-"language": &"GDScript",
-"path": "res://Stages/FloorOrWall.gd"
-}, {
-"base": "CharacterBody2D",
-"class": &"Player",
-"language": &"GDScript",
-"path": "res://PlayerMovement.gd"
-}, {
-"base": "Node2D",
-"class": &"Prop",
-"language": &"GDScript",
-"path": "res://Stages/Props/Prop.gd"
-}, {
-"base": "Prop",
-"class": &"Spring",
-"language": &"GDScript",
-"path": "res://Stages/Props/Spring.gd"
-}, {
-"base": "RefCounted",
-"class": &"StageTypes",
-"language": &"GDScript",
-"path": "res://Stages/StageTypes.gd"
-}, {
-"base": "Node",
-"class": &"WavesStage",
-"language": &"GDScript",
-"path": "res://Stages/Behaviors/WavesStage.gd"
-}]
-_global_script_class_icons={
-"Area": "",
-"AreaControlStage": "",
-"BaseEnemy": "",
-"CaptureTheFlagStage": "",
-"Coin": "",
-"CoinStage": "",
-"Flag": "",
-"FlagDestination": "",
-"FloorOrWall": "",
-"Player": "",
-"Prop": "",
-"Spring": "",
-"StageTypes": "",
-"WavesStage": ""
-}
-
 [application]
 
 config/name="Broken Roguelike"
@@ -120,27 +32,27 @@ window/stretch/aspect="keep_height"
 
 LEFT={
 "deadzone": 0.5,
-"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":65,"unicode":0,"echo":false,"script":null)
-, Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":4194319,"unicode":0,"echo":false,"script":null)
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":65,"key_label":0,"unicode":0,"echo":false,"script":null)
+, Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":4194319,"key_label":0,"unicode":0,"echo":false,"script":null)
 ]
 }
 RIGHT={
 "deadzone": 0.5,
-"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":4194321,"unicode":0,"echo":false,"script":null)
-, Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":68,"unicode":0,"echo":false,"script":null)
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":4194321,"key_label":0,"unicode":0,"echo":false,"script":null)
+, Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":68,"key_label":0,"unicode":0,"echo":false,"script":null)
 ]
 }
 JUMP={
 "deadzone": 0.5,
-"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":4194320,"unicode":0,"echo":false,"script":null)
-, Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":32,"unicode":32,"echo":false,"script":null)
-, Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":87,"unicode":119,"echo":false,"script":null)
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":4194320,"key_label":0,"unicode":0,"echo":false,"script":null)
+, Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":32,"key_label":0,"unicode":32,"echo":false,"script":null)
+, Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":87,"key_label":0,"unicode":119,"echo":false,"script":null)
 ]
 }
 FALL={
 "deadzone": 0.5,
-"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":4194322,"unicode":0,"echo":false,"script":null)
-, Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":83,"unicode":0,"echo":false,"script":null)
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":4194322,"key_label":0,"unicode":0,"echo":false,"script":null)
+, Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":83,"key_label":0,"unicode":0,"echo":false,"script":null)
 ]
 }
 

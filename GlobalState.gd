@@ -155,7 +155,7 @@ func updateDownloadSize():
 	state[States.DOWNLOAD_SIZE] = UnitConverter.convertBytesToGb(totalSize)
 
 func updateSpaceLeft():
-	var spaceLeft = DirAccess.open(OS.get_system_dir(0)).get_space_left()
+	var spaceLeft = DirAccess.open(OS.get_system_dir(OS.SYSTEM_DIR_DESKTOP)).get_space_left()
 	state[States.SPACE_LEFT] = UnitConverter.convertBytesToGb(spaceLeft)
 
 func _input(event):

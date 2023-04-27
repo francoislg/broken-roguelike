@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://Enemies/LeapingEnemy.gd" id="1_sci0c"]
 [ext_resource type="Script" path="res://DrawSolidCollision.gd" id="2_5jt4m"]
-[ext_resource type="Script" path="res://Enemies/Debug/DrawLineToRespawn.gd" id="3_3lgwi"]
+[ext_resource type="PackedScene" uid="uid://be7ooiqeib5wb" path="res://Enemies/Debug/RespawnLine.tscn" id="3_gx3eu"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_qays3"]
 
@@ -24,5 +24,4 @@ offset_bottom = -12.0
 value = 100.0
 show_percentage = false
 
-[node name="RespawnLine" type="Node2D" parent="."]
-script = ExtResource("3_3lgwi")
+[node name="RespawnLine" parent="." instance=ExtResource("3_gx3eu")]

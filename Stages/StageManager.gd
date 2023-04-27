@@ -82,7 +82,7 @@ func set_up_stage():
 	if currentType & StageTypes.types.AreaControl == 0:
 		remove_child(Areas)
 
-func set_visibility_for_stage_type(type: StageTypes.types):
+func set_visibility_for_stage_type(type: int):
 	Coins.visible = type & StageTypes.types.Coins != 0
 	Flags.visible = type & StageTypes.types.CaptureTheFlag != 0
 	Areas.visible = type & StageTypes.types.AreaControl != 0
