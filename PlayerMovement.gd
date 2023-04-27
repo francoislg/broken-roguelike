@@ -91,7 +91,7 @@ func _physics_process(delta):
 	var isGoingUp = velocity.y < 0;
 	
 	var baseGravity = gravity * delta
-	if touchesAWall and not movement_stopped and abs(walk) > 0:
+	if not isGoingUp and touchesAWall and not movement_stopped and abs(walk) > 0:
 		velocity.y = clamp(velocity.y + baseGravity * WALL_GRAVITY_MODIFIER, -playerVariables.jumpHeight * WALL_GRAVITY_MODIFIER, 10000)
 	else:
 		velocity.y += baseGravity * JUMP_BUTTON_GRAVITY_MODIFIER if isGoingUp and Input.is_action_pressed("JUMP") else baseGravity
@@ -107,7 +107,7 @@ func _physics_process(delta):
 		if (is_on_floor() or touchesAWall):
 			buffered_frames_jump = 0
 			velocity.y = -playerVariables.jumpHeight
-			if (touchesAWall):
+			if (touchesAWall and not is_on_floor()):
 				stopMovementFor(0.2)
 				movement_stopped = true
 				if (touchesLeft):
