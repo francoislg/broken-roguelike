@@ -76,6 +76,12 @@ func select_combo(index):
 [node name="CanvasGroup" type="CanvasGroup"]
 script = SubResource("GDScript_20hiy")
 
+[node name="ColorRect" type="ColorRect" parent="."]
+offset_top = -85.0
+offset_right = 877.0
+offset_bottom = 371.0
+color = Color(0.807843, 0.72549, 0.996078, 0.584314)
+
 [node name="FirstChoice" parent="." instance=ExtResource("1_quoc2")]
 
 [node name="SecondChoice" parent="." instance=ExtResource("1_quoc2")]
@@ -85,3 +91,11 @@ offset_bottom = 205.0
 [node name="ThirdChoice" parent="." instance=ExtResource("1_quoc2")]
 offset_top = 227.0
 offset_bottom = 305.0
+
+[node name="Label" type="Label" parent="."]
+offset_left = 223.0
+offset_top = -64.0
+offset_right = 623.0
+offset_bottom = 8.0
+theme_override_font_sizes/font_size = 50
+text = "Choose a combo"

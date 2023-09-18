@@ -1,6 +1,6 @@
 extends RichTextLabel
 
-@onready var Character := $"../../Character"
+@onready var Character := %Character
 
 @onready var playerVariables = Character.CharacterStats.playerVariables
 

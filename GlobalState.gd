@@ -64,12 +64,14 @@ func threadedUpdate():
 	fastTimer.autostart = true
 	fastTimer.wait_time = 1
 	fastTimer.connect('timeout', fastUpdates)
+	call_deferred('add_child', fastTimer)
 
 	var slowTimer = Timer.new()
 	slowTimer.name = "slowTimer"
 	slowTimer.autostart = true
 	slowTimer.wait_time = 10
 	slowTimer.connect('timeout', slowUpdates)
+	call_deferred('add_child', slowTimer)
 
 func oneShotUpdates():
 	updateTotalRam()

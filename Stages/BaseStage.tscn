@@ -22,7 +22,6 @@ size = Vector2(28.5, 392.5)
 
 [node name="Stage" type="Node"]
 script = ExtResource("1_b623s")
-bounds = Vector2(0, 0)
 
 [node name="StartingPoint" type="Node2D" parent="."]
 

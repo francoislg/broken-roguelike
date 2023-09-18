@@ -1,7 +1,9 @@
 extends Camera2D
 
-@onready var Stage := %Stage
+@onready var StagesManager := %StagesManager
 
 func _ready():
-	limit_bottom = Stage.Bounds.Bottom
-	limit_right = Stage.Bounds.Right
+	StagesManager.connect("new_stage", func(stage):
+		limit_bottom = stage.Bounds.Bottom
+		limit_right = stage.Bounds.Right
+	)

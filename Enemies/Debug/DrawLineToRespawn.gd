@@ -8,14 +8,14 @@ var isParentSelected: bool = false
 
 func _ready():
 	if Engine.is_editor_hint():
-		var selection: EditorSelection = EditorPlugin.new().get_editor_interface().get_selection()
+		var selection: EditorSelection = (EditorPlugin as Variant).new().get_editor_interface().get_selection()
 		selection.connect("selection_changed", on_selection_changed)
 
 func on_selection_changed():
 	parent = get_owner()
 	if parent:
 		var id = parent.get_instance_id();
-		var selection: EditorSelection = EditorPlugin.new().get_editor_interface().get_selection()
+		var selection: EditorSelection = (EditorPlugin as Variant).new().get_editor_interface().get_selection()
 		var nodes = selection.get_transformable_selected_nodes()
 		isParentSelected = id in nodes.map(func(node): return node.get_instance_id())
 		if isParentSelected:

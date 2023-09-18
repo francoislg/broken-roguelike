@@ -1,6 +1,8 @@
 @tool
 extends Node
 
+class_name StageManager
+
 signal stage_win
 
 @export_group("Map")
@@ -14,7 +16,7 @@ signal stage_win
 @onready var Enemies := $Enemies
 @onready var Props := $Props
 @onready var Walls := $Walls
-@onready var Character := %Character
+@onready var Character := $"/root/Scene/Character"
 @onready var StartingPoint := $StartingPoint
 @onready var StagesBehaviors := {
 	StageTypes.types.Coins: $Behaviors/CoinStage,
@@ -40,18 +42,17 @@ var currentBehavior
 
 func _ready():
 	set_visibility_for_stage_type(StageTypes.types.Coins | StageTypes.types.Waves | StageTypes.types.CaptureTheFlag | StageTypes.types.AreaControl)
-	
-	if Engine.is_editor_hint():
-		return
-	
-	var arrayOfSupportedTypes = [
+
+func get_supported_types():
+	return [
 		StageTypes.types.Coins if supported_types & StageTypes.types.Coins != 0 else 0,
 		StageTypes.types.Waves if supported_types & StageTypes.types.Waves != 0 else 0,
 		StageTypes.types.CaptureTheFlag if supported_types & StageTypes.types.CaptureTheFlag != 0 else 0,
 		StageTypes.types.AreaControl if supported_types & StageTypes.types.AreaControl != 0 else 0,
 	].filter(func(type): return type != 0)
 	
-	currentType = arrayOfSupportedTypes[randi_range(0, arrayOfSupportedTypes.size() - 1)]
+func prepare_specific_stage(config: StageConfiguration):
+	currentType = config.type
 	currentBehavior = StagesBehaviors[currentType]
 	set_up_stage()
 	currentBehavior.do_ready()
@@ -99,4 +100,5 @@ func set_visibility_for_stage_type(type: int):
 		
 func _process(delta):
 	if not Engine.is_editor_hint():
-		currentBehavior.do_process(delta)
+		if currentBehavior:
+			currentBehavior.do_process(delta)

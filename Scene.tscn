@@ -1,10 +1,10 @@
 [gd_scene load_steps=13 format=3 uid="uid://6uiqgf5rqvoe"]
 
-[ext_resource type="PackedScene" uid="uid://ysjgoyjkxmlw" path="res://Stages/Stage1.tscn" id="1_hj8et"]
 [ext_resource type="Script" path="res://DebugGameVariables.gd" id="1_pwqor"]
-[ext_resource type="Script" path="res://Scenes/SceneManager.gd" id="1_unev7"]
 [ext_resource type="PackedScene" uid="uid://c74ialgxy2ab7" path="res://Player.tscn" id="2_aembg"]
 [ext_resource type="Script" path="res://BindCameraToStageBounds.gd" id="4_l88su"]
+[ext_resource type="Script" path="res://Scenes/StagesManager.gd" id="5_kj1ve"]
+[ext_resource type="PackedScene" uid="uid://o58dvho4eff1" path="res://UI/Course.tscn" id="6_5onm0"]
 [ext_resource type="Script" path="res://UI/Countdown.gd" id="6_hmbah"]
 [ext_resource type="Script" path="res://Character/CharacterStatsDebug.gd" id="7_hgrfn"]
 [ext_resource type="PackedScene" uid="uid://d32ur33isn5en" path="res://Combos/ComboMenu.tscn" id="7_pickd"]
@@ -14,9 +14,6 @@
 [ext_resource type="Script" path="res://UI/HpLabel.gd" id="10_ypa48"]
 
 [node name="Scene" type="Node2D"]
-
-[node name="Stage" parent="." instance=ExtResource("1_hj8et")]
-unique_name_in_owner = true
 
 [node name="Debug Variables" type="RichTextLabel" parent="."]
 visible = false
@@ -32,28 +29,78 @@ unique_name_in_owner = true
 position = Vector2(118, 1033)
 
 [node name="MainCamera" type="Camera2D" parent="Character"]
+process_mode = 3
 process_callback = 0
 limit_left = 0
 limit_top = 0
 position_smoothing_enabled = true
 script = ExtResource("4_l88su")
 
-[node name="SceneManager" type="Node" parent="."]
-process_mode = 3
-script = ExtResource("1_unev7")
-
 [node name="UI Stuff" type="CanvasLayer" parent="."]
 process_mode = 3
 
-[node name="Countdown" type="RichTextLabel" parent="UI Stuff"]
+[node name="CourseUI" type="Control" parent="UI Stuff"]
+unique_name_in_owner = true
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Background" type="ColorRect" parent="UI Stuff/CourseUI"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.419608, 0.419608, 0.419608, 0.686275)
+
+[node name="Course" parent="UI Stuff/CourseUI" instance=ExtResource("6_5onm0")]
+layout_mode = 1
+anchors_preset = 5
+anchor_top = 0.0
+anchor_bottom = 0.0
+offset_left = -273.0
+offset_top = 93.0
+offset_right = 273.0
+offset_bottom = 227.0
+grow_vertical = 1
+
+[node name="ColorRect" type="ColorRect" parent="UI Stuff/CourseUI/Course"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -76.0
+offset_top = -18.0
+offset_right = 76.0
+offset_bottom = 18.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.733333, 1, 1, 0.223529)
+
+[node name="StageUI" type="Control" parent="UI Stuff"]
+unique_name_in_owner = true
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Countdown" type="RichTextLabel" parent="UI Stuff/StageUI"]
 unique_name_in_owner = true
 visible = false
+layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
 offset_left = -105.0
+offset_top = 100.0
 offset_right = 105.0
-offset_bottom = 152.0
+offset_bottom = 252.0
 grow_horizontal = 2
 theme_override_colors/default_color = Color(0.533333, 0.882353, 0.345098, 1)
 theme_override_font_sizes/normal_font_size = 100
@@ -63,63 +110,92 @@ scroll_active = false
 shortcut_keys_enabled = false
 script = ExtResource("6_hmbah")
 
-[node name="CharacterDebugText" type="RichTextLabel" parent="UI Stuff"]
-offset_left = 1183.0
-offset_top = 26.0
-offset_right = 1525.0
-offset_bottom = 456.0
+[node name="CharacterDebugText" type="RichTextLabel" parent="UI Stuff/StageUI"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -513.0
+offset_top = 58.0
+offset_right = -171.0
+offset_bottom = 488.0
+grow_horizontal = 0
 text = "Player Stats"
 autowrap_mode = 0
 script = ExtResource("7_hgrfn")
 
-[node name="ComboMenu" parent="UI Stuff" instance=ExtResource("7_pickd")]
-process_mode = 2
-position = Vector2(552, 237)
+[node name="Hp Label" type="Label" parent="UI Stuff/StageUI"]
+modulate = Color(0.756863, 0.756863, 0, 1)
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 17.0
+offset_top = -34.0
+offset_right = 57.0
+offset_bottom = -11.0
+grow_vertical = 0
+script = ExtResource("10_ypa48")
 
-[node name="NewComboButtom" type="Button" parent="UI Stuff"]
-process_mode = 3
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = 831.0
-offset_top = 8.0
-offset_right = 915.0
+[node name="PauseMenu" type="Control" parent="UI Stuff/StageUI"]
+process_mode = 2
+visible = false
+anchors_preset = 0
+offset_right = 40.0
 offset_bottom = 40.0
-grow_horizontal = 2
-text = "+ Combo
+
+[node name="Reset Stage" type="Button" parent="UI Stuff/StageUI/PauseMenu"]
+process_mode = 2
+layout_mode = 1
+offset_left = 40.0
+offset_top = 31.0
+offset_right = 141.0
+offset_bottom = 62.0
+text = "New Course"
+script = ExtResource("10_uqdk8")
+
+[node name="ResetCombosButton" type="Button" parent="UI Stuff/StageUI/PauseMenu"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = 1749.0
+offset_top = 64.0
+offset_right = 1833.0
+offset_bottom = 96.0
+grow_horizontal = 0
+text = "Reset Combos"
+script = ExtResource("9_u0v3h")
+
+[node name="NewComboButtom" type="Button" parent="UI Stuff/StageUI/PauseMenu"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = 1749.0
+offset_top = 28.0
+offset_right = 1833.0
+offset_bottom = 60.0
+grow_horizontal = 0
+text = "+ Combo Cheat
 "
 script = ExtResource("8_avcs3")
 
-[node name="ResetCombosButton" type="Button" parent="UI Stuff"]
+[node name="ComboMenu" parent="UI Stuff" instance=ExtResource("7_pickd")]
+unique_name_in_owner = true
+process_mode = 2
+visible = false
+position = Vector2(500, 365)
+
+[node name="Stages" type="Node" parent="."]
+
+[node name="StagesManager" type="Node" parent="."]
+unique_name_in_owner = true
 process_mode = 3
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = 831.0
-offset_top = 47.0
-offset_right = 915.0
-offset_bottom = 79.0
-grow_horizontal = 2
-text = "Reset"
-script = ExtResource("9_u0v3h")
+script = ExtResource("5_kj1ve")
+disable_countdown = true
 
-[node name="Hp Label" type="Label" parent="UI Stuff"]
-modulate = Color(0.756863, 0.756863, 0, 1)
-offset_left = 8.0
-offset_top = 1049.0
-offset_right = 48.0
-offset_bottom = 1072.0
-script = ExtResource("10_ypa48")
-
-[node name="Reset Stage" type="Button" parent="UI Stuff"]
-offset_left = 43.0
-offset_top = 11.0
-offset_right = 133.0
-offset_bottom = 42.0
-text = "New Stage"
-script = ExtResource("10_uqdk8")
-
-[connection signal="player_hit" from="Character" to="UI Stuff/Hp Label" method="_on_character_player_hit"]
-[connection signal="pressed" from="UI Stuff/NewComboButtom" to="UI Stuff/NewComboButtom" method="_on_pressed"]
-[connection signal="pressed" from="UI Stuff/ResetCombosButton" to="UI Stuff/ResetCombosButton" method="_on_pressed"]
-[connection signal="pressed" from="UI Stuff/Reset Stage" to="UI Stuff/Reset Stage" method="_on_pressed"]
+[connection signal="player_hit" from="Character" to="UI Stuff/StageUI/Hp Label" method="_on_character_player_hit"]
+[connection signal="pressed" from="UI Stuff/StageUI/PauseMenu/Reset Stage" to="UI Stuff/StageUI/PauseMenu/Reset Stage" method="_on_pressed"]
+[connection signal="pressed" from="UI Stuff/StageUI/PauseMenu/ResetCombosButton" to="UI Stuff/StageUI/PauseMenu/ResetCombosButton" method="_on_pressed"]
+[connection signal="pressed" from="UI Stuff/StageUI/PauseMenu/NewComboButtom" to="UI Stuff/StageUI/PauseMenu/NewComboButtom" method="_on_pressed"]
