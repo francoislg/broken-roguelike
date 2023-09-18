@@ -34,7 +34,6 @@ var startTime: float
 var lastKeyPressedHistoryIndex: int = 0
 # If you adjust this, remember to adjust keyPressedTimer.wait_time. size 20 at 0.5 == 10 seconds
 var keyPressedHistory := [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-var keyPressedTimer: Timer
 var httpClient: HTTPClient;
 
 func _ready():
@@ -46,11 +45,11 @@ func _ready():
 	httpClient = HTTPClient.new()
 	startTime = Time.get_unix_time_from_system()
 	
-	keyPressedTimer = Timer.new()
-	add_child(keyPressedTimer)
+	var keyPressedTimer = Timer.new()
+	keyPressedTimer.name = "keyPressedTimer"
 	keyPressedTimer.wait_time = 0.5
+	keyPressedTimer.autostart = true
 	keyPressedTimer.connect('timeout', onKeyPressedTimerEnd)
-	keyPressedTimer.start()
 	
 	mainThread = Thread.new()
 	mainThread.start(threadedUpdate)
@@ -61,16 +60,16 @@ func threadedUpdate():
 	fastUpdates()
 
 	var fastTimer = Timer.new()
-	add_child(fastTimer)
+	fastTimer.name = "fastTimer"
+	fastTimer.autostart = true
 	fastTimer.wait_time = 1
 	fastTimer.connect('timeout', fastUpdates)
-	fastTimer.start()
 
 	var slowTimer = Timer.new()
-	add_child(slowTimer)
+	slowTimer.name = "slowTimer"
+	slowTimer.autostart = true
 	slowTimer.wait_time = 10
 	slowTimer.connect('timeout', slowUpdates)
-	slowTimer.start()
 
 func oneShotUpdates():
 	updateTotalRam()
@@ -78,8 +77,7 @@ func oneShotUpdates():
 	updateSpaceLeft()
 	state[States.PROCESSOR_COUNT] = OS.get_processor_count()
 	
-	emit_signal('state_updated')
-
+	emitStateUpdated()
 
 func slowUpdates():
 	var threads = multiple_threads([updateInternetSpeed])
@@ -91,7 +89,7 @@ func slowUpdates():
 	
 	await dispose_threads(threads)
 	
-	emit_signal('state_updated')
+	emitStateUpdated()
 
 func fastUpdates():
 	var threads = multiple_threads([updateCpuUsage])
@@ -102,7 +100,10 @@ func fastUpdates():
 
 	await dispose_threads(threads)
 	
-	emit_signal('state_updated')
+	emitStateUpdated()
+	
+func emitStateUpdated():
+	call_deferred('emit_signal', 'state_updated')
 
 func updateWindowPixels():
 	var size = DisplayServer.window_get_max_size();
@@ -162,7 +163,6 @@ func _input(event):
 	if (event is InputEventKey and event.pressed and not event.echo):
 		state[States.KEY_PRESSED_TEN_SECONDS] += 1
 		keyPressedHistory[lastKeyPressedHistoryIndex] += 1
-		
 
 func onKeyPressedTimerEnd():
 	var newKeypressIndex = (lastKeyPressedHistoryIndex + 1) % keyPressedHistory.size()

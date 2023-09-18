@@ -90,12 +90,13 @@ respawner = NodePath("../../Respawners/Respawn1")
 [node name="DashingEnemy" parent="Enemies" index="1" node_paths=PackedStringArray("respawner") instance=ExtResource("4_33yct")]
 position = Vector2(650, 873)
 timeToRespawnInSec = 1.0
-respawner = NodePath("")
+respawner = NodePath("../../Respawners/Respawn1")
 
-[node name="FollowingEnemy2" parent="Enemies" index="2" instance=ExtResource("5_4neuv")]
+[node name="FollowingEnemy2" parent="Enemies" index="2" node_paths=PackedStringArray("respawner") instance=ExtResource("5_4neuv")]
 position = Vector2(1462, 814)
 stage_layer = 6
 timeToRespawnInSec = 1.0
+respawner = NodePath("../../Respawners/Respawn1")
 
 [node name="Coin" parent="Coins" index="0" instance=ExtResource("6_dajti")]
 position = Vector2(477, 1354)

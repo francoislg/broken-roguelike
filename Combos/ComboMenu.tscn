@@ -25,7 +25,8 @@ func new_combos():
 		Choices[i].text = \"%s on %s\" % [GlobalState.stateKeys[combos[i].state], Combos.effectKeys[combos[i].effect]]
 		
 	update_combo_bonus();
-	GlobalState.connect(\"state_updated\", update_combo_bonus)
+	if !GlobalState.is_connected('state_updated', update_combo_bonus):
+		GlobalState.connect(\"state_updated\", update_combo_bonus)
 
 func update_combo_bonus():
 	for i in len(Choices):
