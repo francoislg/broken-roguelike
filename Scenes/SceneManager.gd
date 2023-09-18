@@ -1,7 +1,12 @@
 extends Node
 
+# For debug purposes
+@export
+var disable_countdown = false
+
 @onready var Character := %Character
 @onready var Stage := %Stage
+@onready var Countdown := %Countdown
 
 func _ready():
 	var endDetected = false
@@ -30,6 +35,19 @@ func _ready():
 						tree.reload_current_scene()
 					)
 				)
+	)
+	if !disable_countdown:
+		prepareStageStart()
+	
+func prepareStageStart():
+	Countdown.connect("ready", func(): 
+		Countdown.connect("done", func():
+			var tree = get_tree()
+			tree.paused = false
+		)
+		var tree = get_tree()
+		tree.paused = true
+		Countdown.reset();
 	)
 
 func doAfter(wait_time: float, do: Callable):
