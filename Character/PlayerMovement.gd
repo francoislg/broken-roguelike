@@ -19,6 +19,9 @@ const WALL_GRAVITY_MODIFIER = 0.25
 const JUMP_BUTTON_GRAVITY_MODIFIER = 0.50
 const ENEMY_HIT_KNOCKBACK_FORCE = 700
 const RECEIVE_DAMAGE_KNOCKBACK_FORCE = 1200
+# A small margin in which the cooldown bar is displayed, but the attack is not active
+# to ensure that the cooldown finishes a bit before the bar is full
+const ATTACK_COOLDOWN_SMALL_MARGIN = 0.1
 
 var gravity = 3000 #ProjectSettings.get_setting("physics/2d/default_gravity")
 
@@ -155,7 +158,7 @@ func _on_timer_projectile():
 	projectileTimer.wait_time = playerVariables.projectileCooldown
 
 func update_attackcooldown_bar():
-	var ratio = 1 - (attackCooldownTimer.time_left / attackCooldownTimer.wait_time)
+	var ratio = 1 - (attackCooldownTimer.time_left / attackCooldownTimer.wait_time + ATTACK_COOLDOWN_SMALL_MARGIN)
 	attackCooldownBar.value = ratio * 100
 
 func _on_attack_range_area_body_entered(hit):
@@ -182,7 +185,7 @@ func _on_attack_range_area_body_entered(hit):
 				
 				canAttack = false
 				attackCooldownBar.show()
-				attackCooldownTimer.wait_time = playerVariables.meleeCooldown
+				attackCooldownTimer.wait_time = playerVariables.meleeCooldown - ATTACK_COOLDOWN_SMALL_MARGIN
 				attackCooldownTimer.start()
 				
 				Shield.visible = true

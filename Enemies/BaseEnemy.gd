@@ -21,7 +21,7 @@ signal dies
 var remainingRespawns: int = numberOfRespawns
 var initialPosition: Vector2
 var hp: float
-const HIT_KNOCKBACK_FORCE = 500
+const HIT_KNOCKBACK_FORCE = 800
 var collisionTimer = Timer.new()
 var respawnTimer = Timer.new()
 
