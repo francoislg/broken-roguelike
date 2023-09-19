@@ -1,0 +1,197 @@
+[gd_scene load_steps=14 format=3 uid="uid://bu4y25os12ex7"]
+
+[ext_resource type="PackedScene" uid="uid://d3lqabdfkasx" path="res://Stages/BaseStage.tscn" id="1_kr20p"]
+[ext_resource type="PackedScene" uid="uid://bntpgdab8uuj3" path="res://Stages/Props/Spring.tscn" id="2_db0a8"]
+[ext_resource type="PackedScene" uid="uid://dn0ma3hk1naix" path="res://Stages/Floor.tscn" id="3_v8lkt"]
+[ext_resource type="PackedScene" uid="uid://bdk261jttat2w" path="res://Stages/Wall.tscn" id="4_luvb7"]
+[ext_resource type="PackedScene" uid="uid://kpvuqsv3l53p" path="res://Enemies/BasicFollowingEnemy.tscn" id="5_vs1ij"]
+[ext_resource type="PackedScene" uid="uid://cfr7r3stmxy5q" path="res://Enemies/BasicDashingEnemy.tscn" id="6_rk5os"]
+[ext_resource type="PackedScene" uid="uid://o3v3wdg0q66m" path="res://Stages/Coin.tscn" id="7_cmi13"]
+[ext_resource type="PackedScene" uid="uid://dlxru70euhnqr" path="res://Stages/Flag.tscn" id="8_d35sh"]
+[ext_resource type="PackedScene" uid="uid://daxnvwii14dnn" path="res://Stages/Area.tscn" id="9_bdk37"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_kyjpw"]
+size = Vector2(432, 116)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_r72mv"]
+size = Vector2(289, 117.5)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_eb8oj"]
+resource_local_to_scene = true
+size = Vector2(288, 20)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_kodpu"]
+resource_local_to_scene = true
+size = Vector2(28.5, 392.5)
+
+[node name="Stage2" instance=ExtResource("1_kr20p")]
+
+[node name="StartingPoint" parent="." index="0"]
+position = Vector2(828, 1473)
+
+[node name="Spring" parent="Props" index="0" instance=ExtResource("2_db0a8")]
+position = Vector2(1101, 1485)
+
+[node name="Spring3" parent="Props" index="1" instance=ExtResource("2_db0a8")]
+position = Vector2(327, 1485)
+
+[node name="Spring4" parent="Props" index="2" instance=ExtResource("2_db0a8")]
+position = Vector2(236, 956)
+
+[node name="Spring5" parent="Props" index="3" instance=ExtResource("2_db0a8")]
+position = Vector2(1092, 951)
+
+[node name="Spring6" parent="Props" index="4" instance=ExtResource("2_db0a8")]
+position = Vector2(1374, 951)
+
+[node name="Spring2" parent="Props" index="5" instance=ExtResource("2_db0a8")]
+position = Vector2(1782, 1347)
+
+[node name="Floor2" parent="Walls" index="0" instance=ExtResource("3_v8lkt")]
+position = Vector2(1647, 1362)
+
+[node name="Floor3" parent="Walls" index="1" instance=ExtResource("3_v8lkt")]
+position = Vector2(512, 724)
+
+[node name="Floor4" parent="Walls" index="2" instance=ExtResource("3_v8lkt")]
+position = Vector2(441, 971)
+scale = Vector2(1.5, 1)
+
+[node name="Floor10" parent="Walls" index="3" instance=ExtResource("3_v8lkt")]
+position = Vector2(1373, 966)
+scale = Vector2(2.08, 1)
+
+[node name="Floor9" parent="Walls" index="4" instance=ExtResource("3_v8lkt")]
+position = Vector2(579, 1383)
+scale = Vector2(1.22, 1)
+
+[node name="Floor5" parent="Walls" index="5" instance=ExtResource("3_v8lkt")]
+position = Vector2(828, 1222)
+scale = Vector2(1.5, 1)
+
+[node name="Floor6" parent="Walls" index="6" instance=ExtResource("3_v8lkt")]
+position = Vector2(1488, 1230)
+
+[node name="Floor7" parent="Walls" index="7" instance=ExtResource("3_v8lkt")]
+position = Vector2(1635, 544)
+
+[node name="Floor8" parent="Walls" index="8" instance=ExtResource("3_v8lkt")]
+position = Vector2(1310, 375)
+
+[node name="Wall3" parent="Walls" index="9" instance=ExtResource("4_luvb7")]
+position = Vector2(904, 589)
+scale = Vector2(1, 2)
+
+[node name="Wall6" parent="Walls" index="10" instance=ExtResource("4_luvb7")]
+position = Vector2(1088, 1037)
+scale = Vector2(1, 0.41)
+
+[node name="Wall4" parent="Walls" index="11" instance=ExtResource("4_luvb7")]
+position = Vector2(1153, 561)
+
+[node name="Wall5" parent="Walls" index="12" instance=ExtResource("4_luvb7")]
+position = Vector2(195, 1249)
+scale = Vector2(1, 0.5)
+
+[node name="FollowingEnemy3" parent="Enemies" index="0" node_paths=PackedStringArray("respawner") instance=ExtResource("5_vs1ij")]
+position = Vector2(307, 520)
+stage_layer = 5
+initialHp = 1.0
+timeToRespawnInSec = 1.0
+respawner = NodePath("../../Respawners/Respawn1")
+
+[node name="DashingEnemy" parent="Enemies" index="1" node_paths=PackedStringArray("respawner") instance=ExtResource("6_rk5os")]
+position = Vector2(1336, 302)
+timeToRespawnInSec = 1.0
+respawner = NodePath("../../Respawners/Respawn1")
+
+[node name="FollowingEnemy2" parent="Enemies" index="2" node_paths=PackedStringArray("respawner") instance=ExtResource("5_vs1ij")]
+position = Vector2(1593, 639)
+stage_layer = 6
+timeToRespawnInSec = 1.0
+respawner = NodePath("../../Respawners/Respawn2")
+
+[node name="Coin" parent="Coins" index="0" instance=ExtResource("7_cmi13")]
+position = Vector2(477, 1354)
+
+[node name="Coin9" parent="Coins" index="1" instance=ExtResource("7_cmi13")]
+position = Vector2(137, 1175)
+
+[node name="Coin2" parent="Coins" index="2" instance=ExtResource("7_cmi13")]
+position = Vector2(821, 1189)
+
+[node name="Coin3" parent="Coins" index="3" instance=ExtResource("7_cmi13")]
+position = Vector2(512, 699)
+
+[node name="Coin4" parent="Coins" index="4" instance=ExtResource("7_cmi13")]
+position = Vector2(1365, 660)
+
+[node name="Coin5" parent="Coins" index="5" instance=ExtResource("7_cmi13")]
+position = Vector2(1489, 1197)
+
+[node name="Coin6" parent="Coins" index="6" instance=ExtResource("7_cmi13")]
+position = Vector2(1644, 1322)
+
+[node name="Coin7" parent="Coins" index="7" instance=ExtResource("7_cmi13")]
+position = Vector2(1158, 342)
+
+[node name="Coin8" parent="Coins" index="8" instance=ExtResource("7_cmi13")]
+position = Vector2(1030, 552)
+
+[node name="WavesStage" parent="Behaviors" index="1"]
+multiplier = 1.5
+
+[node name="Flag" parent="Flags" index="0" instance=ExtResource("8_d35sh")]
+position = Vector2(475, 1358)
+
+[node name="Flag2" parent="Flags" index="1" instance=ExtResource("8_d35sh")]
+position = Vector2(644, 694)
+
+[node name="Flag3" parent="Flags" index="2" instance=ExtResource("8_d35sh")]
+position = Vector2(1513, 519)
+
+[node name="Flag4" parent="Flags" index="3" instance=ExtResource("8_d35sh")]
+position = Vector2(1219, 943)
+
+[node name="FlagDestination" parent="." index="7"]
+position = Vector2(1242, 1392)
+
+[node name="Area" parent="Areas" index="0" instance=ExtResource("9_bdk37")]
+position = Vector2(438, 891)
+
+[node name="CollisionShape2D" parent="Areas/Area" index="0"]
+shape = SubResource("RectangleShape2D_kyjpw")
+
+[node name="Area2" parent="Areas" index="1" instance=ExtResource("9_bdk37")]
+position = Vector2(1637, 464)
+
+[node name="CollisionShape2D" parent="Areas/Area2" index="0"]
+shape = SubResource("RectangleShape2D_r72mv")
+
+[node name="Respawn1" type="Node2D" parent="Respawners" index="0"]
+position = Vector2(47, 774)
+
+[node name="Respawn2" type="Node2D" parent="Respawners" index="1"]
+position = Vector2(1850, 818)
+
+[node name="CollisionShape2D" parent="Bounds/Bottom" index="0"]
+shape = SubResource("RectangleShape2D_eb8oj")
+
+[node name="CollisionShape2D" parent="Bounds/Top" index="0"]
+shape = SubResource("RectangleShape2D_eb8oj")
+
+[node name="CollisionShape2D" parent="Bounds/Left" index="0"]
+shape = SubResource("RectangleShape2D_kodpu")
+
+[node name="Right" parent="Bounds" index="3"]
+position = Vector2(1920, 0)
+
+[node name="CollisionShape2D" parent="Bounds/Right" index="0"]
+shape = SubResource("RectangleShape2D_kodpu")
+
+[editable path="Areas/Area"]
+[editable path="Areas/Area2"]
+[editable path="Bounds/Bottom"]
+[editable path="Bounds/Top"]
+[editable path="Bounds/Left"]
+[editable path="Bounds/Right"]

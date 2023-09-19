@@ -65,7 +65,7 @@ anchor_bottom = 0.0
 offset_left = -273.0
 offset_top = 93.0
 offset_right = 273.0
-offset_bottom = 227.0
+offset_bottom = 250.0
 grow_vertical = 1
 
 [node name="ColorRect" type="ColorRect" parent="UI Stuff/CourseUI/Course"]

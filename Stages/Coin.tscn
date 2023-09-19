@@ -4,7 +4,7 @@
 [ext_resource type="Script" path="res://DrawSolidCircle.gd" id="2_xhxxv"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_et5ss"]
-radius = 2.0
+radius = 11.39
 
 [node name="StaticBody2D" type="StaticBody2D"]
 collision_layer = 16
@@ -15,5 +15,5 @@ script = ExtResource("1_j16bd")
 shape = SubResource("CircleShape2D_et5ss")
 debug_color = Color(0, 0.6, 0.701961, 0.419608)
 script = ExtResource("2_xhxxv")
-radius = 2.0
-color = Color(0.678431, 1, 0.184314, 1)
+radius = 5.0
+color = Color(0.905882, 0.929412, 0.313726, 1)

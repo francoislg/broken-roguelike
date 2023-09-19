@@ -24,10 +24,10 @@ size = Vector2(288, 20)
 resource_local_to_scene = true
 size = Vector2(28.5, 392.5)
 
-[node name="Stage" instance=ExtResource("1_vaij1")]
+[node name="Stage1" instance=ExtResource("1_vaij1")]
 
 [node name="StartingPoint" parent="." index="0"]
-position = Vector2(121, 1465)
+position = Vector2(121, 1476)
 
 [node name="Spring" parent="Props" index="0" instance=ExtResource("9_ku4ms")]
 position = Vector2(1815, 1485)

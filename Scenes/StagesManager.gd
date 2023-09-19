@@ -6,6 +6,7 @@ signal new_current_stage_index(currentStageIndex: int)
 
 @export
 var disable_countdown = false
+var disable_start = disable_countdown
 
 @onready var Stage := $"../"
 @onready var Character := %Character
@@ -16,7 +17,8 @@ var disable_countdown = false
 @onready var Stages = $"../Stages"
 @onready var PauseMenu = %StageUI/PauseMenu
 var stages = [
-	preload("res://Stages/Stage1.tscn")
+	preload("res://Stages/Stage1.tscn"),
+	preload("res://Stages/Stage2.tscn")
 ]
 var stageInstances: Array[StageManager] = []
 
@@ -128,7 +130,8 @@ func start_stage():
 					)
 				)
 	)
-	if !disable_countdown:
+	if !disable_start:
+		get_tree().paused = true
 		Countdown.reset();
 
 func show_combos():
@@ -138,9 +141,8 @@ func show_combos():
 	ComboMenu.connect("combo_choice", after_combo_selection)
 	
 func after_combo_selection(_combo):
-	get_tree().paused = false
 	ComboMenu.disconnect("combo_choice", after_combo_selection)
-	start_stage_countdown();
+	start_stage();
 
 func finish_stage():
 	if currentStage:
