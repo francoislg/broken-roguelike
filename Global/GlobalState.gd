@@ -87,8 +87,7 @@ func slowUpdates():
 	state[States.SCREEN_REFRESH_RATE] = DisplayServer.screen_get_refresh_rate()
 	state[States.NUMBER_OF_DRIVES] = DirAccess.get_drive_count()
 	state[States.NUMBER_OF_CONTROLLERS] = Input.get_connected_joypads().size()
-	updateWindowPixels()
-	
+
 	await dispose_threads(threads)
 	
 	emitStateUpdated()
@@ -99,6 +98,7 @@ func fastUpdates():
 	updateClock()
 	state[States.FPS] = Engine.get_frames_per_second()
 	state[States.ELAPSED_TIME] = round(Time.get_unix_time_from_system() - startTime)
+	updateWindowPixels()
 
 	await dispose_threads(threads)
 	
@@ -108,7 +108,7 @@ func emitStateUpdated():
 	call_deferred('emit_signal', 'state_updated')
 
 func updateWindowPixels():
-	var size = DisplayServer.window_get_max_size();
+	var size = DisplayServer.window_get_size();
 	state[States.WINDOW_PIXELS] = size.x * size.y;
 	
 func updateInternetSpeed():

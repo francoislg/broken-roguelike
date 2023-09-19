@@ -23,6 +23,7 @@ var preparationVariation: float
 
 func _ready():
 	super()
+	modeTimer.name = 'modeTimer'
 	modeTimer.one_shot = true
 	modeTimer.wait_time = 1
 	modeTimer.connect("timeout", nextMode)

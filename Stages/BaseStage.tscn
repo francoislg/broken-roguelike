@@ -6,7 +6,7 @@
 [ext_resource type="Script" path="res://Stages/Behaviors/CaptureTheFlagStage.gd" id="4_h05u1"]
 [ext_resource type="Script" path="res://Stages/Behaviors/AreaControlStage.gd" id="5_cnf2b"]
 [ext_resource type="Script" path="res://Stages/FlagDestination.gd" id="6_sh677"]
-[ext_resource type="Script" path="res://DrawSolidCircle.gd" id="7_6cwpu"]
+[ext_resource type="Script" path="res://Debuging/DrawSolidCircle.gd" id="7_6cwpu"]
 [ext_resource type="PackedScene" uid="uid://dn0ma3hk1naix" path="res://Stages/Floor.tscn" id="8_6n6he"]
 [ext_resource type="PackedScene" uid="uid://bdk261jttat2w" path="res://Stages/Wall.tscn" id="9_u8ty2"]
 

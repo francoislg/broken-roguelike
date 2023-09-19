@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://bdk261jttat2w"]
 
-[ext_resource type="Script" path="res://DrawSolidCollision.gd" id="1_6l1ct"]
+[ext_resource type="Script" path="res://Debuging/DrawSolidCollision.gd" id="1_6l1ct"]
 [ext_resource type="Script" path="res://Stages/FloorOrWall.gd" id="1_62tkt"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_1ga0c"]

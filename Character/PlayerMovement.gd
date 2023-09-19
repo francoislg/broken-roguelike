@@ -32,21 +32,24 @@ var projectileTimer = Timer.new()
 var receivedDamageFlashing = Timer.new() 
 var receivedDamageEndTimer = Timer.new()
 var fallAttackGraceTimer = Timer.new()
+var isAttackingTimer = Timer.new()
 var canAttack = true
 var justUsedFallAttack = false
 var isOnDamageCooldown = false
+var isAttacking = false
 
 var hp := 3
 
 var picked_up_flags: Array[Flag] = []
 
 func _ready():
-	initTimer(movementStoppedTimer, 0.2, false, _on_timer_movement_stopped)
-	initTimer(attackCooldownTimer, playerVariables.meleeCooldown, true, _on_timer_attackcooldown_stopped)
-	initTimer(projectileTimer, playerVariables.projectileCooldown, false, _on_timer_projectile)
-	initTimer(receivedDamageFlashing, 0.1, false, _on_receive_damage_timer)
-	initTimer(receivedDamageEndTimer, 3, false, _on_receive_damage_end_timer)
-	initTimer(fallAttackGraceTimer, 0.5, true, func(): justUsedFallAttack = false)
+	add_child(Timers.initTimer(movementStoppedTimer, "movementStopped", 0.2, _on_timer_movement_stopped))
+	add_child(Timers.initOneShotTimer(attackCooldownTimer, "attackCooldown", playerVariables.meleeCooldown, _on_timer_attackcooldown_stopped))
+	add_child(Timers.initTimer(projectileTimer, "projectile", playerVariables.projectileCooldown, _on_timer_projectile))
+	add_child(Timers.initTimer(receivedDamageFlashing, "receivedDamageFlashing", 0.1, _on_receive_damage_timer))
+	add_child(Timers.initTimer(receivedDamageEndTimer, "receivedDamageEnd", 3, _on_receive_damage_end_timer))
+	add_child(Timers.initOneShotTimer(fallAttackGraceTimer, "fallAttackGrace", 0.5, func(): justUsedFallAttack = false))
+	add_child(Timers.initOneShotTimer(isAttackingTimer, "isAttacking", 0.5, func(): isAttacking = false))
 	projectileTimer.start()
 	emit_signal('player_hit', hp)
 
@@ -174,6 +177,9 @@ func _on_attack_range_area_body_entered(hit):
 		if enemies.size() > 0:
 			var playerHitDirection = (hit.position - position).normalized()
 			if canAttack:
+				isAttacking = true
+				isAttackingTimer.start()
+				
 				canAttack = false
 				attackCooldownBar.show()
 				attackCooldownTimer.wait_time = playerVariables.meleeCooldown
@@ -187,14 +193,15 @@ func _on_attack_range_area_body_entered(hit):
 					velocity.y *= 2
 
 				stopMovementFor(0.2)
-				
-				for enemy in enemies:
-					var enemyHitDirection = (enemy.position - position).normalized()
-					enemy.receive_damage(enemyHitDirection, playerVariables.meleeDamage)
 					
 				fallAttackGraceTimer.start()
 			elif not justUsedFallAttack:
 				on_receive_damage(playerHitDirection)
+				
+			if isAttacking:
+				for enemy in enemies:
+					var enemyHitDirection = (enemy.position - position).normalized()
+					enemy.receive_damage(enemyHitDirection, playerVariables.meleeDamage)
 
 func on_receive_damage(hitDirection: Vector2):
 	isOnDamageCooldown = true
@@ -252,8 +259,3 @@ func claim_flags():
 func on_spring():
 	velocity.y = -playerVariables.jumpHeight * 2
 
-func initTimer(newTimer: Timer, waitTime: float, isOneShot: bool, onTimerEndFunction: Callable):
-	add_child(newTimer)
-	newTimer.wait_time = waitTime
-	newTimer.one_shot = isOneShot
-	newTimer.connect("timeout", onTimerEndFunction)

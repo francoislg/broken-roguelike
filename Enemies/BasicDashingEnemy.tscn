@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://cfr7r3stmxy5q"]
 
 [ext_resource type="Script" path="res://Enemies/DashingEnemy.gd" id="1_m3421"]
-[ext_resource type="Script" path="res://DrawSolidCollision.gd" id="2_wpgwr"]
+[ext_resource type="Script" path="res://Debuging/DrawSolidCollision.gd" id="2_wpgwr"]
 [ext_resource type="PackedScene" uid="uid://be7ooiqeib5wb" path="res://Enemies/Debug/RespawnLine.tscn" id="3_mthfv"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_qays3"]

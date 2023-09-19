@@ -97,18 +97,15 @@ scale = Vector2(1, 0.5)
 position = Vector2(307, 520)
 stage_layer = 5
 initialHp = 1.0
-timeToRespawnInSec = 1.0
 respawner = NodePath("../../Respawners/Respawn1")
 
 [node name="DashingEnemy" parent="Enemies" index="1" node_paths=PackedStringArray("respawner") instance=ExtResource("6_rk5os")]
 position = Vector2(1336, 302)
-timeToRespawnInSec = 1.0
 respawner = NodePath("../../Respawners/Respawn1")
 
 [node name="FollowingEnemy2" parent="Enemies" index="2" node_paths=PackedStringArray("respawner") instance=ExtResource("5_vs1ij")]
 position = Vector2(1593, 639)
 stage_layer = 6
-timeToRespawnInSec = 1.0
 respawner = NodePath("../../Respawners/Respawn2")
 
 [node name="Coin" parent="Coins" index="0" instance=ExtResource("7_cmi13")]

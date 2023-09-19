@@ -11,7 +11,7 @@ signal dies
 @export var initialHp: float = 5
 
 @export_subgroup("Respawn")
-@export_range(0, 10, 0.1) var timeToRespawnInSec: float
+@export_range(0, 10, 0.1) var timeToRespawnInSec: float = 5
 @export var numberOfRespawns: int = -1
 @export var respawner: Node2D
 
@@ -39,11 +39,10 @@ func _ready():
 	collisionTimer.connect("timeout", _on_timer_collision_refresh)
 	
 	if timeToRespawnInSec > 0:
-		add_child(respawnTimer)
 		respawnTimer.one_shot = true
 		respawnTimer.wait_time = timeToRespawnInSec;
 		respawnTimer.connect("timeout", respawn)
-		respawnTimer.process_mode = Node.PROCESS_MODE_ALWAYS
+		add_child(respawnTimer)
 
 func _process(_delta):
 	pass
@@ -76,9 +75,7 @@ func die():
 	else:
 		if remainingRespawns > 0:
 			remainingRespawns -= 1
-		visible = false
-		previousProcessMode = process_mode
-		process_mode = Node.PROCESS_MODE_DISABLED
+		disable()
 		if timeToRespawnInSec > 0:
 			respawnTimer.start()
 		
@@ -87,8 +84,17 @@ func respawn():
 	velocity = Vector2.ZERO
 	hp = initialHp
 	update_progress_bar()
+	enable()
+	
+func disable():
+	visible = false
+	set_collision_layer_value(3, false)
+	set_collision_mask_value(2, false)
+	
+func enable():
 	visible = true
-	process_mode = previousProcessMode
+	set_collision_layer_value(3, true)
+	set_collision_mask_value(2, true)
 
 func _on_timer_collision_refresh():
 	#set_collision_mask_value(3, true)

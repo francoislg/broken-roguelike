@@ -17,9 +17,10 @@ config/icon="res://icon.svg"
 
 [autoload]
 
-GlobalState="*res://GlobalState.gd"
-UnitConverter="*res://unit_converter.gd"
+GlobalState="*res://Global/GlobalState.gd"
+UnitConverter="*res://Global/unit_converter.gd"
 Combos="*res://Combos/Combos.gd"
+Timers="*res://Global/Timers.gd"
 
 [display]
 
