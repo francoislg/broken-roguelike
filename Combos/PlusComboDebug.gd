@@ -7,7 +7,6 @@ func _ready():
 	ComboMenu.connect("combo_choice", on_combo_selected)
 
 func _on_pressed():
-	print_debug("OK")
 	ComboMenu.new_combos()
 	ComboMenu.show()
 

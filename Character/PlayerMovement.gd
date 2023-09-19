@@ -141,6 +141,7 @@ func reset():
 	update_attackcooldown_bar()
 	velocity = Vector2.ZERO
 	visible = true
+	ProjectileSpawner.reset()
 
 func stopMovementFor(time: float):
 	movementStoppedTimer.wait_time = time
