@@ -132,8 +132,7 @@ func reset():
 	_on_timer_movement_stopped()
 	_on_timer_attackcooldown_stopped()
 	update_attackcooldown_bar()
-	velocity.x = 0
-	velocity.y = 0
+	velocity = Vector2.ZERO
 	visible = true
 
 func stopMovementFor(time: float):

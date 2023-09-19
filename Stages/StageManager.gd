@@ -72,7 +72,7 @@ func set_up_stage():
 	for prop in Props.get_children().filter(func(prop): return prop is Prop):
 		if prop.stage_layer & currentType == 0:
 			Props.remove_child(prop)
-	
+
 	if currentType & StageTypes.types.Coins == 0:
 		remove_child(Coins)
 	

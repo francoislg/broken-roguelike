@@ -84,6 +84,7 @@ func die():
 		
 func respawn():
 	position = respawner.position if respawner != null else initialPosition
+	velocity = Vector2.ZERO
 	hp = initialHp
 	update_progress_bar()
 	visible = true

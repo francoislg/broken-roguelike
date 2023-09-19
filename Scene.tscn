@@ -193,7 +193,6 @@ position = Vector2(500, 365)
 unique_name_in_owner = true
 process_mode = 3
 script = ExtResource("5_kj1ve")
-disable_countdown = true
 
 [connection signal="player_hit" from="Character" to="UI Stuff/StageUI/Hp Label" method="_on_character_player_hit"]
 [connection signal="pressed" from="UI Stuff/StageUI/PauseMenu/Reset Stage" to="UI Stuff/StageUI/PauseMenu/Reset Stage" method="_on_pressed"]

@@ -4,6 +4,6 @@ extends Camera2D
 
 func _ready():
 	StagesManager.connect("new_stage", func(stage):
-		limit_bottom = stage.Bounds.Bottom
+		limit_bottom = stage.Bounds.Bottom + 50
 		limit_right = stage.Bounds.Right
 	)
