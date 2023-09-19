@@ -171,6 +171,9 @@ position = Vector2(1920, 0)
 [node name="CollisionShape2D" parent="Bounds/Right" index="0"]
 shape = SubResource("RectangleShape2D_kodpu")
 
+[node name="UI" parent="." index="11"]
+visible = false
+
 [editable path="Areas/Area"]
 [editable path="Areas/Area2"]
 [editable path="Bounds/Bottom"]

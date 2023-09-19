@@ -17,6 +17,7 @@ signal dies
 
 @onready var health := $Health
 @onready var character: CharacterBody2D = $"/root/Scene/Character"
+@onready var enemiesTracker: EnemiesTracker = $"/root/Scene/Character/EnemiesTracker"
 
 var remainingRespawns: int = numberOfRespawns
 var initialPosition: Vector2
@@ -43,6 +44,8 @@ func _ready():
 		respawnTimer.wait_time = timeToRespawnInSec;
 		respawnTimer.connect("timeout", respawn)
 		add_child(respawnTimer)
+		
+	enemiesTracker.add(self)
 
 func _process(_delta):
 	pass
@@ -66,11 +69,11 @@ func update_progress_bar():
 	var g = lerpf(0, 1, ratio)
 	health.set("modulate", Color(r, g, 0))
 
-var previousProcessMode
 func die():
 	collisionTimer.stop()
 	
 	if remainingRespawns == 0:
+		disable()
 		queue_free()
 	else:
 		if remainingRespawns > 0:
@@ -90,12 +93,17 @@ func disable():
 	visible = false
 	set_collision_layer_value(3, false)
 	set_collision_mask_value(2, false)
+	enemiesTracker.remove(self)
 	
 func enable():
 	visible = true
 	set_collision_layer_value(3, true)
 	set_collision_mask_value(2, true)
+	enemiesTracker.add(self)
 
 func _on_timer_collision_refresh():
 	#set_collision_mask_value(3, true)
 	pass
+
+func _exit_tree():
+	enemiesTracker.remove(self)

@@ -1,8 +1,9 @@
-[gd_scene load_steps=13 format=3 uid="uid://6uiqgf5rqvoe"]
+[gd_scene load_steps=14 format=3 uid="uid://6uiqgf5rqvoe"]
 
 [ext_resource type="Script" path="res://Debuging/DebugGameVariables.gd" id="1_5hb26"]
 [ext_resource type="PackedScene" uid="uid://c74ialgxy2ab7" path="res://Character/Player.tscn" id="2_aembg"]
 [ext_resource type="Script" path="res://Character/BindCameraToStageBounds.gd" id="3_0an0f"]
+[ext_resource type="Script" path="res://Character/EnemiesTracker.gd" id="4_kxdtk"]
 [ext_resource type="Script" path="res://Scenes/StagesManager.gd" id="5_kj1ve"]
 [ext_resource type="PackedScene" uid="uid://o58dvho4eff1" path="res://UI/Course.tscn" id="6_5onm0"]
 [ext_resource type="Script" path="res://UI/Countdown.gd" id="6_hmbah"]
@@ -35,6 +36,9 @@ limit_left = 0
 limit_top = 0
 position_smoothing_enabled = true
 script = ExtResource("3_0an0f")
+
+[node name="EnemiesTracker" type="Node" parent="Character"]
+script = ExtResource("4_kxdtk")
 
 [node name="UI Stuff" type="CanvasLayer" parent="."]
 process_mode = 3

@@ -11,6 +11,7 @@ signal player_hit(hp: int)
 @onready var ProjectileSpawner := $ProjectileSpawner
 @onready var HoldingFlags := $HoldingFlags
 @onready var Shield := $Shield
+@onready var EnemiesTracker := $"./EnemiesTracker"
 
 @onready var playerVariables = CharacterStats.playerVariables
 
@@ -154,7 +155,9 @@ func _on_timer_attackcooldown_stopped():
 	canAttack = true
 	
 func _on_timer_projectile():
-	ProjectileSpawner.create_projectile(position + (Vector2.UP * 10), (Vector2.LEFT if sprite.flip_h else Vector2.RIGHT) * 1000, playerVariables.projectileDamage)
+	var enemy = EnemiesTracker.get_closest_to(position)
+	var direction = (enemy.position - position).normalized() if enemy else (Vector2.LEFT if sprite.flip_h else Vector2.RIGHT)
+	ProjectileSpawner.create_projectile(position + (Vector2.UP * 10), direction * 1000, playerVariables.projectileDamage)
 	projectileTimer.wait_time = playerVariables.projectileCooldown
 
 func update_attackcooldown_bar():
