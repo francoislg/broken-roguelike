@@ -18,6 +18,7 @@ signal stage_win
 @onready var Walls := $Walls
 @onready var Character := $"/root/Scene/Character"
 @onready var StartingPoint := $StartingPoint
+@onready var UI := $UI
 @onready var StagesBehaviors := {
 	StageTypes.types.Coins: $Behaviors/CoinStage,
 	StageTypes.types.Waves: $Behaviors/WavesStage,
@@ -41,6 +42,7 @@ var currentType: StageTypes.types = StageTypes.types.Coins
 var currentBehavior
 
 func _ready():
+	UI.visible = false
 	set_visibility_for_stage_type(StageTypes.types.Coins | StageTypes.types.Waves | StageTypes.types.CaptureTheFlag | StageTypes.types.AreaControl)
 
 func get_supported_types():
@@ -56,9 +58,10 @@ func prepare_specific_stage(config: StageConfiguration):
 	currentBehavior = StagesBehaviors[currentType]
 	set_up_stage()
 	currentBehavior.do_ready()
-	currentBehavior.connect('stage_win', func(): emit_signal('stage_win'))
-	
+	currentBehavior.connect('stage_win', on_stage_win)
+
 func set_up_stage():
+	UI.visible = true
 	Character.position = StartingPoint.position
 	
 	for enemy in Enemies.get_children().filter(func(enemy): return enemy is BaseEnemy):
@@ -102,3 +105,7 @@ func _process(delta):
 	if not Engine.is_editor_hint():
 		if currentBehavior:
 			currentBehavior.do_process(delta)
+
+func on_stage_win():
+	UI.visible = false
+	emit_signal('stage_win')

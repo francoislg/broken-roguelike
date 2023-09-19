@@ -38,6 +38,7 @@ script = ExtResource("3_0an0f")
 
 [node name="UI Stuff" type="CanvasLayer" parent="."]
 process_mode = 3
+layer = 2
 
 [node name="CourseUI" type="Control" parent="UI Stuff"]
 unique_name_in_owner = true
