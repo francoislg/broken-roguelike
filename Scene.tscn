@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://6uiqgf5rqvoe"]
+[gd_scene load_steps=14 format=3 uid="uid://6uiqgf5rqvoe"]
 
 [ext_resource type="Script" path="res://Debuging/DebugGameVariables.gd" id="1_5hb26"]
 [ext_resource type="PackedScene" uid="uid://c74ialgxy2ab7" path="res://Character/Player.tscn" id="2_aembg"]
@@ -12,6 +12,8 @@
 [ext_resource type="Script" path="res://Combos/ResetComboDebug.gd" id="9_u0v3h"]
 [ext_resource type="Script" path="res://UI/ResetScene.gd" id="10_uqdk8"]
 [ext_resource type="Script" path="res://UI/HpLabel.gd" id="10_ypa48"]
+
+[sub_resource type="AudioStreamMicrophone" id="AudioStreamMicrophone_lmvof"]
 
 [node name="Scene" type="Node2D"]
 
@@ -194,6 +196,12 @@ position = Vector2(500, 365)
 unique_name_in_owner = true
 process_mode = 3
 script = ExtResource("5_kj1ve")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+process_mode = 3
+stream = SubResource("AudioStreamMicrophone_lmvof")
+autoplay = true
+bus = &"Record"
 
 [connection signal="player_hp" from="Character" to="UI Stuff/StageUI/Hp Label" method="_on_character_player_hp"]
 [connection signal="pressed" from="UI Stuff/StageUI/PauseMenu/Reset Stage" to="UI Stuff/StageUI/PauseMenu/Reset Stage" method="_on_pressed"]

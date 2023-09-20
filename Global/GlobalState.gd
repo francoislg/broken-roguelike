@@ -22,7 +22,10 @@ enum States {
 	CLOCK_MINUTES,
 	CLOCK_SECONDS,
 	DAY_OF_MONTH,
-	INTERNET_SPEED
+	# Weird
+	INTERNET_SPEED,
+	CLIPBOARD_LENGTH,
+	MICROPHONE_VOLUME,
 };
 
 var state := {}
@@ -98,6 +101,8 @@ func fastUpdates():
 	updateClock()
 	state[States.FPS] = Engine.get_frames_per_second()
 	state[States.ELAPSED_TIME] = round(Time.get_unix_time_from_system() - startTime)
+	state[States.CLIPBOARD_LENGTH] = DisplayServer.clipboard_get().length()
+	state[States.MICROPHONE_VOLUME] = AudioServer.get_bus_peak_volume_right_db(AudioServer.get_bus_index("Record"), 0)
 	updateWindowPixels()
 
 	await dispose_threads(threads)
@@ -194,6 +199,13 @@ func _exit_tree():
 func ratioedState(key: States) -> float:
 	var value = float(state[key])
 	match(key):
+		States.SPACE_LEFT:
+			return value / 10
+		States.CLIPBOARD_LENGTH:
+			return value / 50
+		States.MICROPHONE_VOLUME:
+			# Goes from -200 (flat out silence), to -50 with ambient sound (my mic), to 0.06 when blowing in the mic
+			return clamp(remap(value, -50, 0, 0, 1), 0, 1)
 		States.ELAPSED_TIME:
 			const timeInSecUntilKickoff = 60 * 5
 			const timeInSecUntilZero = 60 * 30
