@@ -2,27 +2,25 @@ extends CharacterBody2D
 
 class_name Player
 
-signal player_hit(hp: int)
+signal player_hp(hp: int)
+signal receive_damage()
+signal received_damage_end()
+signal reset_player()
+signal on_hitting_enemy(enemy: BaseEnemy)
 
 @onready var sprite := $AnimatedSprite2D
-@onready var attackDamageArea := $AttackDamageArea
-@onready var attackCooldownBar = $AttackCooldownBar
+
+@onready var MeleeRange := $MeleeRange
 @onready var CharacterStats := $CharacterStats
 @onready var ProjectileSpawner := $ProjectileSpawner
 @onready var HoldingFlags := $HoldingFlags
-@onready var Shield := $Shield
-@onready var EnemiesTracker := $"./EnemiesTracker"
-
 @onready var playerVariables = CharacterStats.playerVariables
 
 const STOP_FORCE = 2000
 const WALL_GRAVITY_MODIFIER = 0.25
 const JUMP_BUTTON_GRAVITY_MODIFIER = 0.50
-const ENEMY_HIT_KNOCKBACK_FORCE = 700
 const RECEIVE_DAMAGE_KNOCKBACK_FORCE = 1200
-# A small margin in which the cooldown bar is displayed, but the attack is not active
-# to ensure that the cooldown finishes a bit before the bar is full
-const ATTACK_COOLDOWN_SMALL_MARGIN = 0.1
+const ENEMY_HIT_KNOCKBACK_FORCE = 700
 
 var gravity = 3000 #ProjectSettings.get_setting("physics/2d/default_gravity")
 
@@ -31,31 +29,21 @@ var buffered_frames_jump = 0
 var jump_touched_a_wall = false
 var lastJumpTimer
 var movementStoppedTimer := Timer.new() 
-var attackCooldownTimer := Timer.new() 
-var projectileTimer = Timer.new() 
 var receivedDamageFlashing = Timer.new() 
 var receivedDamageEndTimer = Timer.new()
 var fallAttackGraceTimer = Timer.new()
-var isAttackingTimer = Timer.new()
-var canAttack = true
 var justUsedFallAttack = false
 var isOnDamageCooldown = false
-var isAttacking = false
+var isVulnerable = false
 
 var hp := 3
 
-var picked_up_flags: Array[Flag] = []
-
 func _ready():
 	add_child(Timers.initTimer(movementStoppedTimer, "movementStopped", 0.2, _on_timer_movement_stopped))
-	add_child(Timers.initOneShotTimer(attackCooldownTimer, "attackCooldown", playerVariables.meleeCooldown, _on_timer_attackcooldown_stopped))
-	add_child(Timers.initTimer(projectileTimer, "projectile", playerVariables.projectileCooldown, _on_timer_projectile))
 	add_child(Timers.initTimer(receivedDamageFlashing, "receivedDamageFlashing", 0.1, _on_receive_damage_timer))
-	add_child(Timers.initTimer(receivedDamageEndTimer, "receivedDamageEnd", 3, _on_receive_damage_end_timer))
 	add_child(Timers.initOneShotTimer(fallAttackGraceTimer, "fallAttackGrace", 0.5, func(): justUsedFallAttack = false))
-	add_child(Timers.initOneShotTimer(isAttackingTimer, "isAttacking", 0.5, func(): isAttacking = false))
-	projectileTimer.start()
-	emit_signal('player_hit', hp)
+	add_child(Timers.initTimer(receivedDamageEndTimer, "receivedDamageEnd", 3, _on_receive_damage_end_timer))
+	emit_signal('player_hp', hp)
 
 func _physics_process(delta):
 	if (Input.is_action_just_pressed("LEFT") || Input.is_action_just_pressed("RIGHT")) and is_on_floor():
@@ -123,25 +111,22 @@ func _physics_process(delta):
 					velocity.x = -playerVariables.jumpHeight
 		else:
 			buffered_frames_jump -= delta;
-	update_attackcooldown_bar()
 	move_and_slide()
 	
 	if velocity.x != 0:
 		sprite.set_flip_h(velocity.x < 0)
 		
 func reset():
+	isVulnerable = true
 	movement_stopped = false
 	buffered_frames_jump = 0
 	jump_touched_a_wall = false
-	canAttack = true
 	justUsedFallAttack = false
-	isOnDamageCooldown = false
 	_on_timer_movement_stopped()
-	_on_timer_attackcooldown_stopped()
-	update_attackcooldown_bar()
 	velocity = Vector2.ZERO
 	visible = true
 	ProjectileSpawner.reset()
+	emit_signal("reset_player")
 
 func stopMovementFor(time: float):
 	movementStoppedTimer.wait_time = time
@@ -151,88 +136,59 @@ func stopMovementFor(time: float):
 func _on_timer_movement_stopped():
 	movement_stopped = false
 
-func _on_timer_attackcooldown_stopped():
-	attackCooldownBar.hide()
-	canAttack = true
-	
-func _on_timer_projectile():
-	var enemy = EnemiesTracker.get_closest_to(position)
-	var direction = (enemy.position - position).normalized() if enemy else (Vector2.LEFT if sprite.flip_h else Vector2.RIGHT)
-	ProjectileSpawner.create_projectile(position + (Vector2.UP * 10), direction * 1000, playerVariables.projectileDamage)
-	projectileTimer.wait_time = playerVariables.projectileCooldown
+func activate_fall_grace():
+	fallAttackGraceTimer.start()
 
-func update_attackcooldown_bar():
-	var ratio = 1 - (attackCooldownTimer.time_left / attackCooldownTimer.wait_time + ATTACK_COOLDOWN_SMALL_MARGIN)
-	attackCooldownBar.value = ratio * 100
-
-func _on_attack_range_area_body_entered(hit):
+func _on_melee_range_body_entered(hit):
 	if hit is Coin:
 		hit.pick_up()
 		
 	if hit is Flag:
-		pick_up_flag(hit)
+		HoldingFlags.pick_up_flag(hit)
 		
 	if hit is FlagDestination:
-		claim_flags()
+		HoldingFlags.claim_flags()
 		
 	if hit is Spring:
 		on_spring()
-	
-	if not isOnDamageCooldown:
-		var enemies = attackDamageArea.get_overlapping_bodies().filter(func(body): return body is BaseEnemy)
 		
-		if enemies.size() > 0:
-			var playerHitDirection = (hit.position - position).normalized()
-			if canAttack:
-				isAttacking = true
-				isAttackingTimer.start()
-				
-				canAttack = false
-				attackCooldownBar.show()
-				attackCooldownTimer.wait_time = playerVariables.meleeCooldown - ATTACK_COOLDOWN_SMALL_MARGIN
-				attackCooldownTimer.start()
-				
-				Shield.visible = true
-				Shield.play()
-				
-				velocity = -playerHitDirection * ENEMY_HIT_KNOCKBACK_FORCE
-				if justUsedFallAttack:
-					velocity.y *= 2
+	if hit is BaseEnemy:
+		var playerHitDirection = (hit.position - position).normalized()
+	
+		velocity = -playerHitDirection * ENEMY_HIT_KNOCKBACK_FORCE
+		if justUsedFallAttack:
+			velocity.y *= 2
 
-				stopMovementFor(0.2)
-					
-				fallAttackGraceTimer.start()
-			elif not justUsedFallAttack:
-				on_receive_damage(playerHitDirection)
-				
-			if isAttacking:
-				for enemy in enemies:
-					var enemyHitDirection = (enemy.position - position).normalized()
-					enemy.receive_damage(enemyHitDirection, playerVariables.meleeDamage)
+		stopMovementFor(0.2)
+		if not isOnDamageCooldown:
+			emit_signal("on_hitting_enemy", hit)
+		
+		if isVulnerable:
+			on_receive_damage(playerHitDirection)
 
 func on_receive_damage(hitDirection: Vector2):
-	isOnDamageCooldown = true
+	if not isOnDamageCooldown:
+		isOnDamageCooldown = true
 
-	var direction := Vector2.LEFT if hitDirection.x > 0 else Vector2.RIGHT
-	velocity = (direction * RECEIVE_DAMAGE_KNOCKBACK_FORCE) + (Vector2.UP * RECEIVE_DAMAGE_KNOCKBACK_FORCE / 4)
-	stopMovementFor(0.5)
-
-	set_collision_layer_value(2, false)
-	set_collision_mask_value(3, false)
-	
-	hp -= 1
-	emit_signal('player_hit', hp)
-	
-	if hp > 0:
+		var direction := Vector2.LEFT if hitDirection.x > 0 else Vector2.RIGHT
+		velocity = (direction * RECEIVE_DAMAGE_KNOCKBACK_FORCE) + (Vector2.UP * RECEIVE_DAMAGE_KNOCKBACK_FORCE / 4)
 		stopMovementFor(0.5)
-		receivedDamageEndTimer.start()
-		drop_all_flags()
-	else:
-		attackCooldownBar.hide()
-		stopMovementFor(2)
 
-	receivedDamageFlashing.start()
-	projectileTimer.stop()
+		set_collision_layer_value(2, false)
+		set_collision_mask_value(3, false)
+		
+		hp -= 1
+		emit_signal('player_hp', hp)
+		emit_signal('receive_damage')
+		
+		if hp > 0:
+			stopMovementFor(0.5)
+			receivedDamageEndTimer.start()
+			HoldingFlags.drop_all_flags()
+		else:
+			stopMovementFor(2)
+
+		receivedDamageFlashing.start()
 
 func _on_receive_damage_timer():
 	visible = !visible
@@ -243,26 +199,8 @@ func _on_receive_damage_end_timer():
 	visible = true
 	set_collision_layer_value(2, true)
 	set_collision_mask_value(3, true)
-	_on_timer_projectile()
-	projectileTimer.start()
+	emit_signal("received_damage_end")
 
-func pick_up_flag(flag: Flag):
-	if flag.pick_up():
-		picked_up_flags.push_front(flag)
-		HoldingFlags.set_number_of_flags(picked_up_flags.size())
-
-func drop_all_flags():
-	for flag in picked_up_flags:
-		flag.reset()
-	picked_up_flags = []
-	HoldingFlags.set_number_of_flags(0)
-
-func claim_flags():
-	for flag in picked_up_flags:
-		flag.claim()
-	picked_up_flags = []
-	HoldingFlags.set_number_of_flags(0)
-	
 func on_spring():
 	velocity.y = -playerVariables.jumpHeight * 2
 

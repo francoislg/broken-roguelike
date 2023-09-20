@@ -89,13 +89,17 @@ func finish_post_dash():
 	
 func receive_damage(direction: Vector2, damage: float):
 	super(direction, damage)
-	modeTimer.stop()
 	ColoredRectangle.color = Color.WHITE
 	mode = Mode.Damaged
 	
-func respawn():
+func prepare_respawn():
+	super()
+	modeTimer.stop()
+
+func enable():
 	super()
 	finish_post_dash()
+	modeTimer.start()
 
 func _on_timer_collision_refresh():
 	super()

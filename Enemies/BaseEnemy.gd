@@ -42,7 +42,7 @@ func _ready():
 	if timeToRespawnInSec > 0:
 		respawnTimer.one_shot = true
 		respawnTimer.wait_time = timeToRespawnInSec;
-		respawnTimer.connect("timeout", respawn)
+		respawnTimer.connect("timeout", enable)
 		add_child(respawnTimer)
 		
 	enemiesTracker.add(self)
@@ -79,24 +79,28 @@ func die():
 		if remainingRespawns > 0:
 			remainingRespawns -= 1
 		disable()
+		prepare_respawn()
 		if timeToRespawnInSec > 0:
 			respawnTimer.start()
-		
-func respawn():
+	
+func prepare_respawn():
 	position = respawner.position if respawner != null else initialPosition
 	velocity = Vector2.ZERO
 	hp = initialHp
 	update_progress_bar()
-	enable()
 	
 func disable():
 	visible = false
+	set_process(false)
+	set_physics_process(false)
 	set_collision_layer_value(3, false)
 	set_collision_mask_value(2, false)
 	enemiesTracker.remove(self)
 	
 func enable():
 	visible = true
+	set_process(true)
+	set_physics_process(true)
 	set_collision_layer_value(3, true)
 	set_collision_mask_value(2, true)
 	enemiesTracker.add(self)

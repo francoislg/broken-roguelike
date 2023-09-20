@@ -31,7 +31,6 @@ func stop_counting():
 		CollisionShape.color = initialColor
 		is_counting = false
 
-
 func _on_body_entered(body):
 	if body is Player:
 		start_counting()

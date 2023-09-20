@@ -113,7 +113,7 @@ func start_stage():
 				show_combos()
 			)
 	)
-	Character.connect("player_hit", func(hp):
+	Character.connect("player_hp", func(hp):
 		if not endDetected:
 			endDetected = true
 			if hp <= 0:

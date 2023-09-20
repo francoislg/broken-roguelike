@@ -1,4 +1,4 @@
-[gd_scene load_steps=30 format=3 uid="uid://c74ialgxy2ab7"]
+[gd_scene load_steps=33 format=3 uid="uid://c74ialgxy2ab7"]
 
 [ext_resource type="Script" path="res://Character/PlayerMovement.gd" id="1_gqhlo"]
 [ext_resource type="Texture2D" uid="uid://dvr3jo0ky2jp" path="res://run_animation/run-1.png" id="2_025k3"]
@@ -9,6 +9,7 @@
 [ext_resource type="Texture2D" uid="uid://duqf0jqjbq0ce" path="res://run_animation/run-6.png" id="7_ry1n7"]
 [ext_resource type="Texture2D" uid="uid://bloo2k1vx1e8r" path="res://run_animation/run-7.png" id="8_bb7xi"]
 [ext_resource type="Texture2D" uid="uid://bbgin8n10bajl" path="res://run_animation/run-8.png" id="9_nhfmb"]
+[ext_resource type="Script" path="res://Character/EnemiesTracker.gd" id="10_3ofk5"]
 [ext_resource type="Script" path="res://Character/CharacterStats.gd" id="10_pmyef"]
 [ext_resource type="Script" path="res://Character/ProjectileSpawner.gd" id="11_jlnt7"]
 [ext_resource type="Script" path="res://Debuging/DrawSolidCircle.gd" id="12_hk18l"]
@@ -24,9 +25,14 @@
 [ext_resource type="Texture2D" uid="uid://bva3kuwh2bbrv" path="res://Character/Shield/frame_08_delay-0.1s.png" id="22_e5ux5"]
 [ext_resource type="Texture2D" uid="uid://74fgawv3wg8y" path="res://Character/Shield/frame_09_delay-0.1s.png" id="23_lvkd8"]
 [ext_resource type="Script" path="res://Character/Shield.gd" id="24_myaqt"]
+[ext_resource type="Script" path="res://Character/Weapons/Bubble.gd" id="25_2d60r"]
+[ext_resource type="Script" path="res://Character/Weapons/Bullets.gd" id="26_7ce7h"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ywdt0"]
 size = Vector2(21.5979, 38.0625)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hrxyt"]
+size = Vector2(33, 51)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_3smmn"]
 animations = [{
@@ -59,9 +65,6 @@ animations = [{
 "name": &"default",
 "speed": 5.0
 }]
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_hrxyt"]
-size = Vector2(33, 51)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_udxmh"]
 size = Vector2(170, 168)
@@ -113,36 +116,22 @@ script = ExtResource("1_gqhlo")
 position = Vector2(1.20103, -7.96874)
 shape = SubResource("RectangleShape2D_ywdt0")
 
+[node name="MeleeRange" type="Area2D" parent="."]
+collision_layer = 8
+collision_mask = 20
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MeleeRange"]
+position = Vector2(1.5, -10.5)
+shape = SubResource("RectangleShape2D_hrxyt")
+debug_color = Color(0.635294, 0.52549, 0.133333, 0.419608)
+
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 position = Vector2(2, -15)
 scale = Vector2(0.777985, 0.777985)
 sprite_frames = SubResource("SpriteFrames_3smmn")
 
-[node name="AttackRangeArea" type="Area2D" parent="."]
-collision_layer = 8
-collision_mask = 20
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="AttackRangeArea"]
-position = Vector2(1.5, -10.5)
-shape = SubResource("RectangleShape2D_hrxyt")
-debug_color = Color(0.635294, 0.52549, 0.133333, 0.419608)
-
-[node name="AttackDamageArea" type="Area2D" parent="."]
-collision_layer = 8
-collision_mask = 4
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="AttackDamageArea"]
-shape = SubResource("RectangleShape2D_udxmh")
-debug_color = Color(0.690196, 0.458824, 0.541176, 0.419608)
-
-[node name="AttackCooldownBar" type="ProgressBar" parent="."]
-modulate = Color(0.898039, 0.772549, 1, 1)
-offset_left = -24.0
-offset_top = -29.0
-offset_right = -20.0
-offset_bottom = 16.0
-fill_mode = 3
-show_percentage = false
+[node name="EnemiesTracker" type="Node" parent="."]
+script = ExtResource("10_3ofk5")
 
 [node name="CharacterStats" type="Node" parent="."]
 script = ExtResource("10_pmyef")
@@ -151,7 +140,7 @@ script = ExtResource("10_pmyef")
 script = ExtResource("11_jlnt7")
 
 [node name="HoldingFlags" type="Node2D" parent="."]
-position = Vector2(7, -9)
+position = Vector2(14, -9)
 script = ExtResource("12_kiobk")
 
 [node name="One" type="Node2D" parent="HoldingFlags"]
@@ -171,10 +160,36 @@ script = ExtResource("12_hk18l")
 radius = 2.0
 color = Color(0.243137, 0.65098, 0.184314, 1)
 
-[node name="Shield" type="AnimatedSprite2D" parent="."]
+[node name="Weapons" type="Node2D" parent="."]
+
+[node name="Bubble" type="Node2D" parent="Weapons"]
+script = ExtResource("25_2d60r")
+
+[node name="AttackDamageArea" type="Area2D" parent="Weapons/Bubble"]
+collision_layer = 8
+collision_mask = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Weapons/Bubble/AttackDamageArea"]
+shape = SubResource("RectangleShape2D_udxmh")
+debug_color = Color(0.690196, 0.458824, 0.541176, 0.419608)
+
+[node name="AttackCooldownBar" type="ProgressBar" parent="Weapons/Bubble"]
+modulate = Color(0.898039, 0.772549, 1, 1)
+offset_left = -24.0
+offset_top = -32.0
+offset_right = -20.0
+offset_bottom = 13.0
+fill_mode = 3
+show_percentage = false
+
+[node name="Shield" type="AnimatedSprite2D" parent="Weapons/Bubble"]
 visible = false
 sprite_frames = SubResource("SpriteFrames_prma6")
 script = ExtResource("24_myaqt")
 
-[connection signal="body_entered" from="AttackRangeArea" to="." method="_on_attack_range_area_body_entered"]
-[connection signal="animation_finished" from="Shield" to="Shield" method="_on_animation_finished"]
+[node name="Bullets" type="Node2D" parent="Weapons"]
+script = ExtResource("26_7ce7h")
+
+[connection signal="body_entered" from="MeleeRange" to="." method="_on_melee_range_body_entered"]
+[connection signal="body_entered" from="Weapons/Bubble/AttackDamageArea" to="Weapons/Bubble" method="_on_attack_damage_area_body_entered"]
+[connection signal="animation_finished" from="Weapons/Bubble/Shield" to="Weapons/Bubble/Shield" method="_on_animation_finished"]
