@@ -99,11 +99,29 @@ stage_layer = 5
 initialHp = 1.0
 respawner = NodePath("../../Respawners/Respawn1")
 
-[node name="DashingEnemy" parent="Enemies" index="1" node_paths=PackedStringArray("respawner") instance=ExtResource("6_rk5os")]
-position = Vector2(1336, 302)
+[node name="FollowingEnemy4" parent="Enemies" index="1" node_paths=PackedStringArray("respawner") instance=ExtResource("5_vs1ij")]
+position = Vector2(307, 520)
+stage_layer = 5
+initialHp = 1.0
 respawner = NodePath("../../Respawners/Respawn1")
 
-[node name="FollowingEnemy2" parent="Enemies" index="2" node_paths=PackedStringArray("respawner") instance=ExtResource("5_vs1ij")]
+[node name="DashingEnemy" parent="Enemies" index="2" node_paths=PackedStringArray("respawner") instance=ExtResource("6_rk5os")]
+position = Vector2(712, 308)
+respawner = NodePath("../../Respawners/Respawn1")
+
+[node name="DashingEnemy2" parent="Enemies" index="3" node_paths=PackedStringArray("respawner") instance=ExtResource("6_rk5os")]
+position = Vector2(1407, 122)
+respawner = NodePath("../../Respawners/Respawn1")
+
+[node name="DashingEnemy3" parent="Enemies" index="4" node_paths=PackedStringArray("respawner") instance=ExtResource("6_rk5os")]
+position = Vector2(1224, 295)
+respawner = NodePath("../../Respawners/Respawn1")
+
+[node name="DashingEnemy4" parent="Enemies" index="5" node_paths=PackedStringArray("respawner") instance=ExtResource("6_rk5os")]
+position = Vector2(281, 129)
+respawner = NodePath("../../Respawners/Respawn1")
+
+[node name="FollowingEnemy2" parent="Enemies" index="6" node_paths=PackedStringArray("respawner") instance=ExtResource("5_vs1ij")]
 position = Vector2(1593, 639)
 stage_layer = 6
 respawner = NodePath("../../Respawners/Respawn2")
@@ -166,10 +184,10 @@ position = Vector2(1637, 464)
 shape = SubResource("RectangleShape2D_r72mv")
 
 [node name="Respawn1" type="Node2D" parent="Respawners" index="0"]
-position = Vector2(47, 774)
+position = Vector2(-54, 634)
 
 [node name="Respawn2" type="Node2D" parent="Respawners" index="1"]
-position = Vector2(1850, 818)
+position = Vector2(1967, 790)
 
 [node name="CollisionShape2D" parent="Bounds/Bottom" index="0"]
 shape = SubResource("RectangleShape2D_eb8oj")

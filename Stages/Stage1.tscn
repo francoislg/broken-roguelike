@@ -86,11 +86,28 @@ stage_layer = 5
 initialHp = 1.0
 respawner = NodePath("../../Respawners/Respawn1")
 
-[node name="DashingEnemy" parent="Enemies" index="1" node_paths=PackedStringArray("respawner") instance=ExtResource("4_33yct")]
+[node name="FollowingEnemy4" parent="Enemies" index="1" node_paths=PackedStringArray("respawner") instance=ExtResource("5_4neuv")]
+position = Vector2(177, 755)
+initialHp = 1.0
+respawner = NodePath("../../Respawners/Respawn1")
+
+[node name="DashingEnemy" parent="Enemies" index="2" node_paths=PackedStringArray("respawner") instance=ExtResource("4_33yct")]
 position = Vector2(650, 873)
 respawner = NodePath("../../Respawners/Respawn1")
 
-[node name="FollowingEnemy2" parent="Enemies" index="2" node_paths=PackedStringArray("respawner") instance=ExtResource("5_4neuv")]
+[node name="DashingEnemy2" parent="Enemies" index="3" node_paths=PackedStringArray("respawner") instance=ExtResource("4_33yct")]
+position = Vector2(397, 515)
+respawner = NodePath("../../Respawners/Respawn1")
+
+[node name="DashingEnemy4" parent="Enemies" index="4" node_paths=PackedStringArray("respawner") instance=ExtResource("4_33yct")]
+position = Vector2(1821, 867)
+respawner = NodePath("../../Respawners/Respawn1")
+
+[node name="DashingEnemy3" parent="Enemies" index="5" node_paths=PackedStringArray("respawner") instance=ExtResource("4_33yct")]
+position = Vector2(1172, 630)
+respawner = NodePath("../../Respawners/Respawn1")
+
+[node name="FollowingEnemy2" parent="Enemies" index="6" node_paths=PackedStringArray("respawner") instance=ExtResource("5_4neuv")]
 position = Vector2(1462, 814)
 stage_layer = 6
 respawner = NodePath("../../Respawners/Respawn1")
@@ -154,7 +171,7 @@ position = Vector2(129, -32.5)
 shape = SubResource("RectangleShape2D_r72mv")
 
 [node name="Respawn1" type="Node2D" parent="Respawners" index="0"]
-position = Vector2(841, 653)
+position = Vector2(892, 420)
 
 [node name="CollisionShape2D" parent="Bounds/Bottom" index="0"]
 shape = SubResource("RectangleShape2D_eb8oj")
