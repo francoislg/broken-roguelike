@@ -67,7 +67,7 @@ position = Vector2(1552, 963)
 stage_layer = 5
 
 [node name="Wall3" parent="Walls" index="8" instance=ExtResource("3_iohxa")]
-position = Vector2(1712, 1048)
+position = Vector2(1710, 1021)
 scale = Vector2(1, 2)
 stage_layer = 5
 
@@ -170,9 +170,6 @@ position = Vector2(1920, 0)
 
 [node name="CollisionShape2D" parent="Bounds/Right" index="0"]
 shape = SubResource("RectangleShape2D_kodpu")
-
-[node name="UI" parent="." index="11"]
-visible = false
 
 [editable path="Areas/Area"]
 [editable path="Areas/Area2"]

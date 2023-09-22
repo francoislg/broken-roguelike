@@ -202,7 +202,7 @@ func ratioedState(key: States) -> float:
 		States.SPACE_LEFT:
 			return value / 10
 		States.CLIPBOARD_LENGTH:
-			return value / 50
+			return clamp(value / 100, 0, 1)
 		States.MICROPHONE_VOLUME:
 			# Goes from -200 (flat out silence), to -50 with ambient sound (my mic), to 0.06 when blowing in the mic
 			return clamp(remap(value, -50, 0, 0, 1), 0, 1)

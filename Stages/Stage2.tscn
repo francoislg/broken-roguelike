@@ -58,7 +58,7 @@ position = Vector2(441, 971)
 scale = Vector2(1.5, 1)
 
 [node name="Floor10" parent="Walls" index="3" instance=ExtResource("3_v8lkt")]
-position = Vector2(1373, 966)
+position = Vector2(1374, 966)
 scale = Vector2(2.08, 1)
 
 [node name="Floor9" parent="Walls" index="4" instance=ExtResource("3_v8lkt")]
@@ -83,11 +83,11 @@ position = Vector2(904, 589)
 scale = Vector2(1, 2)
 
 [node name="Wall6" parent="Walls" index="10" instance=ExtResource("4_luvb7")]
-position = Vector2(1088, 1037)
+position = Vector2(1089, 1038)
 scale = Vector2(1, 0.41)
 
 [node name="Wall4" parent="Walls" index="11" instance=ExtResource("4_luvb7")]
-position = Vector2(1153, 561)
+position = Vector2(1153, 565)
 
 [node name="Wall5" parent="Walls" index="12" instance=ExtResource("4_luvb7")]
 position = Vector2(195, 1249)

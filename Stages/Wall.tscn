@@ -5,7 +5,7 @@
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_1ga0c"]
 resource_local_to_scene = true
-size = Vector2(28.5, 392.5)
+size = Vector2(30, 400)
 
 [node name="Wall" type="StaticBody2D"]
 script = ExtResource("1_62tkt")
