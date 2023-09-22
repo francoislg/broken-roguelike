@@ -176,6 +176,8 @@ func on_receive_damage(hitDirection: Vector2):
 
 		set_collision_layer_value(2, false)
 		set_collision_mask_value(3, false)
+		$MeleeRange.set_collision_layer_value(2, false)
+		$MeleeRange.set_collision_mask_value(3, false)
 		
 		hp -= 1
 		emit_signal('player_hp', hp)
@@ -199,6 +201,8 @@ func _on_receive_damage_end_timer():
 	visible = true
 	set_collision_layer_value(2, true)
 	set_collision_mask_value(3, true)
+	$MeleeRange.set_collision_layer_value(2, true)
+	$MeleeRange.set_collision_mask_value(3, true)
 	emit_signal("received_damage_end")
 
 func on_spring():
