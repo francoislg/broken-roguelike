@@ -11,6 +11,8 @@ var disable_start = disable_countdown
 @onready var Stage := $"../"
 @onready var Character := %Character
 @onready var CharacterWeapons: Weapons = %"Character/Weapons"
+@onready var SetupUI := %SetupUI
+@onready var WeaponsMenu := %"SetupUI/WeaponsMenu"
 @onready var CourseUI := %CourseUI
 @onready var StageUI := %StageUI
 @onready var ComboMenu := %ComboMenu
@@ -36,9 +38,14 @@ func _ready():
 		tree.paused = false
 		isInGame = true
 	)
+	WeaponsMenu.connect("weapons_choice", func(_first, _second):
+		CharacterWeapons.init_weapon_left(_first)
+		CharacterWeapons.init_weapon_right(_second)
+		prepare_next_stage()
+		start_stage_countdown()
+	)
 	reset_course()
-	prepare_next_stage()
-	start_stage_countdown()
+	prepare_setup()
 
 func create_random_config():
 	var stageIndex = randi_range(0, stages.size() - 1)
@@ -66,7 +73,15 @@ func reset_course():
 	course = courseConfig
 	emit_signal('new_course', courseConfig)
 
-func prepare_next_stage(): 
+func prepare_setup():
+	SetupUI.visible = true
+	StageUI.visible = false
+	CourseUI.visible = false
+	var tree = get_tree()
+	tree.paused = true
+
+func prepare_next_stage():
+	SetupUI.visible = false
 	StageUI.visible = false
 	CourseUI.visible = true
 
@@ -74,8 +89,6 @@ func prepare_next_stage():
 	currentStage = stageInstances[currentStageIndex]
 	currentStage.connect("ready", func():
 		Character.reset()
-		CharacterWeapons.init_weapon_left(Weapons.WeaponTypes.Bullets)
-		CharacterWeapons.init_weapon_right(Weapons.WeaponTypes.Bubble)
 		currentStage.prepare_specific_stage(config)
 		emit_signal("new_current_stage_index", currentStageIndex)
 		emit_signal("new_stage", currentStage)

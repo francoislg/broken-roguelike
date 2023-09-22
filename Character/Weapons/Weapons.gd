@@ -3,6 +3,7 @@ extends Node
 class_name Weapons
 
 enum WeaponTypes {
+	None = -1,
 	Bubble,
 	Bullets
 }
@@ -24,18 +25,20 @@ var rightWeapon: Weapon
 func init_weapon_left(weaponType: WeaponTypes):
 	if leftWeapon:
 		remove_child(leftWeapon)
-	var weaponScene = allWeapons[weaponType]
-	var weapon = weaponScene.instantiate()
-	weapon.init(LeftCooldown)
-	add_child(weapon)
-	leftWeapon = weapon
+	if weaponType != WeaponTypes.None:
+		var weaponScene = allWeapons[weaponType]
+		var weapon = weaponScene.instantiate()
+		weapon.init(LeftCooldown)
+		add_child(weapon)
+		leftWeapon = weapon
 
 func init_weapon_right(weaponType: WeaponTypes):
 	if rightWeapon:
 		remove_child(rightWeapon)
-	var weaponScene = allWeapons[weaponType]
-	var weapon = weaponScene.instantiate()
-	weapon.init(RightCooldown)
-	add_child(weapon)
-	rightWeapon = weapon
+	if weaponType != WeaponTypes.None:
+		var weaponScene = allWeapons[weaponType]
+		var weapon = weaponScene.instantiate()
+		weapon.init(RightCooldown)
+		add_child(weapon)
+		rightWeapon = weapon
 	

@@ -1,8 +1,9 @@
-[gd_scene load_steps=14 format=3 uid="uid://6uiqgf5rqvoe"]
+[gd_scene load_steps=15 format=3 uid="uid://6uiqgf5rqvoe"]
 
 [ext_resource type="Script" path="res://Debuging/DebugGameVariables.gd" id="1_5hb26"]
 [ext_resource type="PackedScene" uid="uid://c74ialgxy2ab7" path="res://Character/Player.tscn" id="2_aembg"]
 [ext_resource type="Script" path="res://Character/BindCameraToStageBounds.gd" id="3_0an0f"]
+[ext_resource type="PackedScene" uid="uid://h7lnvvwa1w82" path="res://Character/Weapons/WeaponsMenu.tscn" id="4_kiffq"]
 [ext_resource type="Script" path="res://Scenes/StagesManager.gd" id="5_kj1ve"]
 [ext_resource type="PackedScene" uid="uid://o58dvho4eff1" path="res://UI/Course.tscn" id="6_5onm0"]
 [ext_resource type="Script" path="res://UI/Countdown.gd" id="6_hmbah"]
@@ -41,6 +42,17 @@ script = ExtResource("3_0an0f")
 [node name="UI Stuff" type="CanvasLayer" parent="."]
 process_mode = 3
 layer = 2
+
+[node name="SetupUI" type="Control" parent="UI Stuff"]
+unique_name_in_owner = true
+process_mode = 2
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="WeaponsMenu" parent="UI Stuff/SetupUI" instance=ExtResource("4_kiffq")]
+position = Vector2(500, 388)
 
 [node name="CourseUI" type="Control" parent="UI Stuff"]
 unique_name_in_owner = true
