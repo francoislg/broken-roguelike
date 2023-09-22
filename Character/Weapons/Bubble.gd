@@ -1,7 +1,6 @@
 extends Weapon
 
 @onready var AttackDamageArea := $AttackDamageArea
-@onready var AttackCooldownBar = $AttackCooldownBar
 @onready var Shield := $Shield
 
 # A small margin in which the cooldown bar is displayed, but the attack is not active
@@ -29,10 +28,10 @@ func reset():
 	canAttack = true
 	isAttacking = false
 	Character.isVulnerable = false
-	AttackCooldownBar.hide()
+	Cooldown.reset()
 	
 func on_receive_damage():
-	AttackCooldownBar.hide()
+	Cooldown.reset()
 
 func on_hitting_enemy(_enemy: BaseEnemy):
 	if canAttack:
@@ -40,7 +39,7 @@ func on_hitting_enemy(_enemy: BaseEnemy):
 		isAttackingTimer.start()
 		
 		canAttack = false
-		AttackCooldownBar.show()
+		Cooldown.start(ATTACK_COOLDOWN_SMALL_MARGIN)
 		attackCooldownTimer.wait_time = playerVariables.meleeCooldown - ATTACK_COOLDOWN_SMALL_MARGIN
 		attackCooldownTimer.start()
 		
@@ -58,7 +57,7 @@ func _on_timer_is_attacking_end():
 	Character.isVulnerable = true
 
 func _on_timer_attackcooldown_stopped():
-	AttackCooldownBar.hide()
+	Cooldown.reset()
 	canAttack = true
 	Character.isVulnerable = false
 	
@@ -67,8 +66,7 @@ func _on_attack_damage_area_body_entered(body):
 		damage_enemy(body)
 
 func update_attackcooldown_bar():
-	var ratio = 1 - (attackCooldownTimer.time_left / attackCooldownTimer.wait_time + ATTACK_COOLDOWN_SMALL_MARGIN)
-	AttackCooldownBar.value = ratio * 100
+	Cooldown.update_from_timer(attackCooldownTimer)
 
 func damage_enemy(enemy: BaseEnemy):
 	var enemyHitDirection = (enemy.position - Character.position).normalized()

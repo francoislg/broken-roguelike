@@ -8,3 +8,7 @@ class_name Weapon
 @onready var ProjectileSpawner := $"../../ProjectileSpawner"
 @onready var playerVariables = CharacterStats.playerVariables
 
+var Cooldown: CooldownUI
+
+func init(cooldown: CooldownUI):
+	Cooldown = cooldown

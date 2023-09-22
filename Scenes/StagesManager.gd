@@ -10,6 +10,7 @@ var disable_start = disable_countdown
 
 @onready var Stage := $"../"
 @onready var Character := %Character
+@onready var CharacterWeapons: Weapons = %"Character/Weapons"
 @onready var CourseUI := %CourseUI
 @onready var StageUI := %StageUI
 @onready var ComboMenu := %ComboMenu
@@ -73,6 +74,8 @@ func prepare_next_stage():
 	currentStage = stageInstances[currentStageIndex]
 	currentStage.connect("ready", func():
 		Character.reset()
+		CharacterWeapons.init_weapon_left(Weapons.WeaponTypes.Bullets)
+		CharacterWeapons.init_weapon_right(Weapons.WeaponTypes.Bubble)
 		currentStage.prepare_specific_stage(config)
 		emit_signal("new_current_stage_index", currentStageIndex)
 		emit_signal("new_stage", currentStage)

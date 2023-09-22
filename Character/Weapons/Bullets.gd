@@ -7,7 +7,7 @@ func _ready():
 	add_child(Timers.initTimer(projectileTimer, "projectile", playerVariables.projectileCooldown, _on_timer_projectile))
 	projectileTimer.start()
 
-func _on_receive_damage(_hp):
+func _on_receive_damage():
 	projectileTimer.stop()
 
 func _on_receive_damage_end():	

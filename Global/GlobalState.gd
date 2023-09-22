@@ -221,4 +221,5 @@ func ratioedState(key: States) -> float:
 		States.INTERNET_SPEED:
 			return clamp(remap(value, 0, 3, 0, 1), 0, 100)
 		_:
-			return value / 100
+			# This ensures that all variables are at maximum 200%
+			return clamp(value / 100, -2, 2)
