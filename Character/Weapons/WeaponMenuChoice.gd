@@ -8,6 +8,7 @@ const labels := {
 	WeaponTypes.Bubble: 'Bubble',
 	WeaponTypes.Cross: 'Cross',
 	WeaponTypes.Bullets: 'Bullets',
+	WeaponTypes.Orbit: 'Orbit',
 }
 
 var currentType: WeaponTypes

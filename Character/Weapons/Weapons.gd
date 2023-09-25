@@ -6,7 +6,8 @@ enum WeaponTypes {
 	None = -1,
 	Bubble,
 	Cross,
-	Bullets
+	Bullets,
+	Orbit
 }
 
 const MeleeWeapons = [WeaponTypes.Bubble, WeaponTypes.Cross]
@@ -18,7 +19,8 @@ const ProjectileWeapons = [WeaponTypes.Bullets]
 const allWeapons := {
 	WeaponTypes.Bubble: preload("res://Character/Weapons/Bubble.tscn"),
 	WeaponTypes.Cross: preload("res://Character/Weapons/Cross.tscn"),
-	WeaponTypes.Bullets: preload("res://Character/Weapons/Bullets.tscn")
+	WeaponTypes.Bullets: preload("res://Character/Weapons/Bullets.tscn"),
+	WeaponTypes.Orbit: preload("res://Character/Weapons/Orbit.tscn"),
 }
 
 var leftWeapon: Weapon

@@ -67,6 +67,11 @@ layout_mode = 2
 button_pressed = true
 button_group = SubResource("ButtonGroup_cjm2g")
 
+[node name="SecondProjectile" parent="Projectiles" instance=ExtResource("2_l68ie")]
+layout_mode = 2
+button_pressed = true
+button_group = SubResource("ButtonGroup_cjm2g")
+
 [node name="Submit" type="Button" parent="."]
 offset_left = 291.0
 offset_top = 287.0

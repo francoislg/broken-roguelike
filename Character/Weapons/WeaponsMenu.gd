@@ -7,6 +7,7 @@ signal weapons_choice(first: WeaponsTypes, second: WeaponsTypes)
 @onready var FirstMelee := $Melees/FirstMelee
 @onready var SecondMelee := $Melees/SecondMelee
 @onready var FirstProjectile := $Projectiles/FirstProjectile
+@onready var SecondProjectile := $Projectiles/SecondProjectile
 @onready var Submit := $Submit
 
 var meleeType: WeaponsTypes = WeaponsTypes.None
@@ -16,13 +17,14 @@ func _ready():
 	FirstMelee.set_weapon_type(WeaponsTypes.Bubble)
 	SecondMelee.set_weapon_type(WeaponsTypes.Cross)
 	FirstProjectile.set_weapon_type(WeaponsTypes.Bullets)
+	SecondProjectile.set_weapon_type(WeaponsTypes.Orbit)
 	
 	for melee in [FirstMelee, SecondMelee]:
 		melee.connect("selected", func(type):
 			meleeType = type
 			update_buttons()	
 		)
-	for projectile in [FirstProjectile]:
+	for projectile in [FirstProjectile, SecondProjectile]:
 		projectile.connect("selected", func(type):
 			projectileType = type
 			update_buttons()

@@ -1,0 +1,45 @@
+[gd_scene load_steps=6 format=3 uid="uid://cpsckk7h1vxxt"]
+
+[ext_resource type="Script" path="res://Character/Weapons/Orbit.gd" id="1_dkq6u"]
+[ext_resource type="Texture2D" uid="uid://d3c8mghve86wv" path="res://Character/Weapons/Orbit/Orbit.png" id="2_8vc8h"]
+[ext_resource type="Texture2D" uid="uid://bfsh8iueee87i" path="res://Character/Weapons/Cross/Flare.png" id="2_t2glj"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_mcqta"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_vv6r8"]
+size = Vector2(250, 250)
+
+[node name="Orbit" type="Node2D"]
+script = ExtResource("1_dkq6u")
+
+[node name="Pivot" type="Node2D" parent="."]
+
+[node name="Ball" type="Node2D" parent="Pivot"]
+position = Vector2(90, 0)
+
+[node name="Collision" type="Area2D" parent="Pivot/Ball"]
+collision_layer = 8
+collision_mask = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Pivot/Ball/Collision"]
+shape = SubResource("RectangleShape2D_mcqta")
+
+[node name="Orbit" type="Sprite2D" parent="Pivot/Ball/Collision"]
+scale = Vector2(0.15625, 0.15625)
+texture = ExtResource("2_8vc8h")
+
+[node name="AttackArea" type="Area2D" parent="Pivot/Ball"]
+collision_layer = 8
+collision_mask = 4
+
+[node name="Shape" type="CollisionShape2D" parent="Pivot/Ball/AttackArea"]
+shape = SubResource("RectangleShape2D_vv6r8")
+debug_color = Color(0.741176, 0.34902, 0.788235, 0.419608)
+
+[node name="Explosion" type="Sprite2D" parent="Pivot/Ball/AttackArea"]
+visible = false
+scale = Vector2(1.9375, 1.9375)
+texture = ExtResource("2_t2glj")
+
+[connection signal="body_entered" from="Pivot/Ball/Collision" to="." method="_on_collision_body_entered"]
+[connection signal="body_entered" from="Pivot/Ball/AttackArea" to="." method="_on_attack_area_body_entered"]

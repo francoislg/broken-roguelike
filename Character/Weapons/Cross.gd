@@ -49,7 +49,7 @@ func _on_collision_body_entered(body):
 
 func damage_enemy(enemy: BaseEnemy):
 	var enemyHitDirection = (enemy.position - Character.position).normalized()
-	enemy.receive_damage(enemyHitDirection, playerVariables.meleeDamage)
+	enemy.receive_damage(enemyHitDirection, playerVariables.meleeDamage * 2)
 
 
 
