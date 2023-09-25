@@ -2,23 +2,23 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bwiw8r3rvcy0c"
-path="res://.godot/imported/frame_00_delay-0.1s.png-b42aa67bbda7a081fe15fe34249412cb.ctex"
+uid="uid://dah1g4frfxb8e"
+path="res://.godot/imported/frame_03_delay-0.1s.png-78d34be4935d2f487aab79145f297902.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Character/Shield/frame_00_delay-0.1s.png"
-dest_files=["res://.godot/imported/frame_00_delay-0.1s.png-b42aa67bbda7a081fe15fe34249412cb.ctex"]
+source_file="res://Character/Weapons/Shield/frame_03_delay-0.1s.png"
+dest_files=["res://.godot/imported/frame_03_delay-0.1s.png-78d34be4935d2f487aab79145f297902.ctex"]
 
 [params]
 
 compress/mode=0
+compress/high_quality=false
 compress/lossy_quality=0.7
 compress/hdr_compression=1
-compress/bptc_ldr=0
 compress/normal_map=0
 compress/channel_pack=0
 mipmaps/generate=false

@@ -1,16 +1,16 @@
 [gd_scene load_steps=15 format=3 uid="uid://btv3v54rtdjie"]
 
 [ext_resource type="Script" path="res://Character/Weapons/Bubble.gd" id="1_mt2lv"]
-[ext_resource type="Texture2D" uid="uid://bwiw8r3rvcy0c" path="res://Character/Shield/frame_00_delay-0.1s.png" id="2_a2cme"]
-[ext_resource type="Texture2D" uid="uid://bl337oiohd2pj" path="res://Character/Shield/frame_01_delay-0.1s.png" id="3_xod64"]
-[ext_resource type="Texture2D" uid="uid://b78loxr2pe6p6" path="res://Character/Shield/frame_02_delay-0.1s.png" id="4_ofdap"]
-[ext_resource type="Texture2D" uid="uid://dah1g4frfxb8e" path="res://Character/Shield/frame_03_delay-0.1s.png" id="5_a2svv"]
-[ext_resource type="Texture2D" uid="uid://dc2ucd2rqmyp3" path="res://Character/Shield/frame_04_delay-0.1s.png" id="6_jtmm0"]
-[ext_resource type="Texture2D" uid="uid://cc11f8qde3v2f" path="res://Character/Shield/frame_05_delay-0.1s.png" id="7_ocok7"]
-[ext_resource type="Texture2D" uid="uid://cpbej700hyo13" path="res://Character/Shield/frame_06_delay-0.1s.png" id="8_8cs6l"]
-[ext_resource type="Texture2D" uid="uid://c6pkgjmx123ms" path="res://Character/Shield/frame_07_delay-0.1s.png" id="9_ueqd0"]
-[ext_resource type="Texture2D" uid="uid://bva3kuwh2bbrv" path="res://Character/Shield/frame_08_delay-0.1s.png" id="10_jcw44"]
-[ext_resource type="Texture2D" uid="uid://74fgawv3wg8y" path="res://Character/Shield/frame_09_delay-0.1s.png" id="11_qe0wm"]
+[ext_resource type="Texture2D" uid="uid://bwiw8r3rvcy0c" path="res://Character/Weapons/Shield/frame_00_delay-0.1s.png" id="2_o30i2"]
+[ext_resource type="Texture2D" uid="uid://bl337oiohd2pj" path="res://Character/Weapons/Shield/frame_01_delay-0.1s.png" id="3_qo6gb"]
+[ext_resource type="Texture2D" uid="uid://b78loxr2pe6p6" path="res://Character/Weapons/Shield/frame_02_delay-0.1s.png" id="4_1k8jm"]
+[ext_resource type="Texture2D" uid="uid://dah1g4frfxb8e" path="res://Character/Weapons/Shield/frame_03_delay-0.1s.png" id="5_d2gma"]
+[ext_resource type="Texture2D" uid="uid://dc2ucd2rqmyp3" path="res://Character/Weapons/Shield/frame_04_delay-0.1s.png" id="6_r3cku"]
+[ext_resource type="Texture2D" uid="uid://cc11f8qde3v2f" path="res://Character/Weapons/Shield/frame_05_delay-0.1s.png" id="7_pvgt5"]
+[ext_resource type="Texture2D" uid="uid://cpbej700hyo13" path="res://Character/Weapons/Shield/frame_06_delay-0.1s.png" id="8_qsbbi"]
+[ext_resource type="Texture2D" uid="uid://c6pkgjmx123ms" path="res://Character/Weapons/Shield/frame_07_delay-0.1s.png" id="9_8rj6b"]
+[ext_resource type="Texture2D" uid="uid://bva3kuwh2bbrv" path="res://Character/Weapons/Shield/frame_08_delay-0.1s.png" id="10_yup3k"]
+[ext_resource type="Texture2D" uid="uid://74fgawv3wg8y" path="res://Character/Weapons/Shield/frame_09_delay-0.1s.png" id="11_7q40a"]
 [ext_resource type="Script" path="res://Character/Shield.gd" id="12_6hh18"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_udxmh"]
@@ -20,34 +20,34 @@ size = Vector2(170, 168)
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("2_a2cme")
+"texture": ExtResource("2_o30i2")
 }, {
 "duration": 1.0,
-"texture": ExtResource("3_xod64")
+"texture": ExtResource("3_qo6gb")
 }, {
 "duration": 1.0,
-"texture": ExtResource("4_ofdap")
+"texture": ExtResource("4_1k8jm")
 }, {
 "duration": 1.0,
-"texture": ExtResource("5_a2svv")
+"texture": ExtResource("5_d2gma")
 }, {
 "duration": 1.0,
-"texture": ExtResource("6_jtmm0")
+"texture": ExtResource("6_r3cku")
 }, {
 "duration": 1.0,
-"texture": ExtResource("7_ocok7")
+"texture": ExtResource("7_pvgt5")
 }, {
 "duration": 1.0,
-"texture": ExtResource("8_8cs6l")
+"texture": ExtResource("8_qsbbi")
 }, {
 "duration": 1.0,
-"texture": ExtResource("9_ueqd0")
+"texture": ExtResource("9_8rj6b")
 }, {
 "duration": 1.0,
-"texture": ExtResource("10_jcw44")
+"texture": ExtResource("10_yup3k")
 }, {
 "duration": 1.0,
-"texture": ExtResource("11_qe0wm")
+"texture": ExtResource("11_7q40a")
 }],
 "loop": false,
 "name": &"default",

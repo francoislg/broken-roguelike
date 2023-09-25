@@ -6,6 +6,7 @@ const WeaponTypes := Weapons.WeaponTypes
 
 const labels := {
 	WeaponTypes.Bubble: 'Bubble',
+	WeaponTypes.Cross: 'Cross',
 	WeaponTypes.Bullets: 'Bullets',
 }
 

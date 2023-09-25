@@ -5,10 +5,11 @@ class_name Weapons
 enum WeaponTypes {
 	None = -1,
 	Bubble,
+	Cross,
 	Bullets
 }
 
-const MeleeWeapons = [WeaponTypes.Bubble]
+const MeleeWeapons = [WeaponTypes.Bubble, WeaponTypes.Cross]
 const ProjectileWeapons = [WeaponTypes.Bullets]
 
 @onready var LeftCooldown := $FloatingUI/Left
@@ -16,6 +17,7 @@ const ProjectileWeapons = [WeaponTypes.Bullets]
 
 const allWeapons := {
 	WeaponTypes.Bubble: preload("res://Character/Weapons/Bubble.tscn"),
+	WeaponTypes.Cross: preload("res://Character/Weapons/Cross.tscn"),
 	WeaponTypes.Bullets: preload("res://Character/Weapons/Bullets.tscn")
 }
 
