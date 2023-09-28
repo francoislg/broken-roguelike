@@ -22,6 +22,9 @@ func _process(delta):
 
 func respawn():
 	Orbit.visible = true
+	
+func _exit_tree():
+	AttackArea.queue_free()
 
 func explode():
 	Orbit.visible = false

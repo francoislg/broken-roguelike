@@ -200,7 +200,7 @@ func ratioedState(key: States) -> float:
 	var value = float(state[key])
 	match(key):
 		States.SPACE_LEFT:
-			return value / 10
+			return clamp(value / 100, -3, 3)
 		States.CLIPBOARD_LENGTH:
 			return clamp(value / 100, 0, 1)
 		States.MICROPHONE_VOLUME:
